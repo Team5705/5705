@@ -1,0 +1,33 @@
+package org.usfirst.frc.team5705.robot.commands;
+
+import org.usfirst.frc.team5705.robot.Robot;
+import edu.wpi.first.wpilibj.command.Command;
+
+public class Drive extends Command{
+
+		public Drive(){
+		requires(Robot.driveT);
+		}
+
+		public void initialize(){
+		}
+
+		protected void execute(){
+
+		}
+
+		protected void end(){
+
+		}
+
+		protected void interrupted(){
+
+		}
+		
+		
+	protected boolean isFinished() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}

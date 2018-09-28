@@ -14,7 +14,7 @@ public class DriveTrain extends Subsystem{
 		drivetrain.tankDrive(speedL, speedR);
 		
 	}
-	
+	//Aqui pondremos los modos de manejo del robot, Tank y Arcade.
 	public void ArcadeDrive(double speed,  double turn){
 		drivetrain.arcadeDrive(speed, turn);
 		

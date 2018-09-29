@@ -30,10 +30,9 @@ public class Robot extends TimedRobot {
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
+	 * Esta función se ejecuta cuando el robot se inicia por primera vez y debe ser
+	 * utilizado para cualquier código de inicialización.
 	 */
-	@Override
 	public void robotInit() {
 		m_oi = new OI();
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
@@ -42,32 +41,29 @@ public class Robot extends TimedRobot {
 	}
 
 	/**
-	 * This function is called once each time the robot enters Disabled mode.
-	 * You can use it to reset any subsystem information you want to clear when
-	 * the robot is disabled.
+	 *Esta función se llama una vez cada vez que el robot ingresa al modo Deshabilitado. 
+	 *Puede usarlo para restablecer cualquier información del subsistema que desee borrar cuando el robot 
+	 *esté deshabilitado.
 	 */
-	@Override
 	public void disabledInit() {
 
 	}
 
-	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
 	/**
-	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString code to get the auto name from the text box below the Gyro
+	 * Este modo autónomo (junto con el código de selección anterior) muestra cómo seleccionar 
+	 * entre diferentes modos autónomos utilizando el panel de control. El código de selección 
+	 * enviable funciona con Java SmartDashboard. Si prefiere el Tablero de LabVIEW, elimine todo el código 
+	 * del selector y elimine el comentario del código getString para obtener el nombre automático 
+	 * del cuadro de texto debajo de Gyro
 	 *
-	 * <p>You can add additional auto modes by adding additional commands to the
-	 * chooser code above (like the commented example) or additional comparisons
-	 * to the switch structure below with additional strings & commands.
+	 * <p>Puede agregar modos automáticos adicionales agregando comandos adicionales al código de selección 
+	 * anterior (como el ejemplo comentado) o comparaciones adicionales a la estructura del conmutador a 
+	 * continuación con cadenas y comandos adicionales.
 	 */
-	@Override
 	public void autonomousInit() {
 		m_autonomousCommand = m_chooser.getSelected();
 
@@ -78,43 +74,38 @@ public class Robot extends TimedRobot {
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
 
-		// schedule the autonomous command (example)
+		// programar el comando autónomo (ejemplo)
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.start();
 		}
 	}
 
 	/**
-	 * This function is called periodically during autonomous.
+	 * Esta función se llama periódicamente durante el autónomo.
 	 */
-	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
-	@Override
 	public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
+		// Esto asegura que la autonomía se detiene cuando se inicia la ejecución de 
+		// teleop. Si desea que la autonomía continúe hasta que sea interrumpida por 
+		// otro comando, elimine esta línea o coméntela.
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
 	}
 
 	/**
-	 * This function is called periodically during operator control.
+	 * Esta función se llama periódicamente durante el control del operador.
 	 */
-	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
 	/**
-	 * This function is called periodically during test mode.
+	 * Esta función se llama periódicamente durante el modo de prueba.
 	 */
-	@Override
 	public void testPeriodic() {
 	}
 }

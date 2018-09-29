@@ -16,11 +16,11 @@ import org.usfirst.frc.team5705.robot.commands.ExampleCommand;
 import org.usfirst.frc.team5705.robot.subsystems.ExampleSubsystem;
 
 /**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.properties file in the
- * project.
+ * La VM está configurada para ejecutar automáticamente esta clase y para 
+ * llamar a las funciones correspondientes a cada modo, como se describe en la 
+ * documentación de TimedRobot. Si cambia el nombre de esta clase o el paquete 
+ * después de crear este proyecto, también debe actualizar el archivo build.properties 
+ * en el proyecto.
  */
 public class Robot extends TimedRobot {
 	public static ExampleSubsystem m_subsystem = new ExampleSubsystem();

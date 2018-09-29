@@ -18,9 +18,9 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  * floating around.
  */
 public class RobotMap {
-	static Talon disparador;
-	static Spark MotorDer;
-	static Spark MotorIzq;
+	public static Talon disparador;
+	public static Spark MotorDer;
+	public static Spark MotorIzq;
 	public static DifferentialDrive Chasis;
 	/*
 	public static void speedTren() {
@@ -30,9 +30,9 @@ public class RobotMap {
 	public static void init(){
 	MotorIzq = new Spark(0);
 	MotorDer = new Spark(1);
-	disparador = new Talon(3);
+	disparador = new Talon(2);
 	Chasis = new DifferentialDrive(MotorIzq, MotorDer);
 	
-	}	
+	}
 
 }

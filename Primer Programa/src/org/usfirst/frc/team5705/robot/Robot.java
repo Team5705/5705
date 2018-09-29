@@ -7,8 +7,11 @@
 
 package org.usfirst.frc.team5705.robot;
 
+import org.usfirst.frc.team5705.robot.commands.Disparador;
+import org.usfirst.frc.team5705.robot.commands.DisparadorInv;
 import org.usfirst.frc.team5705.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team5705.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team5705.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -26,6 +29,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 	public class Robot extends TimedRobot {
 	public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
 	public static OI m_oi;
+	
+	public static Shooter disparador = new Shooter();
 	public static DriveTrain driveT = new DriveTrain();
 	public static Joystick driver = new Joystick(0);
 	public static XboxControllerMap driver2 = new XboxControllerMap(1);
@@ -116,6 +121,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		if (driver2.getXButton()) {
+			new Disparador();
+		}
+		else if(driver2.getYButton()) {
+			new DisparadorInv();
+		}
 	}
 
 	/**

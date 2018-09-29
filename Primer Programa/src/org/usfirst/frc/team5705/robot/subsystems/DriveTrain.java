@@ -3,6 +3,7 @@ package org.usfirst.frc.team5705.robot.subsystems;
 import org.usfirst.frc.team5705.robot.RobotMap;
 import org.usfirst.frc.team5705.robot.commands.Drive;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
@@ -21,6 +22,15 @@ public class DriveTrain extends Subsystem{
 		
 	}
 	public DifferentialDrive drivetrain = RobotMap.Chasis;
+	public ADXRS450_Gyro gyroc = RobotMap.gyroc;
+	
+	public double getleading() {
+		return gyroc.getAngle();
+		
+	}
+	public void gyroreset() {
+		gyroc.reset();
+	}
 	
 	public void Stop() {
 		drivetrain.arcadeDrive(0, 0);		

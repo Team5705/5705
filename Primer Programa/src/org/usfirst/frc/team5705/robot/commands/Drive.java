@@ -13,15 +13,15 @@ public class Drive extends Command{
 		}
 
 		protected void execute(){
-
+			Robot.driveT.ArcadeDrive(Robot.driver2.getLeftStickY(), Robot.driver2.getLeftStickY());
 		}
 
 		protected void end(){
-
+			Robot.driveT.Stop();
 		}
 
 		protected void interrupted(){
-
+			end();
 		}
 		
 		

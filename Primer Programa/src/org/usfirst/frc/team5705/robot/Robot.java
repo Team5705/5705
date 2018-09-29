@@ -7,14 +7,14 @@
 
 package org.usfirst.frc.team5705.robot;
 
+import org.usfirst.frc.team5705.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team5705.robot.subsystems.ExampleSubsystem;
+
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team5705.robot.commands.ExampleCommand;
-import org.usfirst.frc.team5705.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team5705.robot.subsystems.ExampleSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,10 +23,12 @@ import org.usfirst.frc.team5705.robot.subsystems.ExampleSubsystem;
  * creating this project, you must also update the build.properties file in the
  * project.
  */
-public class Robot extends TimedRobot {
+	public class Robot extends TimedRobot {
 	public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
 	public static OI m_oi;
 	public static DriveTrain driveT = new DriveTrain();
+	public static Joystick driver = new Joystick(0);
+	public static XboxControllerMap driver2 = new XboxControllerMap(1);
 	
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -36,11 +38,14 @@ public class Robot extends TimedRobot {
 	 * used for any initialization code.
 	 */
 	@Override
-	public void robotInit() {
+	public void robotInit(){
+		RobotMap.init();
+		
 		m_oi = new OI();
-		m_chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", m_chooser);
+		
+		//m_chooser.addDefault("Default Auto", new ExampleCommand());
+		//m_chooser.addObject("My Auto", new MyAutoCommand());
+		//SmartDashboard.putData("Auto mode", m_chooser);
 	}
 
 	/**
@@ -118,5 +123,6 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+	
 	}
 }

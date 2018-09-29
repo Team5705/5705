@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team5705.robot;
 
+import org.usfirst.frc.team5705.robot.commands.*;
 import org.usfirst.frc.team5705.robot.subsystems.*;
 
 import edu.wpi.cscore.UsbCamera;
@@ -29,9 +30,9 @@ public class Robot extends TimedRobot {
 	public static Drivetrain drivetrain;
 	public static Balls balls;
 	public static Tray tray;
-	
+
 	public static OI oi;
-	
+
 	UsbCamera cam;
 
 	Command autonomousCommand;
@@ -50,10 +51,10 @@ public class Robot extends TimedRobot {
 		oi = new OI();
 
 		chooser.addDefault("Default Auto", null);
-		chooser.addObject("My Auto", null);
+		chooser.addObject("My Auto", new MyAutonomous());
 		chooser.addObject("La Buena dijo el Frank", null);
 		SmartDashboard.putData("Auto mode", chooser);
-				
+
 		cam = CameraServer.getInstance().startAutomaticCapture(RobotMap.cam);
 		cam.setFPS(30);
 		cam.setResolution(640, 480);

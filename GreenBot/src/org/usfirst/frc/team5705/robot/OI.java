@@ -7,11 +7,25 @@
 
 package org.usfirst.frc.team5705.robot;
 
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+	
+	public XboxControllerMap driverController = new XboxControllerMap(RobotMap.joystick_1);
+	
+	boolean D3 = driverController.getXButton();
+	
+	public OI() {
+		if (D3 == true) {
+			// new Command();
+		}
+	}	
+	
+	
+	
 	//// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a
 	//// joystick.

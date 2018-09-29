@@ -7,6 +7,9 @@
 
 package org.usfirst.frc.team5705.robot;
 
+import org.usfirst.frc.team5705.robot.commands.*;
+
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -16,12 +19,18 @@ public class OI {
 	
 	public XboxControllerMap driverController = new XboxControllerMap(RobotMap.joystick_1);
 	
-	boolean D3 = driverController.getXButton();
+	JoystickButton D1 = new JoystickButton(driverController, 1);
+	JoystickButton D2 = new JoystickButton(driverController, 2);
+	JoystickButton D3 = new JoystickButton(driverController, 3);
+	JoystickButton D5 = new JoystickButton(driverController, 5);
+	JoystickButton D6 = new JoystickButton(driverController, 6);
 	
 	public OI() {
-		if (D3 == true) {
-			// new Command();
-		}
+		D1.whileHeld(new TrayUp());
+		D2.whileHeld(new TrayDown());
+		D3.whileHeld(new Shooter());
+		D5.whileHeld(new DecreaseSpeed());
+		D6.whileHeld(new IncreaseSpeed());
 	}	
 	
 	

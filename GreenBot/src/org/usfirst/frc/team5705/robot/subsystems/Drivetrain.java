@@ -7,14 +7,13 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
 public class Drivetrain extends Subsystem {
 
-	ADXRS450_Gyro Gyro = null;
+	ADXRS450_Gyro gyro = null;
 
 	Spark leftmotor = null;
 	Spark rightmotor = null;
@@ -22,8 +21,8 @@ public class Drivetrain extends Subsystem {
 	DifferentialDrive Robotdrive = null;
 
 	public Drivetrain() {
-		Gyro = new ADXRS450_Gyro(RobotMap.drivetrain_gyro);
-		Gyro.calibrate();
+		gyro = new ADXRS450_Gyro(RobotMap.drivetrain_gyro);
+		gyro.calibrate();
 		leftmotor = new Spark(RobotMap.drivetrain_leftmotor);
 		rightmotor = new Spark(RobotMap.drivetrain_rightmotor);
 
@@ -35,12 +34,12 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double Gyro() {
-		double angle = Gyro.getAngle();
-		SmartDashboard.putNumber("Gyro", angle);
+		double angle = gyro.getAngle();
 		return angle;
 	}
 
 	public void initDefaultCommand() {
 		setDefaultCommand(new DriveArcade());
+		
 	}
 }

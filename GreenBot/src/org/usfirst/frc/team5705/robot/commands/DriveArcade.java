@@ -3,6 +3,7 @@ package org.usfirst.frc.team5705.robot.commands;
 import org.usfirst.frc.team5705.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveArcade extends Command {
 	double speed = Robot.chassisSpeed;
@@ -21,7 +22,8 @@ public class DriveArcade extends Command {
 		double rotateSpeed = Robot.oi.driverController.getRightStickX();
 		
 		Robot.drivetrain.Drive(moveSpeed, rotateSpeed, speed);
-		Robot.drivetrain.Gyro();
+		SmartDashboard.putNumber("chassisSpeed", speed);
+		SmartDashboard.putNumber("Gyro", Robot.drivetrain.Gyro());
 	}
 
 	// Haga que este retorno sea verdadero cuando este comando ya no necesite

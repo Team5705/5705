@@ -8,6 +8,9 @@
 package org.usfirst.frc.team5705.robot;
 
 import org.usfirst.frc.team5705.robot.subsystems.*;
+
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -24,7 +27,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
 	public static double chassisSpeed;
 	public static Drivetrain drivetrain;
+	public static Balls balls;
+	public static Tray tray;
+	
 	public static OI oi;
+	
+	UsbCamera cam;
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -36,6 +44,8 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		chassisSpeed = 0.8;
 		drivetrain = new Drivetrain();
+		balls = new Balls();
+		tray = new Tray();
 
 		oi = new OI();
 
@@ -43,6 +53,10 @@ public class Robot extends TimedRobot {
 		chooser.addObject("My Auto", null);
 		chooser.addObject("La Buena dijo el Frank", null);
 		SmartDashboard.putData("Auto mode", chooser);
+				
+		cam = CameraServer.getInstance().startAutomaticCapture(RobotMap.cam);
+		cam.setFPS(30);
+		cam.setResolution(640, 480);
 	}
 
 	/**

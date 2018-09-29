@@ -11,9 +11,18 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SPI.Port;
 
 public class RobotMap {
-
+	// Motors
 	public static final int drivetrain_leftmotor = 8;
 	public static final int drivetrain_rightmotor = 9;
 	public static final Port drivetrain_gyro = SPI.Port.kOnboardCS0;
+	public static final int motor_shooter = 6;
+	public static final int motorVentanilla = 7;
+
+	// Joysticks
 	public static int joystick_1 = 0;
+
+	// Cameras
+	public static final int cam = 0;
+	public static final int limitswitch_1 = 0;
+	public static final int limitswitch_2 = 1;
 }

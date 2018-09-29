@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team5705.robot;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -22,12 +23,15 @@ public class RobotMap {
 	public static Spark MotorDer;
 	public static Spark MotorIzq;
 	public static DifferentialDrive Chasis;
+	public static ADXRS450_Gyro gyroc;
 	/*
 	public static void speedTren() {
 	new double SpeedValue = 0;
 	}
 	*/
 	public static void init(){
+	gyroc = new ADXRS450_Gyro();
+	gyroc.calibrate();
 	MotorIzq = new Spark(0);
 	MotorDer = new Spark(1);
 	disparador = new Talon(2);

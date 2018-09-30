@@ -16,7 +16,7 @@ public class Rotate90 extends Command {
 
     protected void execute() {
     	double angleRobot = Robot.drivetrain.Gyro();
-		while (angleRobot >= 90) {
+		while (angleRobot <= 90) {
     		Robot.drivetrain.Drive(0, 1, 1);
     	}
     	finished = true;

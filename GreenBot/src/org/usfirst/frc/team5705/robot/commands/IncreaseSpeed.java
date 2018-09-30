@@ -19,7 +19,7 @@ public class IncreaseSpeed extends InstantCommand {
     		Robot.chassisSpeed = 1.0;
     	}
     	else {
-    		Robot.chassisSpeed = Vel + 0.1;
+    		Robot.chassisSpeed += Vel;
     	}
     }
 

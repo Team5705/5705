@@ -12,6 +12,7 @@ import org.usfirst.frc.team5705.robot.subsystems.*;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -26,6 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * build.properties en el proyecto.
  */
 public class Robot extends TimedRobot {
+	public static String gamedata;
 	public static double chassisSpeed;
 	public static Drivetrain drivetrain;
 	public static Balls balls;
@@ -53,12 +55,13 @@ public class Robot extends TimedRobot {
 		chooser.addDefault("Default Auto", null);
 		chooser.addObject("My Auto", new MyAutonomous());
 		chooser.addObject("La Buena dijo el Frank", null);
+		chooser.addObject("GameData", new GameData());
 		SmartDashboard.putData("Auto mode", chooser);
 
 		cam = CameraServer.getInstance().startAutomaticCapture(RobotMap.cam);
 		cam.setFPS(30);
 		cam.setResolution(640, 480);
-	}
+	        }
 
 	/**
 	 * Esta función se llama una vez cada vez que el robot ingresa al modo
@@ -88,6 +91,7 @@ public class Robot extends TimedRobot {
 	 * comandos adicionales.
 	 */
 	public void autonomousInit() {
+		gamedata = DriverStation.getInstance().getGameSpecificMessage();
 		autonomousCommand = chooser.getSelected();
 
 		/*

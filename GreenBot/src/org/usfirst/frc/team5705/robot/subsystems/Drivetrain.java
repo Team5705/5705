@@ -15,8 +15,7 @@ public class Drivetrain extends Subsystem {
 
 	ADXRS450_Gyro gyro = null;
 
-	Spark leftmotor = null;
-	Spark rightmotor = null;
+	Spark leftmotor = null, rightmotor = null;
 
 	DifferentialDrive Robotdrive = null;
 
@@ -34,8 +33,7 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double Gyro() {
-		double angle = gyro.getAngle();
-		return angle;
+		return gyro.getAngle();
 	}
 
 	public void initDefaultCommand() {

@@ -28,7 +28,7 @@ public class XboxControllerMap extends Joystick {
 	public static final int RightX = 5;
 	public static final int RightY = 6;
 
-	double deadband = 0.2;
+	double deadband = 0.02;
 
 	public XboxControllerMap(int port) {
 		super(port);

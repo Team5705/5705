@@ -10,16 +10,17 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 public class DecreaseSpeed extends InstantCommand {
 	double Vel = Robot.chassisSpeed;
 
-	public DecreaseSpeed() {
-		super();
-	}
+    public DecreaseSpeed() {
+        super();
+    }
 
-	protected void initialize() {
-		if (Vel <= 0.0) {
-			Robot.chassisSpeed = 0.0;
-		} else {
-			Robot.chassisSpeed += 0.1;
-		}
-	}
+    protected void initialize() {
+    	if (Vel <= 0.0) {
+    		Robot.chassisSpeed = 0.0;
+    	}
+    	else {
+    		Robot.chassisSpeed += Vel;
+    	}
+    }
 
 }

@@ -19,9 +19,9 @@ public class DriveMecanum extends Command {
     protected void execute() {
     	angle = Robot.drivetrain.Gyro();
     	
-    	double moveXSpeed = Robot.oi.driverController.getLeftStickX();
-    	double moveYSpeed = Robot.oi.driverController.getLeftStickY();
-    	double rotateSpeed = Robot.oi.driverController.getRightStickX();
+    	double moveXSpeed = -Robot.oi.driverController.getRawAxis(1);
+    	double moveYSpeed = -Robot.oi.driverController.getRawAxis(0);
+    	double rotateSpeed = Robot.oi.driverController.getRawAxis(4);
     	
     	Robot.drivetrain.Drive(moveXSpeed, moveYSpeed, rotateSpeed, angle, speed);
     	

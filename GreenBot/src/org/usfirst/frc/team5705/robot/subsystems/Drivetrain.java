@@ -15,12 +15,14 @@ public class Drivetrain extends Subsystem {
 
 	ADXRS450_Gyro gyro = null;
 
-	Spark leftmotor = null, rightmotor = null;
+	Spark leftmotor = null;
+	Spark rightmotor = null;
 
 	DifferentialDrive Robotdrive = null;
 
 	public Drivetrain() {
 		gyro = new ADXRS450_Gyro(RobotMap.drivetrain_gyro);
+		gyro.reset();
 		gyro.calibrate();
 		leftmotor = new Spark(RobotMap.drivetrain_leftmotor);
 		rightmotor = new Spark(RobotMap.drivetrain_rightmotor);

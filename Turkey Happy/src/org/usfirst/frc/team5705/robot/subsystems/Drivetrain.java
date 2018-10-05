@@ -27,19 +27,17 @@ public class Drivetrain extends Subsystem {
 		leftRearMotor = new Spark(RobotMap.drivetrain_leftRearMotor);
 		rightRearMotor = new Spark(RobotMap.drivetrain_rightRearMotor);
 
-		rightFrontMotor.setInverted(true);
-		rightRearMotor.setInverted(true);
 
 		MecanumDrive = new MecanumDrive(leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor);
-	}
-
-	public void Drive(double moveXSpeed, double moveYSpeed, double rotateSpeed, double gyro, double speed) {
-		MecanumDrive.driveCartesian(moveYSpeed * speed, moveXSpeed * speed, rotateSpeed * speed, gyro);
 	}
 
 	public double Gyro() {
 		double angle = gyro.getAngle();
 		return angle;
+	}
+	
+	public void Drive(double moveXSpeed, double moveYSpeed, double rotateSpeed, double gyro, double speed) {
+		MecanumDrive.driveCartesian(moveYSpeed * speed, moveXSpeed * speed, rotateSpeed * speed, gyro);
 	}
 
 	public void initDefaultCommand() {

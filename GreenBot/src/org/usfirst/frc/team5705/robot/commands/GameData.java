@@ -1,14 +1,12 @@
 package org.usfirst.frc.team5705.robot.commands;
 
-import org.usfirst.frc.team5705.robot.Robot;
-
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class GameData extends CommandGroup {
-	String gamedata;
 
 	public GameData() {
-		gamedata = Robot.gamedata;
+		String gamedata = DriverStation.getInstance().getGameSpecificMessage();
 
 		switch (gamedata) {
 		case "LL":

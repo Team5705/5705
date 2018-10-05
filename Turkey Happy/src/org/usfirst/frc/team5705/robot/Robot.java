@@ -17,17 +17,18 @@ import org.usfirst.frc.team5705.robot.subsystems.*;
 public class Robot extends TimedRobot {
 	public static double chassisSpeed;
 	public static Drivetrain drivetrain;
+	public static Elevator elevator;
 	public static OI oi;
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
 	public void robotInit() {
-		chassisSpeed = 0.8;
+		chassisSpeed = 0.6;
 		drivetrain = new Drivetrain();
+		elevator = new Elevator();
 		oi = new OI();
 		chooser.addDefault("Default Auto", null);
-		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 	}
 

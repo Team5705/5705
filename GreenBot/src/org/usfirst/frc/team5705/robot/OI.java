@@ -28,9 +28,9 @@ public class OI {
 	public OI() {
 		D1.whileHeld(new TrayUp());
 		D2.whileHeld(new TrayDown());
-		D3.whileHeld(new Shooter());
-		D5.whileHeld(new DecreaseSpeed());
-		D6.whileHeld(new IncreaseSpeed());
+		D3.whileHeld(new Shooter());;
+		D5.whenPressed(new DecreaseSpeed());
+		D6.whenPressed(new IncreaseSpeed());
 	}	
 	
 	

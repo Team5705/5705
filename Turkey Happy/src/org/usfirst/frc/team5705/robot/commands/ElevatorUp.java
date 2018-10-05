@@ -7,27 +7,27 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class MoveRobot extends Command {
-
-    public MoveRobot() {
-        requires(Robot.drivetrain);
+public class ElevatorUp extends Command {
+	
+    public ElevatorUp() {
+    	requires(Robot.elevator);
     }
 
     protected void initialize() {
+
     }
 
     protected void execute() {
-    	Robot.drivetrain.Drive(1, 1, 0.5);
+    	double speed 
     }
 
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     protected void end() {
     }
 
     protected void interrupted() {
-    	end();
     }
 }

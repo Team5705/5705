@@ -18,4 +18,7 @@ public class RobotMap {
 	public static final int drivetrain_leftRearMotor = 2;
 	public static final int drivetrain_rightRearMotor = 3;
 	public static final int Joystick_1 = 0;
+	public static final int elevator_rM = 8;
+	public static final int elevator_lM = 5;
+	
 }

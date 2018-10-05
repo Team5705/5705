@@ -18,10 +18,11 @@ public class Shooter extends Command {
 	}
 
 	protected boolean isFinished() {
-		return true;
+		return false;
 	}
 
 	protected void end() {
+		Robot.balls.Shoot(0);
 	}
 
 	protected void interrupted() {

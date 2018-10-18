@@ -21,14 +21,14 @@ public class XboxControllerMap extends Joystick {
 	/**
 	 * Axes
 	 */
-	public static final int LeftX = 1;
-	public static final int LeftY = 2;
-	public static final int LeftTrigger = 3;
-	public static final int RightTrigger = 4;
-	public static final int RightX = 5;
-	public static final int RightY = 6;
+	public static final int LeftX = 0;
+	public static final int LeftY = 1;
+	public static final int LeftTrigger = 2;
+	public static final int RightTrigger = 3;
+	public static final int RightX = 4;
+	public static final int RightY = 5;
 
-	double deadband = 0.02;
+	double deadband = 0.05;
 
 	public XboxControllerMap(int port) {
 		super(port);

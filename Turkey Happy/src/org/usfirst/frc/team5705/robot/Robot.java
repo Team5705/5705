@@ -12,12 +12,15 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.usfirst.frc.team5705.robot.commands.MovePolar;
 import org.usfirst.frc.team5705.robot.subsystems.*;
 
 public class Robot extends TimedRobot {
 	public static double chassisSpeed;
 	public static Drivetrain drivetrain;
 	public static Elevator elevator;
+	public static Arm arm;
 	public static OI oi;
 
 	Command autonomousCommand;
@@ -27,8 +30,9 @@ public class Robot extends TimedRobot {
 		chassisSpeed = 0.6;
 		drivetrain = new Drivetrain();
 		elevator = new Elevator();
+		arm = new Arm();
 		oi = new OI();
-		chooser.addDefault("Default Auto", null);
+		chooser.addDefault("Default Auto", new MovePolar());
 		SmartDashboard.putData("Auto mode", chooser);
 	}
 

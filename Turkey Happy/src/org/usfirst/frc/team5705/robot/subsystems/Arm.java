@@ -2,19 +2,21 @@ package org.usfirst.frc.team5705.robot.subsystems;
 
 import org.usfirst.frc.team5705.robot.RobotMap;
 
-import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class Elevator extends Subsystem {
+public class Arm extends Subsystem {
+	
+	Victor rM, lM;
 
-	Spark rM, lM;
-
-	public Elevator() {
-		rM = new Spark(RobotMap.elevator_rM);
-		lM = new Spark(RobotMap.elevator_lM);
+	public Arm() {
+		rM = new Victor(RobotMap.arm_rM);
+		lM = new Victor(RobotMap.arm_lM);
+ 
+		
 	}
 
-	public void Elev(double speed) {
+	public void arm(double speed) {
 		rM.set(speed);
 		lM.set(speed);
 	}

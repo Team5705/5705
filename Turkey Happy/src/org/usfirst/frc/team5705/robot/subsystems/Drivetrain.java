@@ -27,7 +27,6 @@ public class Drivetrain extends Subsystem {
 		leftRearMotor = new Spark(RobotMap.drivetrain_leftRearMotor);
 		rightRearMotor = new Spark(RobotMap.drivetrain_rightRearMotor);
 
-
 		MecanumDrive = new MecanumDrive(leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor);
 	}
 
@@ -35,9 +34,13 @@ public class Drivetrain extends Subsystem {
 		double angle = gyro.getAngle();
 		return angle;
 	}
-	
+
 	public void Drive(double moveXSpeed, double moveYSpeed, double rotateSpeed, double gyro, double speed) {
-		MecanumDrive.driveCartesian(moveYSpeed * speed, moveXSpeed * speed, rotateSpeed * speed, gyro);
+		MecanumDrive.driveCartesian(moveYSpeed * speed, moveXSpeed * speed, rotateSpeed * speed);
+	}
+
+	public void Polar(double magnitude, double angle, double rotation) {
+		MecanumDrive.drivePolar(magnitude, angle, rotation);
 	}
 
 	public void initDefaultCommand() {

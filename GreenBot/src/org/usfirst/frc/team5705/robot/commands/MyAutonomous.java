@@ -1,35 +1,15 @@
 package org.usfirst.frc.team5705.robot.commands;
 
-import org.usfirst.frc.team5705.robot.Robot;
-
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class MyAutonomous extends CommandGroup {
 
 	public MyAutonomous() {
-		requires(Robot.drivetrain);
-		requires(Robot.balls);
-	}
 		
-	protected void initialize() {
-		
-	}
-	protected void execte() {
 		addSequential(new Rotate90(), 2);
 		addParallel(new Shooter(), 3);
 		addParallel(new MoveRobot(), 3);
-	}
 	
-	protected boolean isFinished() {
-		return true;
-	}
-	
-	protected void end(){
-		
-	}
-	
-	protected void interrupted() {
-		end();
 	}
 	
 

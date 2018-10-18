@@ -4,17 +4,17 @@ import org.usfirst.frc.team5705.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ElevatorUp extends Command {
+public class TakeCube extends Command {
 
-	public ElevatorUp() {
-		requires(Robot.elevator);
+	public TakeCube() {
+		requires(Robot.arm);
 	}
 
 	protected void initialize() {
 	}
 
 	protected void execute() {
-		Robot.elevator.Elev(1);
+		Robot.arm.arm(-0.7);
 	}
 
 	protected boolean isFinished() {
@@ -22,7 +22,7 @@ public class ElevatorUp extends Command {
 	}
 
 	protected void end() {
-		Robot.elevator.Elev(0);
+		Robot.arm.arm(0);
 	}
 
 	protected void interrupted() {

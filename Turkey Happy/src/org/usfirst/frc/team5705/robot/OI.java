@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team5705.robot;
 
+import org.usfirst.frc.team5705.robot.commands.*;
+
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public class OI {
@@ -15,11 +17,17 @@ public class OI {
 	
 	JoystickButton D1 = new JoystickButton(driverController, 1);
 	JoystickButton D2 = new JoystickButton(driverController, 2);
+	JoystickButton D3 = new JoystickButton(driverController, 3);
+	JoystickButton D4 = new JoystickButton(driverController, 4);
 	
 	public OI() {
 		
-		D1.whileHeld(null);
-		D2.whileHeld(null);
+		D1.whileHeld(new TakeCube());
+		D2.whileHeld(new DropCube());
+		D3.whileHeld(new ElevatorUp());
+		D4.whileHeld(new ElevatorDown());
+		
+		
 	}
 	
 }

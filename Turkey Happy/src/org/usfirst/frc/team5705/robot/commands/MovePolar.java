@@ -6,26 +6,26 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class MovePolar extends Command {
 
-    public MovePolar() {
-    	requires(Robot.drivetrain);
-    }
+	public MovePolar() {
+		requires(Robot.drivetrain);
+	}
 
-    protected void initialize() {
-    }
+	protected void initialize() {
+	}
 
-    protected void execute() {
-    	Robot.drivetrain.Polar(0.6, 30, 0);
-    }
+	protected void execute() {
+		Robot.drivetrain.Polar(0.6, 30, 0);
+	}
 
-    protected boolean isFinished() {
-        return false;
-    }
+	protected boolean isFinished() {
+		return false;
+	}
 
-    protected void end() {
-    	Robot.drivetrain.Polar(0.01, 0, 0);
-    }
+	protected void end() {
+		Robot.drivetrain.Polar(0.01, 0, 0);
+	}
 
-    protected void interrupted() {
-    end();
-    }
+	protected void interrupted() {
+		end();
+	}
 }

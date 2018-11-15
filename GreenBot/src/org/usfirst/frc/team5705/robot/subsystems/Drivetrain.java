@@ -17,7 +17,7 @@ public class Drivetrain extends Subsystem {
 
 	Spark leftmotor = null;
 	Spark rightmotor = null;
-
+	
 	DifferentialDrive Robotdrive = null;
 
 	public Drivetrain() {

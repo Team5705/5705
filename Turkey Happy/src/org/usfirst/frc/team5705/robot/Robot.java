@@ -32,7 +32,7 @@ public class Robot extends TimedRobot {
 		elevator = new Elevator();
 		arm = new Arm();
 		oi = new OI();
-		chooser.addDefault("Default Auto", new MovePolar());
+		chooser.addDefault("Default Auto", new MovePolar(0));
 		SmartDashboard.putData("Auto mode", chooser);
 	}
 

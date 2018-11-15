@@ -22,8 +22,8 @@ public class OI {
 	
 	public OI() {
 		
-		D1.whileHeld(new TakeCube());
-		D2.whileHeld(new DropCube());
+		D1.whenPressed(new TakeCube());
+		D2.whenPressed(new DropCube());
 		D3.whileHeld(new ElevatorUp());
 		D4.whileHeld(new ElevatorDown());
 		

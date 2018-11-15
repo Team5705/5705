@@ -10,8 +10,8 @@ public class Tray extends Subsystem {
 
 	Talon motorVentanilla = null;
 
-	DigitalInput limitSwitch;
-	DigitalInput limitSwitch2;
+	DigitalInput limitSwitch = null;
+	DigitalInput limitSwitch2 = null;
 
 	public Tray() {
 		motorVentanilla = new Talon(RobotMap.motorVentanilla);

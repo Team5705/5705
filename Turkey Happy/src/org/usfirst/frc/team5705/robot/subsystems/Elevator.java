@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Elevator extends Subsystem {
 
-	Spark rM, lM;
+	Spark rM = null, lM = null;
 
 	public Elevator() {
 		rM = new Spark(RobotMap.elevator_rM);

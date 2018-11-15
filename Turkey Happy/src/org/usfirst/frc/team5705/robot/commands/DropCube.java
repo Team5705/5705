@@ -11,18 +11,17 @@ public class DropCube extends Command {
     }
 
     protected void initialize() {
+    	Robot.arm.open();
     }
 
     protected void execute() {
-    	Robot.arm.arm(0.7);
     }
 
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     protected void end() {
-    	Robot.arm.arm(0);
     }
 
     protected void interrupted() {

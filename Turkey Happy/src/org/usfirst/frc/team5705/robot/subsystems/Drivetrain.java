@@ -21,6 +21,7 @@ public class Drivetrain extends Subsystem {
 
 	public Drivetrain() {
 		gyro = new ADXRS450_Gyro(RobotMap.drivetrain_gyro);
+		gyro.reset();
 		gyro.calibrate();
 		leftFrontMotor = new Spark(RobotMap.drivetrain_leftFrontMotor);
 		rightFrontMotor = new Spark(RobotMap.drivetrain_rigthFrontMotor);

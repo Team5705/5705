@@ -7,6 +7,9 @@
 
 package org.usfirst.frc.team5705.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -21,19 +24,26 @@ public class Robot extends TimedRobot {
 	public static Drivetrain drivetrain;
 	public static Elevator elevator;
 	public static Arm arm;
+	public static Compressor c;
 	public static OI oi;
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
 	public void robotInit() {
-		chassisSpeed = 0.6;
+		
+		chassisSpeed = 0.7;
 		drivetrain = new Drivetrain();
 		elevator = new Elevator();
 		arm = new Arm();
 		oi = new OI();
+		c = new Compressor(0);
 		chooser.addDefault("Default Auto", new MovePolar(0));
 		SmartDashboard.putData("Auto mode", chooser);
+		
+		UsbCamera cam0 = CameraServer.getInstance().startAutomaticCapture(RobotMap.cam);
+		cam0.setFPS(30);
+		cam0.setResolution(640, 480);
 	}
 
 	public void disabledInit() {

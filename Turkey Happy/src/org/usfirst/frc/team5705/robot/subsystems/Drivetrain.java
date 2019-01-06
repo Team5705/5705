@@ -37,7 +37,7 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void Drive(double moveXSpeed, double moveYSpeed, double rotateSpeed, double gyro, double speed) {
-		MecanumDrive.driveCartesian(moveYSpeed * speed, moveXSpeed * speed, rotateSpeed * speed);
+		MecanumDrive.driveCartesian(moveYSpeed * speed, moveXSpeed * speed, rotateSpeed * speed, gyro);
 	}
 
 	public void Polar(double magnitude, double angle, double rotation) {

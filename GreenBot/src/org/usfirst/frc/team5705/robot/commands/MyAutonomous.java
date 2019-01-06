@@ -6,9 +6,9 @@ public class MyAutonomous extends CommandGroup {
 
 	public MyAutonomous() {
 
-		addSequential(new Rotate90(), 2);
-		addParallel(new Shooter(), 3);
-		addSequential(new MoveRobot(), 3);
+		addSequential(new Rotate90());
+		addParallel(new Shooter(), 1);
+		addSequential(new MoveRobot(0.7,0,1), 1.5);
 
 	}
 

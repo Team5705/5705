@@ -35,7 +35,22 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double Gyro() {
-		return gyro.getAngle();
+		double angle = gyro.getAngle();
+		double gyro = 0;
+		if (angle > 360)
+		{
+			gyro = angle % 360;
+		}
+		else if (angle < 0)
+		{
+			gyro = (Math.abs(angle)) % 360;
+		}
+		else 
+		{
+			gyro = angle;
+		}
+
+		return gyro;
 	}
 
 	public void initDefaultCommand() {

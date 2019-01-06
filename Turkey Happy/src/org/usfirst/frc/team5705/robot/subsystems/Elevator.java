@@ -1,5 +1,6 @@
 package org.usfirst.frc.team5705.robot.subsystems;
 
+import org.usfirst.frc.team5705.robot.Robot;
 import org.usfirst.frc.team5705.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.Spark;
@@ -17,6 +18,8 @@ public class Elevator extends Subsystem {
 	public void Elev(double speed) {
 		rM.set(speed);
 		lM.set(speed);
+		Robot.c.setClosedLoopControl(true);
+		
 	}
 
 	public void initDefaultCommand() {

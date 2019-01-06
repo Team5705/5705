@@ -16,7 +16,7 @@ public class DriveArcade extends Command {
 	}
 
 	protected void execute() {
-		double moveSpeed = -Robot.oi.driverController.getRawAxis(1);
+		double moveSpeed = Robot.oi.driverController.getRawAxis(1);
 		double rotateSpeed = Robot.oi.driverController.getRawAxis(4);
 		
 		Robot.drivetrain.Drive(moveSpeed, rotateSpeed, speed);

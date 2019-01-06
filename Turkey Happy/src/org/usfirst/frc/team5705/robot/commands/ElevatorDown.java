@@ -14,7 +14,7 @@ public class ElevatorDown extends Command {
     }
 
     protected void execute() {
-    	Robot.elevator.Elev(-1);
+    	Robot.elevator.Elev(-0.45);
     }
 
     protected boolean isFinished() {

@@ -3,24 +3,23 @@ package org.usfirst.frc.team5705.robot.subsystems;
 
 import org.usfirst.frc.team5705.robot.RobotMap;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Arm extends Subsystem {
 	
-	DoubleSolenoid arms = null;
+	Solenoid arms = null;
 	
 	public Arm() {
-		arms = new DoubleSolenoid(RobotMap.solenoid_deploy, RobotMap.solenoid_retract);
+		arms = new Solenoid(RobotMap.solenoid_arm);
 	}
 	
 	public void open() {
-		arms.set(Value.kForward);
+		arms.set(true);
 	}
 	
 	public void close() {
-		arms.set(Value.kReverse);
+		arms.set(false);
 	}
 	
 	public void initDefaultCommand() {

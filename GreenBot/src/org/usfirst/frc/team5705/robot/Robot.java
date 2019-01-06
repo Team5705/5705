@@ -27,8 +27,6 @@ public class Robot extends TimedRobot {
 
 	public static OI oi;
 
-	
-
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -62,7 +60,6 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		// gamedata = DriverStation.getInstance().getGameSpecificMessage();
 		autonomousCommand = chooser.getSelected();
-
 
 		if (autonomousCommand != null) {
 			autonomousCommand.start();

@@ -19,7 +19,6 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,7 +35,7 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  Vision _vision;
+  private Vision _vision;
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -47,10 +46,15 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-
-    _vision = new Vision();
-    
-
+    System.out.println();
+    System.out.println();
+    System.out.println("******************************************************************");
+    System.out.println("******************************************************************");
+    System.out.println("************** Welcome user, this is the test robot **************");
+    System.out.println("******************************************************************");
+    System.out.println("******************************************************************");
+    System.out.println();
+    System.out.println();
   }
 
   /**
@@ -105,7 +109,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+
+    _vision = new Vision();
     new Thread(_vision).start();
+
   }
 
   /**
@@ -115,36 +122,33 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
     
   }
-
   class Vision implements Runnable {
-      Mat frame = new Mat(); 
-      Mat frame1 = new Mat();
-      Mat frame2 = new Mat();
+    Mat frame = new Mat(); 
+    Mat frame1 = new Mat();
+    Mat frame2 = new Mat();
+    Mat frame3 = new Mat();
+   
 
-      VideoCapture cam0 = new VideoCapture(0);
-
-    @Override
     public void run() {
-      cam0.read(frame);
-      Imgproc.cvtColor(frame, frame1, Imgproc.COLOR_BGR2HSV);
-      Core.inRange(frame1, new Scalar(94, 223, 223), new Scalar(126, 255, 255), frame2);
+    VideoCapture camera = new VideoCapture(0);
+    camera.read(frame);
+    Imgproc.cvtColor(frame, frame1, Imgproc.COLOR_BGR2HSV);
+    Core.inRange(frame1, new Scalar(12, 23, 166), new Scalar(44, 255, 255), frame2);
 
-      //List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-      List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-      Mat hierarchy = new Mat();
-      Imgproc.findContours(frame2, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
-      for (int i = 0; i < contours.size(); i++) {
-          contours.get(i);
-      }
-      Rect boundRect = Imgproc.boundingRect(hierarchy);
-      double centerX = boundRect.x + (boundRect.width / 2);
-      double centerY = boundRect.y + (boundRect.height / 2);
-
-      SmartDashboard.putNumber("x", centerX);
-      SmartDashboard.putNumber("y", centerY);
-
-
+    List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+    Mat hierarchy = new Mat();
+    Imgproc.findContours(frame2, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
+    for (int i = 0; i < contours.size(); i++) {
+        frame3 = contours.get(i);
     }
+    Rect boundRect = Imgproc.boundingRect(frame3);
+    double centerX = boundRect.x + (boundRect.width / 2);
+    double centerY = boundRect.y + (boundRect.height / 2);
+
+    SmartDashboard.putNumber("x", centerX);
+    SmartDashboard.putNumber("y", centerY);
+    }
+
 
   }
 }

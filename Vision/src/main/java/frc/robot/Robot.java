@@ -14,7 +14,6 @@ import java.util.List;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfByte;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
@@ -36,10 +35,8 @@ public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
-  private Runnable r;
-  private Thread t;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
+  Vision _vision;
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -51,8 +48,9 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    r = new Vision();
-    t = new Thread(r);
+    _vision = new Vision();
+    
+
   }
 
   /**
@@ -104,9 +102,10 @@ public class Robot extends TimedRobot {
   /**
    * This function is called periodically during operator control.
    */
+
   @Override
   public void teleopPeriodic() {
-    t.start();
+    new Thread(_vision).start();
   }
 
   /**

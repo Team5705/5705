@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  private Vision _vision;
+  Vision _vision;
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -106,12 +106,14 @@ public class Robot extends TimedRobot {
   /**
    * This function is called periodically during operator control.
    */
-
+public void teleopInit() {
+    _vision = new Vision();
+    new Thread(_vision).start();
+}
   @Override
   public void teleopPeriodic() {
 
-    _vision = new Vision();
-    new Thread(_vision).start();
+    
 
   }
 
@@ -127,27 +129,34 @@ public class Robot extends TimedRobot {
     Mat frame1 = new Mat();
     Mat frame2 = new Mat();
     Mat frame3 = new Mat();
-   
+    VideoCapture camera = new VideoCapture(0);
 
     public void run() {
-    VideoCapture camera = new VideoCapture(0);
-    camera.read(frame);
-    Imgproc.cvtColor(frame, frame1, Imgproc.COLOR_BGR2HSV);
-    Core.inRange(frame1, new Scalar(12, 23, 166), new Scalar(44, 255, 255), frame2);
+     while (true) {
 
-    List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-    Mat hierarchy = new Mat();
-    Imgproc.findContours(frame2, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
-    for (int i = 0; i < contours.size(); i++) {
-        frame3 = contours.get(i);
-    }
-    Rect boundRect = Imgproc.boundingRect(frame3);
-    double centerX = boundRect.x + (boundRect.width / 2);
-    double centerY = boundRect.y + (boundRect.height / 2);
+      try {
+        camera.read(frame);
+        Imgproc.cvtColor(frame, frame1, Imgproc.COLOR_BGR2HSV);
+        Core.inRange(frame1, new Scalar(12, 23, 166), new Scalar(44, 255, 255), frame2);
 
-    SmartDashboard.putNumber("x", centerX);
-    SmartDashboard.putNumber("y", centerY);
+        List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+        Mat hierarchy = new Mat();
+        Imgproc.findContours(frame2, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
+        for (int i = 0; i < contours.size(); i++) {
+            frame3 = contours.get(i);
+        }
+        Rect boundRect = Imgproc.boundingRect(frame3);
+        double centerX = boundRect.x + (boundRect.width / 2);
+        double centerY = boundRect.y + (boundRect.height / 2);
+
+        SmartDashboard.putNumber("x", centerX);
+        SmartDashboard.putNumber("y", centerY);
+      } catch (Exception e) {
+        System.out.println("Error");
+      }
+      
     }
+  }
 
 
   }

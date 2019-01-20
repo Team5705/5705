@@ -129,12 +129,13 @@ public void teleopInit() {
     Mat frame1 = new Mat();
     Mat frame2 = new Mat();
     Mat frame3 = new Mat();
-    VideoCapture camera = new VideoCapture(0);
+    VideoCapture camera;
 
     public void run() {
      while (true) {
 
       try {
+        camera = new VideoCapture(0);
         camera.read(frame);
         Imgproc.cvtColor(frame, frame1, Imgproc.COLOR_BGR2HSV);
         Core.inRange(frame1, new Scalar(12, 23, 166), new Scalar(44, 255, 255), frame2);

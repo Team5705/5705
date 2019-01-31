@@ -18,13 +18,15 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
+import frc.robot.commands.Drive;
 
 /**
  * Add your docs here.
  */
 public class Powertrain extends Subsystem {
-  WPI_TalonSRX leftMaster = null,   rightMaster = null, 
-           leftFollow = null,   rightFollow = null;
+  WPI_TalonSRX leftMaster = null;  
+  WPI_TalonSRX rightMaster = null, 
+               leftFollow = null,   rightFollow = null;
 
   ADXRS450_Gyro gyro;
 
@@ -70,7 +72,6 @@ public class Powertrain extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new Drive());
   }
 }

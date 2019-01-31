@@ -19,7 +19,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * creating this project, you must also update the build.gradle file in the
  * project.
  */
+import frc.robot.subsystems.Powertrain;
 public class Robot extends TimedRobot {
+  public static Powertrain powertrain;
   Command autonomousCommand;
   public static OI oi;
 
@@ -31,6 +33,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    powertrain = new Powertrain();
     oi = new OI();
     chooser.setDefaultOption("Default Auto", null);
     chooser.addOption("Prueba 1", null);

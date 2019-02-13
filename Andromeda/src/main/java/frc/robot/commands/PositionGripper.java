@@ -11,11 +11,37 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class Drive extends Command {
+/*
+*   Position 0 --> Initial/Default
+*   Position 1 --> Take Cargo
+*   Position 2 --> Take/Drop Hatch Panel | Drop Cargo in Level 1 and 2
+*   Position 3 --> Drop Cargo in Level 3
+*/
 
-  public Drive() {
-    requires(Robot.powertrain);
+public class PositionGripper extends Command {
+  double angle;
+  double positionAngle;
+  int tol = 1;
 
+  public PositionGripper(int position) {
+    requires(Robot.gripper);
+    
+    switch (position){
+      case 0:
+        positionAngle = 0;
+        break;
+      case 1:
+      positionAngle = -90;
+        break;
+      case 2:
+      positionAngle = -45;
+        break;
+      case 3:
+      positionAngle = -10;
+        break;
+      default:
+      positionAngle = 0;
+    }
   }
 
   // Called just before this Command runs the first time
@@ -26,26 +52,25 @@ public class Drive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double moveSpeed = Robot.oi.controller1.getRawAxis(1);
-    double rotateSpeed = Robot.oi.controller1.getRawAxis(4);
+    if (Robot.mode == "MM") end();
+    double speed = (((angle - positionAngle)*0.00035)/2);
 
-    Robot.powertrain.arcadeDrive(moveSpeed, rotateSpeed);
-
-    double angle = Robot.powertrain.gyro();
-    SmartDashboard.putNumber("Angle", angle);
-
+    Robot.gripper.moveGRIPPER(speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    angle = Robot.gripper.gripperAngle();
+    SmartDashboard.putNumber("Gripper Angle", angle);
+
+  return (angle >= positionAngle-tol && angle <= positionAngle+tol);
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.powertrain.arcadeDrive(0, 0);
+    Robot.gripper.moveGRIPPER(0);
   }
 
   // Called when another command which requires one or more of the same

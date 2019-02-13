@@ -8,14 +8,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class Drive extends Command {
-
-  public Drive() {
-    requires(Robot.powertrain);
-
+public class ManualElevator extends Command {
+  public ManualElevator() {
+    requires(Robot.elevator);
   }
 
   // Called just before this Command runs the first time
@@ -26,14 +23,10 @@ public class Drive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double moveSpeed = Robot.oi.controller1.getRawAxis(1);
-    double rotateSpeed = Robot.oi.controller1.getRawAxis(4);
-
-    Robot.powertrain.arcadeDrive(moveSpeed, rotateSpeed);
-
-    double angle = Robot.powertrain.gyro();
-    SmartDashboard.putNumber("Angle", angle);
-
+    double down = -Robot.oi.controller1.getRawAxis(2);
+    double up = Robot.oi.controller1.getRawAxis(3);
+    double speed = down + up;
+    Robot.elevator.manualElevator(speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -45,7 +38,7 @@ public class Drive extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.powertrain.arcadeDrive(0, 0);
+    Robot.elevator.manualElevator(0);
   }
 
   // Called when another command which requires one or more of the same

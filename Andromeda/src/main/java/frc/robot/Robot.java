@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.*;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -19,14 +20,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * creating this project, you must also update the build.gradle file in the
  * project.
  */
-import frc.robot.subsystems.Powertrain;
 public class Robot extends TimedRobot {
   public static Powertrain powertrain;
+  public static Gripper gripper; 
+  public static Elevator elevator;
+  
+  public static final Object imgLock = new Object();
+
   Command autonomousCommand;
+  public static String mode;
+  String auto;
+
   public static OI oi;
-
+  
   SendableChooser<Command> chooser = new SendableChooser<>();
-
+  SendableChooser<String> mode_chooser = new SendableChooser<>();
+  SendableChooser<String> autonomous = new SendableChooser<>();
+  
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -34,14 +44,27 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     powertrain = new Powertrain();
+    gripper = new Gripper();
+    elevator = new Elevator();
+    
     oi = new OI();
-    chooser.setDefaultOption("Default Auto", null);
-    chooser.addOption("Prueba 1", null);
-    chooser.addOption("Prueba 2", null);
-    chooser.addOption("Prueba 3", null);
-    SmartDashboard.putData("Select Autonomous", chooser);
-  }
 
+    chooser.setDefaultOption("Automatic Autonomous", null);
+    chooser.addOption("Estation 1", null);
+    chooser.addOption("Estation 2", null);
+    chooser.addOption("Estation 3", null);
+    
+    mode_chooser.setDefaultOption("Automated Mode", "AM");
+    mode_chooser.addOption("Manual Mode", "MM");
+
+    autonomous.setDefaultOption("Yes", "Y");
+    autonomous.addOption("No", "N");
+    
+    SmartDashboard.putData("Select Autonomous", chooser);
+    SmartDashboard.putData("Select Mode", mode_chooser);
+    SmartDashboard.putData("Autonomous On?", autonomous);
+  }
+  
   /**
    * This function is called every robot packet, no matter the mode. Use
    * this for items like diagnostics that you want ran during disabled,
@@ -52,6 +75,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    mode = mode_chooser.getSelected();
   }
 
   /**
@@ -62,7 +86,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
   }
-
+  
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
@@ -82,16 +106,17 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     autonomousCommand = chooser.getSelected();
-
+    auto = autonomous.getSelected();
+    
     /*
-     * String autoSelected = SmartDashboard.getString("Auto Selector",
+    * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
      * = new MyAutoCommand(); break; case "Default Auto": default:
      * autonomousCommand = new ExampleCommand(); break; }
      */
 
     // schedule the autonomous command (example)
-    if (autonomousCommand != null) {
+    if (autonomousCommand != null && auto != "N") {
       autonomousCommand.start();
     }
   }
@@ -102,6 +127,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+
+    if (auto != "Y") autonomousCommand.cancel();
   }
 
   @Override
@@ -129,4 +156,6 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
   }
+
+  
 }

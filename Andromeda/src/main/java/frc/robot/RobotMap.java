@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.SPI.Port;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -14,11 +16,29 @@ package frc.robot;
  * floating around.
  */
 public class RobotMap {
+  //Motors CAN-Bus
+	public static final int powertrain_leftmotor1 = 1;
+	public static final int powertrain_leftmotor2 = 2;
+	public static final int powertrain_rightmotor1 = 3;
+  public static final int powertrain_rightmotor2 = 4;
+	public static final int cargogripper_motor = 5;
+  public static final int cargogripper_motormove = 6;
+  public static final int elevatorleftmotor = 7;
 
-	public static final int powertrain_leftmotor1 = 0;
-	public static final int powertrain_leftmotor2 = 1;
-	public static final int powertrain_rightmotor1 = 2;
-	public static final int powertrain_rightmotor2 = 3;
+  //Sparks
+  public static final int elevatorrightmotor = 0;
+
+  //Solenoids
+  public static final int hatchpgripper = 0;
+  public static final int hatchpgripper_move = 1;
+
+  //Sensors
+  public static final Port gyro = Port.kOnboardCS0;
+  public static final int _lim1 = 0;
+  public static final int _lim2 = 1;
+  public static final int _lim3 = 2;
+  
+
   // For example to map the left and right motors, you could define the
   // following variables to use with your drivetrain subsystem.
   // public static int leftMotor = 1;

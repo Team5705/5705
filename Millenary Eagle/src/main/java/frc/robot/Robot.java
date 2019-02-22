@@ -25,13 +25,14 @@ public class Robot extends TimedRobot {
   public static Gripper gripper; 
   public static Elevator elevator;
   
-  public static final Object imgLock = new Object();
+  //public static final Object imgLock = new Object();
 
   Command autonomousCommand;
   public static String mode;
   String auto;
 
   public static OI oi;
+  public static GlobalVariables globalvariables;
   
   SendableChooser<Command> chooser = new SendableChooser<>();
   SendableChooser<String> mode_chooser = new SendableChooser<>();
@@ -43,11 +44,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    GlobalVariables.chassisSpeed = 0.65;
+    GlobalVariables.amarre = 0.0;
+
     powertrain = new Powertrain();
     gripper = new Gripper();
-    elevator = new Elevator();
+    elevator = new Elevator(); 
     
     oi = new OI();
+    globalvariables = new GlobalVariables();
 
     chooser.setDefaultOption("Automatic Autonomous", null);
     chooser.addOption("Estation 1", null);
@@ -76,6 +81,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     mode = mode_chooser.getSelected();
+
+    SmartDashboard.putNumber("chassisSpeed", GlobalVariables.chassisSpeed);
   }
 
   /**

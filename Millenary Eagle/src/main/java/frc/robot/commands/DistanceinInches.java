@@ -8,38 +8,43 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class Drive extends Command {
+public class DistanceinInches extends Command {
+  double ref;
+  double distance;
+  double angle;
 
-  public Drive() {
+  double kProportional = 0.0005;
+
+  public DistanceinInches(double inches) {
     requires(Robot.powertrain);
-
+    ref = inches;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.powertrain.resetEncoder();
+    Robot.powertrain.resetGyro();
+
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double moveSpeed = Robot.oi.controller1.getRawAxis(1);
-    double rotateSpeed = Robot.oi.controller1.getRawAxis(4);
-
-    Robot.powertrain.arcadeDrive(moveSpeed, rotateSpeed);
-
-    double angle = Robot.powertrain.gyro();
-    SmartDashboard.putNumber("Angle", angle);
-
+    double xSpeed = ((distance - ref)*kProportional);
+    double zSpeed = ((0 - angle)*0.03);
+    
+    Robot.powertrain.arcadeDrive(-velocity(xSpeed, 0.7, 0.4), velocity(zSpeed, 0.7, 0.4));
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    angle = Robot.powertrain.gyroFinal();
+    distance = Robot.powertrain.distanceInInches();
+    return Math.abs(ref) >= Math.abs(distance-110);
   }
 
   // Called once after isFinished returns true
@@ -53,5 +58,13 @@ public class Drive extends Command {
   @Override
   protected void interrupted() {
     end();
+  }
+
+  double velocity(double speed, double maxSpeed, double minSpeed){
+    if (speed >= maxSpeed) speed = maxSpeed;
+    else if (speed <= -maxSpeed) speed = -maxSpeed;
+    else if(speed <= minSpeed && speed > 0) speed = minSpeed;
+    else if(speed >= -minSpeed && speed < 0) speed = -minSpeed;
+    return speed;
   }
 }

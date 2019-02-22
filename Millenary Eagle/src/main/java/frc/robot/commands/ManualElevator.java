@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class ManualElevator extends Command {
@@ -23,10 +24,14 @@ public class ManualElevator extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double down = -Robot.oi.controller1.getRawAxis(2);
-    double up = Robot.oi.controller1.getRawAxis(3);
-    double speed = down + up;
+    double down = -Robot.oi.controller1.getRawAxis(2)*0.9;
+    double up = Robot.oi.controller1.getRawAxis(3)*0.9;
+    double speed = 0.1 + (down + up);
+
     Robot.elevator.manualElevator(speed);
+    SmartDashboard.putNumber("Speed", speed);
+    SmartDashboard.putNumber("Elevator Position", Robot.elevator.position());
+
   }
 
   // Make this return true when this Command no longer needs to run execute()

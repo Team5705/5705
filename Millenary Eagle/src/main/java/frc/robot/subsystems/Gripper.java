@@ -9,29 +9,31 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.commands.ManualGripperPosition;
 
 /**
  * Add your docs here.
  */
 public class Gripper extends Subsystem {
-  public WPI_TalonSRX juanito = null;
-  WPI_VictorSPX carlitos = null;
+  WPI_TalonSRX juanito = null;
+  WPI_VictorSPX carlitos = null, marquito = null;
 
   Solenoid gripp = null, move = null;
 
   DigitalInput _lim3 = null;
 
   public Gripper() {
-    carlitos = new WPI_VictorSPX(RobotMap.cargogripper_motor);
     juanito = new WPI_TalonSRX(RobotMap.cargogripper_motormove);
+    carlitos = new WPI_VictorSPX(RobotMap.cargogripper_motor);
+    marquito = new WPI_VictorSPX(RobotMap.cargogripper_motor2);
 
     gripp = new Solenoid(RobotMap.hatchpgripper);
     move = new Solenoid(RobotMap.hatchpgripper_move);
@@ -40,10 +42,13 @@ public class Gripper extends Subsystem {
 
     carlitos.configFactoryDefault();
     juanito.configFactoryDefault();
+    marquito.configFactoryDefault();
+
+    marquito.follow(juanito);
 
     carlitos.setInverted(false);
     juanito.setInverted(false);
-
+    marquito.setInverted(InvertType.FollowMaster);
     initQuadrature();
 
 
@@ -64,11 +69,11 @@ public class Gripper extends Subsystem {
   }
 
   public void takeCargo(){
-    carlitos.set(ControlMode.PercentOutput, 0.75);
+    carlitos.set(ControlMode.PercentOutput, -0.4);
   }
 
   public void dropCargo(){
-    carlitos.set(ControlMode.PercentOutput, -0.75);
+    carlitos.set(ControlMode.PercentOutput, 1);
   }
 
   public boolean limit(){
@@ -108,13 +113,12 @@ public class Gripper extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new ManualGripperPosition());
   }
 
   public void initQuadrature() {
 		/* get the absolute pulse width position */
-		int pulseWidth = Robot.elevator.pedrito.getSensorCollection().getPulseWidthPosition();
+		int pulseWidth = juanito.getSensorCollection().getPulseWidthPosition();
 
 		/**
 		 * If there is a discontinuity in our measured range, subtract one half

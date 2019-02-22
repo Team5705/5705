@@ -17,13 +17,15 @@ import edu.wpi.first.wpilibj.SPI.Port;
  */
 public class RobotMap {
   //Motors CAN-Bus
-	public static final int powertrain_leftmotor1 = 1;
-	public static final int powertrain_leftmotor2 = 2;
-	public static final int powertrain_rightmotor1 = 3;
-  public static final int powertrain_rightmotor2 = 4;
-	public static final int cargogripper_motor = 5;
-  public static final int cargogripper_motormove = 6;
-  public static final int elevatorleftmotor = 7;
+	public static final int powertrain_leftmotor1 = 6;
+	public static final int powertrain_leftmotor2 = 7;
+	public static final int powertrain_rightmotor1 = 2;
+  public static final int powertrain_rightmotor2 = 5;
+
+	public static final int cargogripper_motor = 8;
+	public static final int cargogripper_motor2 = 8;
+  public static final int cargogripper_motormove = 4;
+  public static final int elevatorleftmotor = 3;
 
   //Sparks
   public static final int elevatorrightmotor = 0;
@@ -34,9 +36,9 @@ public class RobotMap {
 
   //Sensors
   public static final Port gyro = Port.kOnboardCS0;
-  public static final int _lim1 = 0;
-  public static final int _lim2 = 1;
-  public static final int _lim3 = 2;
+  public static final int _lim1 = 1; //Limit Down
+  public static final int _lim2 = 2; //Limit Up
+  public static final int _lim3 = 0; //LimitCargo
   
 
   // For example to map the left and right motors, you could define the

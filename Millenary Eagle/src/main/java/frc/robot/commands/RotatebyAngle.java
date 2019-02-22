@@ -8,75 +8,54 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-/*
-*   Position 0 --> Initial/Default
-*   Position 1 --> Take Cargo
-*   Position 2 --> Take/Drop Hatch Panel | Drop Cargo in Level 1 and 2
-*   Position 3 --> Drop Cargo in Level 3
-*/
-
-public class PositionGripper extends Command {
+public class RotatebyAngle extends Command {
+  int ref;
   double angle;
-  double positionAngle;
-  int tol = 1;
 
-  public PositionGripper(int position) {
-    requires(Robot.gripper);
-    
-    switch (position){
-      case 0:
-        positionAngle = 0;
-        break;
-      case 1:
-      positionAngle = -90;
-        break;
-      case 2:
-      positionAngle = -45;
-        break;
-      case 3:
-      positionAngle = -10;
-        break;
-      default:
-      positionAngle = 0;
-    }
+  public RotatebyAngle(int angle) {
+    requires(Robot.powertrain);
+    ref = angle;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.powertrain.resetGyro();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.mode == "MM") end();
-    double speed = (((angle - positionAngle)*0.00035)/2);
+    double zSpeed = ((ref - angle)*0.03);
 
-    Robot.gripper.moveGRIPPER(speed);
+    Robot.powertrain.arcadeDrive(0, velocity(zSpeed, 0.7, 0.4));
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    angle = Robot.gripper.gripperAngle();
-    SmartDashboard.putNumber("Gripper Angle", angle);
-
-  return (angle >= positionAngle-tol && angle <= positionAngle+tol);
+    angle = Robot.powertrain.gyroFinal();
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.gripper.moveGRIPPER(0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
+  }
+
+  double velocity(double speed, double maxSpeed, double minSpeed){
+    if (speed >= maxSpeed) speed = maxSpeed;
+    else if (speed <= -maxSpeed) speed = -maxSpeed;
+    else if(speed <= minSpeed && speed > 0) speed = minSpeed;
+    else if(speed >= -minSpeed && speed < 0) speed = -minSpeed;
+    return speed;
   }
 }

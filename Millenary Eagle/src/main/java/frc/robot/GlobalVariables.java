@@ -11,9 +11,6 @@ package frc.robot;
  * Add your docs here.
  */
 public class GlobalVariables {
-    public static double position_powertrain;
-    public static double position_elevator;
-    public static double position_gripp;
-
-    public static double chassisSpeed;
+    public static double chassisSpeed = 0.8;
+    public static double amarre = 0;
 }

@@ -13,7 +13,6 @@ import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.ManualElevator;
@@ -22,14 +21,14 @@ import frc.robot.commands.ManualElevator;
  * Add your docs here.
  */
 public class Elevator extends Subsystem {
-  public WPI_TalonSRX pedrito = null;
-  Spark marquito = null;
+  WPI_TalonSRX pedrito = null;
+  //wpi_ marquito = null;
 
   DigitalInput _lim1 = null, _lim2 = null; 
 
   public Elevator(){
     pedrito = new WPI_TalonSRX(RobotMap.elevatorleftmotor);
-    marquito = new Spark(RobotMap.elevatorrightmotor);
+    //marquito = new Spark(RobotMap.elevatorrightmotor);
 
     _lim1 = new DigitalInput(RobotMap._lim1);
     _lim2 = new DigitalInput(RobotMap._lim2);
@@ -41,12 +40,12 @@ public class Elevator extends Subsystem {
   }
 
   public int position(){
-    return pedrito.getSelectedSensorPosition(0);
+    return -pedrito.getSelectedSensorPosition(0);
   }
 
   public void manualElevator(double speed){
     pedrito.set(ControlMode.PercentOutput, speed);
-    marquito.set(speed);
+    //marquito.set(speed);
   }
 
   public boolean limitDown(){

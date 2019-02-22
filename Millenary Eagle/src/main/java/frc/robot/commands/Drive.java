@@ -8,33 +8,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.GlobalVariables;
 import frc.robot.Robot;
 
-public class PositionLevel_Elevator extends Command {
-  double position;
-  double level;
-  int tol;
-  boolean lim1, lim2;
+public class Drive extends Command {
+  double chassisSpeed;
 
-  public PositionLevel_Elevator(int level) {
-    requires(Robot.elevator);
+  public Drive() {
+    requires(Robot.powertrain);
 
-    switch (level){
-      case 1:
-        this.level = 10;
-        tol = 10;
-        break;
-      case 2:
-        this.level = 5000;
-        tol = 20;
-        break;
-      case 3:
-        this.level = 10000;
-        tol = 10;
-        break;
-      default:
-        end();
-    }
   }
 
   // Called just before this Command runs the first time
@@ -45,28 +28,30 @@ public class PositionLevel_Elevator extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(Robot.mode == "MM") end();
+    chassisSpeed = GlobalVariables.chassisSpeed;
 
-    double speed = -(((position - level)*0.00035)/2);
-    Robot.elevator.manualElevator(speed);
+    double moveSpeed = -Robot.oi.controller1.getRawAxis(1);
+    double rotateSpeed = Robot.oi.controller1.getRawAxis(4);
 
-    
+    Robot.powertrain.arcadeDrive(moveSpeed * chassisSpeed, rotateSpeed * chassisSpeed);
+
+    double angle = Robot.powertrain.gyroFinal();
+
+    SmartDashboard.putNumber("Angle", Robot.powertrain.gyro());
+    SmartDashboard.putNumber("POV", Robot.oi.controller1.getPOV());
+
   }
-  
+
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    position = Robot.elevator.position();
-    lim1 = Robot.elevator.limitDown();
-    lim2 = Robot.elevator.limitUp();
-    
-    return (((level-tol <= position) && (position <= level+tol)) || (lim1 || lim2));
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.elevator.manualElevator(0);
+    Robot.powertrain.arcadeDrive(0, 0);
   }
 
   // Called when another command which requires one or more of the same

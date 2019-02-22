@@ -26,7 +26,9 @@ public class GripperActions extends Command {
           dropHP = false,
           takeOutHG = false,
           hideHG = false,
-          finish = false;
+          finish = false,
+          lim;
+          
   public GripperActions(int action) {
     requires(Robot.gripper);
 
@@ -75,14 +77,13 @@ public class GripperActions extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (takeCargo == true) Robot.gripper.takeCargo();
+    if (takeCargo == true) Robot.gripper.takeCargo(); 
     else if (dropCargo == true) Robot.gripper.dropCargo();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    boolean lim;
     if (dropCargo == true) {
       lim = false;
     } else {
@@ -94,7 +95,7 @@ public class GripperActions extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.gripper.stopMotor();
+    if (lim == true) Robot.gripper.stopMotor();
   }
 
   // Called when another command which requires one or more of the same

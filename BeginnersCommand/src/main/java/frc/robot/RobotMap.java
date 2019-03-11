@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.SPI.Port;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -25,6 +27,17 @@ public class RobotMap {
   public static final int rightSlave  = 3;
   public static final int leftSlave   = 4;
   
+  //Puertos en los que arrancaran los sensores
+  public static final Port gyro = Port.kOnboardCS0;
+
+  //Controladores por PWM (SPARK, Victor, Talon, etc...)
+
+
+  //Neumatica
+
+
+  //
+
 
   // If you are using multiple modules, make sure to define both the port
   // number and the module. For example you with a rangefinder:

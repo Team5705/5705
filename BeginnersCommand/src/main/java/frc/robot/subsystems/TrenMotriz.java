@@ -20,21 +20,43 @@ import frc.robot.RobotMap;
  */
 public class TrenMotriz extends Subsystem {
   // Aqui declaramos todo lo que llevara el tren motriz, controladores y sensores
-  WPI_TalonSRX  rightMaster1 = null;
-  WPI_VictorSPX leftMaster1 = null,
-                leftSlave2 = null,
-                rightSlave2 = null;
+  WPI_TalonSRX  rightMaster = null;
+  WPI_VictorSPX leftMaster = null, leftSlave = null, rightSlave = null;
+  // Un giroscopio tipo ADXRS450 por puerto SPI
   ADXRS450_Gyro giroscopio;
+  // Declaramos el arreglo del Tren Motriz tipo "DifferentialDrive"
   DifferentialDrive robotDrive;
+  // Un valor tipo double de alta precision decimal, para
   double deadband = 0.06;
 
   //Creamos un metodo o funcion para hacerse ejecutar el tren motriz
   public TrenMotriz(){
-    rightMaster1 = new WPI_TalonSRX(RobotMap.rightMaster);
-    leftMaster1 = new WPI_VictorSPX(RobotMap.lefttMaster);
-    leftSlave2 = new WPI_VictorSPX(RobotMap.leftSlave);
-    rightSlave2 = new WPI_VictorSPX(RobotMap.rightSlave);
-  
+    rightMaster = new WPI_TalonSRX(RobotMap.rightMaster);
+    leftMaster = new WPI_VictorSPX(RobotMap.lefttMaster);
+    leftSlave = new WPI_VictorSPX(RobotMap.leftSlave);
+    rightSlave = new WPI_VictorSPX(RobotMap.rightSlave);
+
+    // Configuramos por defecto los controladores para prevenir comportamientos raros
+    // Utilizando el metodo creado por CTRE "configFactoryDefault"
+    rightMaster.configFactoryDefault();
+    leftMaster.configFactoryDefault();
+    leftSlave.configFactoryDefault();		
+    rightSlave.configFactoryDefault();
+    
+    // Configuramos los controladores para que no giren los motores invertidos
+    leftMaster.setInverted(false);
+    rightMaster.setInverted(false);
+
+    //Le damos la orden de que los esclavos sigan a los maestros con el metodo "Follow"
+    leftSlave.follow(leftMaster);
+    rightSlave.follow(rightMaster);
+
+    // Configuraciones de los sensores en el Tren Motriz
+      // Arrancamos el giroscopio en su debido puerto SPI
+      // Posteriormente lo reiniciamos para borrar todo dato anterior, y lo calibramos
+    giroscopio = new ADXRS450_Gyro(RobotMap.gyro);
+    giroscopio.reset();
+    giroscopio.calibrate();
   }
   // Put methods for controlling this subsystem
   // here. Call these from Commands.

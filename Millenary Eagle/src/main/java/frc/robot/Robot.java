@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -27,6 +30,11 @@ public class Robot extends TimedRobot {
   
   //public static final Object imgLock = new Object();
 
+  NetworkTable table;
+  NetworkTable subtable;
+  NetworkTableEntry centerX;
+  public static double center;
+
   Command autonomousCommand;
   public static String mode;
   String auto;
@@ -44,15 +52,18 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    GlobalVariables.chassisSpeed = 0.65;
-    GlobalVariables.amarre = 0.0;
+    GlobalVariables.chassisSpeed = 0.6;
 
     powertrain = new Powertrain();
     gripper = new Gripper();
     elevator = new Elevator(); 
     
     oi = new OI();
-    globalvariables = new GlobalVariables();
+
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    table = inst.getTable("CenterVisionTarget");
+    centerX = table.getEntry("centerVT");
+    inst.startClientTeam(5705);
 
     chooser.setDefaultOption("Automatic Autonomous", null);
     chooser.addOption("Estation 1", null);
@@ -82,7 +93,9 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     mode = mode_chooser.getSelected();
 
-    SmartDashboard.putNumber("chassisSpeed", GlobalVariables.chassisSpeed);
+    center = centerX.getDouble(0);
+    SmartDashboard.putNumber("CenterX", center);
+
   }
 
   /**

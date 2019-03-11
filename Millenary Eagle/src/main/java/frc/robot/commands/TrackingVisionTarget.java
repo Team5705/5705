@@ -8,59 +8,40 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class DistanceinInches extends Command {
-  double ref;
-  double distance;
-  double angle;
+public class TrackingVisionTarget extends Command {
+  double center;
+  double tol = 15;
+  double ref = 320;
 
-  double tol = 1;
-
-  double kProportional = 0.13;
-  double kProportionalturn = 0.13;
-
-  public DistanceinInches(double inches) {
+  public TrackingVisionTarget() {
     requires(Robot.powertrain);
-    ref = inches;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.powertrain.resetEncoder();
-    Robot.powertrain.resetGyro();
-
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double xSpeed = ((distance - ref)*kProportional);
-    double zSpeed = ((0 - angle)*kProportionalturn);
-    
-    Robot.powertrain.arcadeDrive(velocity(xSpeed, 1, 0.4), velocity(zSpeed, 0.7, 0.4));
+    double xSpeed = -Robot.oi.controller1.getRawAxis(1);
+    double rotate = (((ref - center) * 0.008));
+
+    double speed = velocity(rotate, 0.7, 0.35);
+    SmartDashboard.putNumber("Speed", speed);
+
+    Robot.powertrain.arcadeDrive(xSpeed, speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    angle = Robot.powertrain.gyroFinal();
-    distance = Robot.powertrain.distanceInInches();
-    return Math.abs(distance) >= (Math.abs(ref) - tol);
-  }
-
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-    Robot.powertrain.arcadeDrive(0.05, 0);
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-    end();
+    center = Robot.center;
+    return false;//center >= (ref - tol) && center <= (ref + tol); //     305 <-- ref --> 335
   }
 
   double velocity(double speed, double maxSpeed, double minSpeed){
@@ -69,5 +50,18 @@ public class DistanceinInches extends Command {
     else if(speed <= minSpeed && speed > 0) speed = minSpeed;
     else if(speed >= -minSpeed && speed < 0) speed = -minSpeed;
     return speed;
+  }
+
+  // Called once after isFinished returns true
+  @Override
+  protected void end() {
+    Robot.powertrain.arcadeDrive(0, 0);
+  }
+
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
+  @Override
+  protected void interrupted() {
+    end();
   }
 }

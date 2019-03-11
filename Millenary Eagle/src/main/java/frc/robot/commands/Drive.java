@@ -9,7 +9,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.GlobalVariables;
 import frc.robot.Robot;
 
 public class Drive extends Command {
@@ -23,22 +22,23 @@ public class Drive extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    chassisSpeed = 0.8;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    chassisSpeed = GlobalVariables.chassisSpeed;
+    int POV = Robot.oi.controller1.getPOV();
 
     double moveSpeed = -Robot.oi.controller1.getRawAxis(1);
     double rotateSpeed = Robot.oi.controller1.getRawAxis(4);
 
-    Robot.powertrain.arcadeDrive(moveSpeed * chassisSpeed, rotateSpeed * chassisSpeed);
-
-    double angle = Robot.powertrain.gyroFinal();
+    Robot.powertrain.arcadeDrive(moveSpeed * chassisSpeed, rotateSpeed * chassisSpeed);  
+    
 
     SmartDashboard.putNumber("Angle", Robot.powertrain.gyro());
-    SmartDashboard.putNumber("POV", Robot.oi.controller1.getPOV());
+    SmartDashboard.putNumber("POV", POV);
+    SmartDashboard.putNumber("ChassisSpeed", chassisSpeed);
 
   }
 

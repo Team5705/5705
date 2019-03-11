@@ -33,7 +33,9 @@ public class RobotMap {
   //Solenoids
   public static final int hatchpgripper = 0;
   public static final int hatchpgripper_move = 1;
-
+  public static final int jumper_front = 2;
+  public static final int jumper_rear = 3;
+  
   //Sensors
   public static final Port gyro = Port.kOnboardCS0;
   public static final int _lim1 = 1; //Limit Down

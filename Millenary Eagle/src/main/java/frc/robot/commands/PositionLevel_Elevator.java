@@ -8,28 +8,29 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class PositionLevel_Elevator extends Command {
   double position;
   double level;
   int tol;
-  boolean lim1, lim2;
+  boolean lim1;
 
   public PositionLevel_Elevator(int level) {
     requires(Robot.elevator);
 
     switch (level){
       case 1:
-        this.level = 10;
-        tol = 10;
+        this.level = 2500;
+        tol = 80;
         break;
       case 2:
-        this.level = 5000;
-        tol = 20;
+        this.level = 16800;
+        tol = 80;
         break;
       case 3:
-        this.level = 10000;
+        this.level = 16800 + (16800-2500);
         tol = 10;
         break;
       default:
@@ -45,12 +46,13 @@ public class PositionLevel_Elevator extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(Robot.mode == "MM") end();
+    //if(Robot.mode == "MM") end();
 
-    double speed = -(((position - level)*0.00035)/2);
-    Robot.elevator.manualElevator(speed);
+    double speed = -(((position - level)*0.00035));
+    double spe = velocity(speed, 1, 0.3);
+    Robot.elevator.manualElevator(spe);
 
-    
+    SmartDashboard.putNumber("ElevSpeed", speed);
   }
   
   // Make this return true when this Command no longer needs to run execute()
@@ -58,15 +60,14 @@ public class PositionLevel_Elevator extends Command {
   protected boolean isFinished() {
     position = Robot.elevator.position();
     lim1 = Robot.elevator.limitDown();
-    lim2 = Robot.elevator.limitUp();
-    
-    return (((level-tol <= position) && (position <= level+tol)) || (lim1 || lim2));
+    return ((level-tol <= position) && (position <= level+tol)) || lim1;//|| position > 10000);
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.elevator.manualElevator(0);
+    Robot.elevator.manualElevator(0.1);
+    //if(lim1 == true) Robot.elevator.resetEncoder();
   }
 
   // Called when another command which requires one or more of the same

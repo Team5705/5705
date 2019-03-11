@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.ManualGripperPosition;
+import frc.robot.commands.GripperManual;
 
 /**
  * Add your docs here.
@@ -113,7 +113,7 @@ public class Gripper extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new ManualGripperPosition());
+    setDefaultCommand(new GripperManual());
   }
 
   public void initQuadrature() {

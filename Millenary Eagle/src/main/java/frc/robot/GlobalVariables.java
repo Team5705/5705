@@ -12,5 +12,4 @@ package frc.robot;
  */
 public class GlobalVariables {
     public static double chassisSpeed = 0.8;
-    public static double amarre = 0;
 }

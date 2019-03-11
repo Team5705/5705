@@ -63,18 +63,24 @@ public class Powertrain extends Subsystem {
 
     rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     rightMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 1);
+
     
-    /* leftMaster.config_kF(0, 0.1097, 10);
-    leftMaster.config_kP(0, 0.113333, 10);
-    leftMaster.config_kI(0, 0, 10);
-    leftMaster.config_kD(0,0,10); */
+    /*rightMaster.config_kF(0, 0.1097, 10);
+    rightMaster.config_kP(0, 0.5,   10);
+    rightMaster.config_kI(0, 0.001, 10);
+    rightMaster.config_kD(0, 0.0,   10); */
   }
   
   public double distanceInInches(){
-    int position = leftMaster.getSelectedSensorPosition(0);
-    double distance = (position / 4096) * 8; //Wheels 8''
+    int position = rightMaster.getSelectedSensorPosition(0);
+    double distance = (position / 4096) * 4; //Wheels 4''
     return distance;
   }
+
+  /*public void dis(float inches){
+    int value = (int) (inches / 4) * 4096;
+    rightMaster.set(ControlMode.Position, value);
+  }*/
 
   public void arcadeDrive(double xSpeed, double rotateSpeed){
     

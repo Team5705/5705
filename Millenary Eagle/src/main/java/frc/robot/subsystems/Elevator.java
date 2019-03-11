@@ -43,6 +43,11 @@ public class Elevator extends Subsystem {
     return -pedrito.getSelectedSensorPosition(0);
   }
 
+  public void resetEncoder(){
+    pedrito.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
+    pedrito.setSelectedSensorPosition(0, 0, 10);
+  }
+
   public void manualElevator(double speed){
     pedrito.set(ControlMode.PercentOutput, speed);
     //marquito.set(speed);

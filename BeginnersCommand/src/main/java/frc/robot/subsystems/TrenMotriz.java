@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
@@ -29,7 +30,7 @@ public class TrenMotriz extends Subsystem {
   // Un valor tipo double de alta precision decimal, para
   double deadband = 0.06;
 
-  //Creamos un metodo o funcion para hacerse ejecutar el tren motriz
+  //Creamos un metodo o funcion para el arranque del Tren Motriz y sus componentes
   public TrenMotriz(){
     rightMaster = new WPI_TalonSRX(RobotMap.rightMaster);
     leftMaster = new WPI_VictorSPX(RobotMap.lefttMaster);
@@ -44,8 +45,10 @@ public class TrenMotriz extends Subsystem {
     rightSlave.configFactoryDefault();
     
     // Configuramos los controladores para que no giren los motores invertidos
-    leftMaster.setInverted(false);
     rightMaster.setInverted(false);
+    leftMaster.setInverted(false);
+    leftSlave.setInverted(InvertType.FollowMaster);
+    rightSlave.setInverted(InvertType.FollowMaster);
 
     //Le damos la orden de que los esclavos sigan a los maestros con el metodo "Follow"
     leftSlave.follow(leftMaster);
@@ -57,13 +60,31 @@ public class TrenMotriz extends Subsystem {
     giroscopio = new ADXRS450_Gyro(RobotMap.gyro);
     giroscopio.reset();
     giroscopio.calibrate();
+
+    // Finalmente creamos el arreglo de la transmision con los controladores maestros
+    robotDrive = new DifferentialDrive(leftMaster, rightMaster);
+
   }
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+  
+  // Escribimos un metodo/funcion para operar el Tren Motriz
+  public void arcadeDrive(double xSpeed, double rotateSpeed){
+
+
+    robotDrive.arcadeDrive(xSpeed, rotateSpeed);
+  }
+  // Creamos otro metodo/funcion para indicarle que se reiniciara el giroscopio
+  public void resetGyro(){
+    giroscopio.reset();
+  }
+
+
+
 
   @Override
   public void initDefaultCommand() {
     // Establecemos el comando por defecto del subsistema aqui
-    setDefaultCommand(new Drive());
+    // el cual nos permitira operar el arreglo del Tren motriz
+
+  //  setDefaultCommand(new Drive());
   }
 }

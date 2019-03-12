@@ -46,7 +46,8 @@ public class PositionLevel_Elevator extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    //if(Robot.mode == "MM") end();
+    if(Robot.mode == "MM") end();
+    
 
     double speed = -(((position - level)*0.00035));
     double spe = velocity(speed, 1, 0.3);

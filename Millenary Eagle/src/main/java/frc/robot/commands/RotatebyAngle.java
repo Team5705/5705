@@ -20,7 +20,7 @@ public class RotatebyAngle extends Command {
     requires(Robot.powertrain);
     ref = angle;
   }
-
+  
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
@@ -32,7 +32,7 @@ public class RotatebyAngle extends Command {
   protected void execute() {
     double zSpeed = ((ref - angle)* kProportional);
 
-    Robot.powertrain.arcadeDrive(0, velocity(zSpeed, 0.75, 0.4));
+    Robot.powertrain.arcadeDrive(0, velocity(zSpeed, 0.7, 0.4));
   }
 
   // Make this return true when this Command no longer needs to run execute()

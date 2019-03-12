@@ -13,8 +13,8 @@ import frc.robot.Robot;
 
 public class TrackingVisionTarget extends Command {
   double center;
-  double tol = 15;
-  double ref = 320;
+  double tol = 3;
+  double ref = 160; // 320 x 240 resolution
 
   public TrackingVisionTarget() {
     requires(Robot.powertrain);
@@ -41,7 +41,7 @@ public class TrackingVisionTarget extends Command {
   @Override
   protected boolean isFinished() {
     center = Robot.center;
-    return false;//center >= (ref - tol) && center <= (ref + tol); //     305 <-- ref --> 335
+    return center >= (ref - tol) && center <= (ref + tol); //     305 <-- ref --> 335
   }
 
   double velocity(double speed, double maxSpeed, double minSpeed){

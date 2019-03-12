@@ -14,17 +14,18 @@ public class DistanceinInches extends Command {
   double ref;
   double distance;
   double angle;
+  int refAngle;
 
-  double tol = 1;
+  int tol = 1;
 
   double kProportional = 0.13;
-  double kProportionalturn = 0.13;
+  double kProportionalturn = 0.03;
 
-  public DistanceinInches(double inches) {
+  public DistanceinInches(double inches, int angle) {
     requires(Robot.powertrain);
     ref = inches;
+    refAngle = angle;
   }
-
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
@@ -36,10 +37,10 @@ public class DistanceinInches extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double xSpeed = ((distance - ref)*kProportional);
-    double zSpeed = ((0 - angle)*kProportionalturn);
+    double xSpeed = -((ref - distance)*kProportional);
+    double zSpeed = ((refAngle - angle)*kProportionalturn);
     
-    Robot.powertrain.arcadeDrive(velocity(xSpeed, 1, 0.4), velocity(zSpeed, 0.7, 0.4));
+    Robot.powertrain.arcadeDrive(velocity(xSpeed, 1, 0.4), velocity(zSpeed, 0.7, 0));
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -34,8 +34,6 @@ public class GripperManual extends Command {
         break;
     
       default:
-
-        break;
     }
   }
 

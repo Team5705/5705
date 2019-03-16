@@ -24,16 +24,23 @@ public class PositionLevel_Elevator extends Command {
       case 1:
         this.level = 2500;
         tol = 80;
+        System.out.println("Elevator Level 1");
         break;
+
       case 2:
         this.level = 16800;
         tol = 80;
+        System.out.println("Elevator Level 2");
         break;
+
       case 3:
         this.level = 16800 + (16800-2500);
         tol = 10;
+        System.out.println("Elevator Level 3");
         break;
+
       default:
+        System.out.println("No data level elevator");
         end();
     }
   }
@@ -46,22 +53,22 @@ public class PositionLevel_Elevator extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(Robot.mode == "MM") end();
-    
+  //if(Robot.mode == "MM") end();
 
-    double speed = -(((position - level)*0.00035));
+    double speed = (((level - position)*0.00035));
     double spe = velocity(speed, 1, 0.3);
     Robot.elevator.manualElevator(spe);
 
-    SmartDashboard.putNumber("ElevSpeed", speed);
+    SmartDashboard.putNumber("ElevSpeed", spe);
   }
   
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     position = Robot.elevator.position();
+    SmartDashboard.putNumber("Elevator Position", position);
     lim1 = Robot.elevator.limitDown();
-    return ((level-tol <= position) && (position <= level+tol)) || lim1;//|| position > 10000);
+    return ((level-tol) <= position && position <= (level+tol)); //|| lim1;//|| position > 10000);
   }
 
   // Called once after isFinished returns true

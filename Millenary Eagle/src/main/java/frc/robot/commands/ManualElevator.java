@@ -29,7 +29,8 @@ public class ManualElevator extends Command {
     double speed = 0.1 + (down + up);
 
     Robot.elevator.manualElevator(speed);
-    SmartDashboard.putNumber("Speed", speed);
+    
+    SmartDashboard.putNumber("ElevSpeed", speed);
     SmartDashboard.putNumber("Elevator Position", Robot.elevator.position());
 
   }
@@ -43,7 +44,7 @@ public class ManualElevator extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.elevator.manualElevator(0);
+    Robot.elevator.manualElevator(0.1);
   }
 
   // Called when another command which requires one or more of the same

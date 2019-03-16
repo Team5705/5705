@@ -84,12 +84,12 @@ public class Powertrain extends Subsystem {
 
   public void arcadeDrive(double xSpeed, double rotateSpeed){
     
-    /*if (Math.abs(xSpeed) < deadband) {
+    if (Math.abs(xSpeed) < deadband) {
       xSpeed = 0;
     }
     if (Math.abs(rotateSpeed) < deadband) {
       rotateSpeed = 0;
-    } */
+    } 
 
     robotDrive.arcadeDrive(xSpeed, rotateSpeed);
 
@@ -116,6 +116,10 @@ public class Powertrain extends Subsystem {
       return angle * 360;
       }
     }
+  }
+
+  public double getRateGyro(){
+    return gyro.getRate();
   }
 
   public double gyroFinal(){

@@ -9,11 +9,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class AutonomousPosition1 extends CommandGroup {
+public class AutonomousPosition2 extends CommandGroup {
   /**
    * Dejar disco en el CargoShip Posicion 3
    */
-  public AutonomousPosition1() {
+  public AutonomousPosition2() {
 
     addSequential(new DistanceinInches(52, -5));//-124.50
     /*addSequential(new RotatebyAngle(45));

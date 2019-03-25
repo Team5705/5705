@@ -16,9 +16,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.AutonomousPosition1;
-import frc.robot.commands.DistanceinInches;
-import frc.robot.commands.RotatebyAngle;
+import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -84,7 +82,7 @@ public class Robot extends TimedRobot {
     chooser.setDefaultOption("Automatic Autonomous", null);
     chooser.addOption("Estation 1", new RotatebyAngle(45));
     chooser.addOption("Estation 2", new DistanceinInches(10, 0));
-    chooser.addOption("Estation 3", new AutonomousPosition1());
+    chooser.addOption("Estation 3", new AutonomousPosition2());
     chooser.addOption("Null", null);
     
     mode_chooser.setDefaultOption("Automated Mode", "AM");

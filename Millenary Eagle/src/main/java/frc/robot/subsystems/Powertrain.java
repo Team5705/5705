@@ -73,9 +73,14 @@ public class Powertrain extends Subsystem {
   
   public double distanceInInches(){
     int position = rightMaster.getSelectedSensorPosition(0);
-    double distance = (position / 4096) * 4; //Wheels 4''
+    double distance = (position / 4096) * 12.56; //Wheels 4''
     return distance;
   }
+
+  public int position(){
+    return rightMaster.getSelectedSensorPosition(0);
+  } 
+
 
   /*public void dis(float inches){
     int value = (int) (inches / 4) * 4096;
@@ -84,20 +89,20 @@ public class Powertrain extends Subsystem {
 
   public void arcadeDrive(double xSpeed, double rotateSpeed){
     
-    if (Math.abs(xSpeed) < deadband) {
+    /*if (Math.abs(xSpeed) < deadband) {
       xSpeed = 0;
     }
     if (Math.abs(rotateSpeed) < deadband) {
       rotateSpeed = 0;
-    } 
+    } */
 
     robotDrive.arcadeDrive(xSpeed, rotateSpeed);
 
   }
 
   public void resetEncoder(){
-    leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
-    leftMaster.setSelectedSensorPosition(0, 0, 10);
+    rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0); /* PIDLoop=0,timeoutMs=0 */
+    rightMaster.setSelectedSensorPosition(0, 0, 10);
   }
 
   public void resetGyro(){

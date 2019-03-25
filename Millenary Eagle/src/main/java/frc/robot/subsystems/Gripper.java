@@ -9,7 +9,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
@@ -24,7 +23,7 @@ import frc.robot.commands.GripperManual;
  */
 public class Gripper extends Subsystem {
   WPI_TalonSRX juanito = null;
-  WPI_VictorSPX carlitos = null, marquito = null;
+  WPI_VictorSPX carlitos = null;
 
   Solenoid gripp = null, move = null;
 
@@ -33,7 +32,6 @@ public class Gripper extends Subsystem {
   public Gripper() {
     juanito = new WPI_TalonSRX(RobotMap.cargogripper_motormove);
     carlitos = new WPI_VictorSPX(RobotMap.cargogripper_motor);
-    marquito = new WPI_VictorSPX(RobotMap.cargogripper_motor2);
 
     gripp = new Solenoid(RobotMap.hatchpgripper);
     move = new Solenoid(RobotMap.hatchpgripper_move);
@@ -42,13 +40,10 @@ public class Gripper extends Subsystem {
 
     carlitos.configFactoryDefault();
     juanito.configFactoryDefault();
-    marquito.configFactoryDefault();
 
-    marquito.follow(juanito);
 
     carlitos.setInverted(false);
     juanito.setInverted(false);
-    marquito.setInverted(InvertType.FollowMaster);
     initQuadrature();
 
 
@@ -85,11 +80,11 @@ public class Gripper extends Subsystem {
   }
 
   public void takeHatchPanel(){
-    gripp.set(false);
+    gripp.set(true);
   }
 
   public void dropHatchPanel(){
-    gripp.set(true);
+    gripp.set(false);
   }
 
   public void takeOutHatchGripper(){

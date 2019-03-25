@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.RobotJumper;
 
 /**
  * Add your docs here.
@@ -17,7 +18,7 @@ import frc.robot.RobotMap;
 public class Jumper extends Subsystem {
   Solenoid front = null, rear = null;
 
-  Jumper(){
+  public Jumper(){
     front = new Solenoid(RobotMap.jumper_front);
     rear = new Solenoid(RobotMap.jumper_rear);
   }
@@ -42,7 +43,6 @@ public class Jumper extends Subsystem {
     
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new RobotJumper());
   }
 }

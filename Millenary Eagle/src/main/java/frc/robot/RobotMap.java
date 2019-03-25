@@ -19,11 +19,11 @@ public class RobotMap {
   //Motors CAN-Bus
 	public static final int powertrain_leftmotor1 = 6;
 	public static final int powertrain_leftmotor2 = 7;
-	public static final int powertrain_rightmotor1 = 2;
+	public static final int powertrain_rightmotor1 = 9;
   public static final int powertrain_rightmotor2 = 5;
 
 	public static final int cargogripper_motor = 8;
-	public static final int cargogripper_motor2 = 8;
+	//public static final int cargogripper_motor2 = 8;
   public static final int cargogripper_motormove = 4;
   public static final int elevatorleftmotor = 3;
 
@@ -31,10 +31,11 @@ public class RobotMap {
   public static final int elevatorrightmotor = 0;
 
   //Solenoids
-  public static final int hatchpgripper = 0;
-  public static final int hatchpgripper_move = 1;
-  public static final int jumper_front = 2;
-  public static final int jumper_rear = 3;
+  public static final int hatchpgripper = 1;
+  public static final int hatchpgripper_move = 2;
+  
+  public static final int jumper_front = 3;
+  public static final int jumper_rear = 0;
   
   //Sensors
   public static final Port gyro = Port.kOnboardCS0;

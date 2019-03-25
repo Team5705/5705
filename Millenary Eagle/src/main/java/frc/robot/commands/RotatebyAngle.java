@@ -22,7 +22,7 @@ public class RotatebyAngle extends Command {
     requires(Robot.powertrain);
     desiredAngle = angle;
     
-    pidGyro = new GyroPIDController(0.5, 0, 0, -1, 1); 
+    pidGyro = new GyroPIDController(0.01, 0, 0, -0.6, 0.6); 
   }
   
   // Called just before this Command runs the first time
@@ -36,7 +36,7 @@ public class RotatebyAngle extends Command {
   protected void execute() {
     //double zSpeed = ((ref - angle)* kProportional);
     //Robot.powertrain.arcadeDrive(0, velocity(zSpeed, 0.7, 0.4));
-    Robot.powertrain.arcadeDrive(0, pidGyro.getPIDValue(desiredAngle));
+    Robot.powertrain.arcadeDrive(0, velocity(pidGyro.getPIDValue(desiredAngle), 0.4) );
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -59,11 +59,9 @@ public class RotatebyAngle extends Command {
     end();
   }
 
-  /*double velocity(double speed, double maxSpeed, double minSpeed){
-    if (speed >= maxSpeed) speed = maxSpeed;
-    else if (speed <= -maxSpeed) speed = -maxSpeed;
-    else if(speed <= minSpeed && speed > 0) speed = minSpeed;
+  double velocity(double speed, double minSpeed){
+    if(speed <= minSpeed && speed > 0) speed = minSpeed;
     else if(speed >= -minSpeed && speed < 0) speed = -minSpeed;
     return speed;
-  }*/
+  }
 }

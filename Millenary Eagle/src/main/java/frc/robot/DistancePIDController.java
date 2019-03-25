@@ -14,7 +14,7 @@ public class DistancePIDController extends Robot{
   * Variables
   */
     private double displacement = 0;
-    private double sum = 0, rate = 0, distance, errorAn = 0, errorD, pid = 0;
+    private double sum = 0, distance, errorAn = 0, errorD, pid = 0;
     private long pasado = 0, ahora;
  /**
   * Constants
@@ -31,7 +31,7 @@ public class DistancePIDController extends Robot{
     
   }
 
-  public double getPIDValue(int desiredDistance){
+  public double getPIDValue(double desiredDistance){
       distance = powertrain.distanceInInches();
 
       ahora = System.currentTimeMillis();
@@ -47,24 +47,24 @@ public class DistancePIDController extends Robot{
         errorD = (displacement - errorAn)/1; 
         
         //Ecuacion general para el PID
-        pid = (kP * displacement) + (kI * sum) + (kD * rate);
+        pid = (kP * displacement) + (kI * sum) + (kD * errorD);
 
         pasado = ahora;
         errorAn = displacement;
+        
+        SmartDashboard.putNumber("P:", (kP * displacement));
+        SmartDashboard.putNumber("I:", (kI * sum));
+        SmartDashboard.putNumber("D:", (kD * errorD));
+        SmartDashboard.putNumber("PID", pid);
+        
+        
+        
+        //No permita que el valor de PID aumente mas alla de PID_MAX o por debajo de PID_MIN y
+        //Evite la acumulacion de la suma
+        if(pid >= PID_MAX) pid = PID_MAX;
+        else if(pid <= PID_MIN) pid = PID_MIN;
+        else this.sum = sum;
       }   
-      
-      SmartDashboard.putNumber("P:", (kP * displacement));
-      SmartDashboard.putNumber("I:", (kI * sum));
-      SmartDashboard.putNumber("D:", (kD * errorD));
-      SmartDashboard.putNumber("PID", pid);
-
-
-      
-      //No permita que el valor de PID aumente mas alla de PID_MAX o por debajo de PID_MIN y
-      //Evite la acumulacion de la suma
-      if(pid >= PID_MAX) pid = PID_MAX;
-      else if(pid <= PID_MIN) pid = PID_MIN;
-      else this.sum = sum;
 
       return pid;
   }

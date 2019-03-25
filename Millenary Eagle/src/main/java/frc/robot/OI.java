@@ -9,8 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.GripperActions;
-import frc.robot.commands.PositionLevel_Elevator;
+import frc.robot.commands.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -29,12 +28,13 @@ public class OI {
 
 
   public OI(){
-    //D1.whenActive(null);
-    //D2.whenActive(null);
+    D1.whileHeld(new VisionTargetCenter());
+    D2.whenPressed(new PositionLevel_Elevator(3));
     D3.whenPressed(new PositionLevel_Elevator(1));
     D4.whenPressed(new PositionLevel_Elevator(2));
-    D5.whenActive(new GripperActions(0));
-    D6.whenActive(new GripperActions(1));
+    D5.whenActive(new DropHatch());
+    D6.whenActive(new TakeHatch());
+   
 
     
 

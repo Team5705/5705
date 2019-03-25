@@ -17,26 +17,27 @@ public class PositionLevel_Elevator extends Command {
   int tol;
   boolean lim1;
 
+
   public PositionLevel_Elevator(int level) {
     requires(Robot.elevator);
 
     switch (level){
       case 1:
-        this.level = 2500;
-        tol = 80;
-        System.out.println("Elevator Level 1");
+        this.level = 500;
+        tol = 150;
+        //System.out.println("Elevator Level 1");
         break;
 
       case 2:
-        this.level = 16800;
-        tol = 80;
-        System.out.println("Elevator Level 2");
+        this.level = 15100;
+        tol = 150;
+        //System.out.println("Elevator Level 2");
         break;
 
       case 3:
-        this.level = 16800 + (16800-2500);
+        this.level = 23000;
         tol = 10;
-        System.out.println("Elevator Level 3");
+        //System.out.println("Elevator Level 3");
         break;
 
       default:
@@ -55,8 +56,8 @@ public class PositionLevel_Elevator extends Command {
   protected void execute() {
   //if(Robot.mode == "MM") end();
 
-    double speed = (((level - position)*0.00035));
-    double spe = velocity(speed, 1, 0.3);
+    double speed = (((level - position)*0.0006));
+    double spe = velocity(speed, 1, 0.4);
     Robot.elevator.manualElevator(spe);
 
     SmartDashboard.putNumber("ElevSpeed", spe);

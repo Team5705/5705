@@ -22,7 +22,7 @@ public class Drive extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    chassisSpeed = 0.8;
+    chassisSpeed = 1.0;
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -39,6 +39,8 @@ public class Drive extends Command {
     SmartDashboard.putNumber("Angle", Robot.powertrain.gyro());
     SmartDashboard.putNumber("POV", POV);
     SmartDashboard.putNumber("ChassisSpeed", chassisSpeed);
+    SmartDashboard.putNumber("GyroFinal", Robot.powertrain.gyroFinal());
+    SmartDashboard.putNumber("Distance ", Robot.powertrain.position());
 
   }
 

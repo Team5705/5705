@@ -10,11 +10,15 @@ package frc.robot;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.AutonomousPosition1;
+import frc.robot.commands.DistanceinInches;
+import frc.robot.commands.RotatebyAngle;
 import frc.robot.subsystems.*;
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,11 +27,17 @@ import frc.robot.subsystems.*;
  * creating this project, you must also update the build.gradle file in the
  * project.
  */
+
+ /*
+ * Robot Code Desert Eagles 5705 
+  */
 public class Robot extends TimedRobot {
   public static Powertrain powertrain;
   public static Gripper gripper; 
   public static Elevator elevator;
+  public static Jumper jumper;
   
+  public static Compressor compresor;
   //public static final Object imgLock = new Object();
 
   NetworkTable table;
@@ -45,6 +55,8 @@ public class Robot extends TimedRobot {
   SendableChooser<Command> chooser = new SendableChooser<>();
   SendableChooser<String> mode_chooser = new SendableChooser<>();
   SendableChooser<String> autonomous = new SendableChooser<>();
+
+  SendableChooser<Boolean> compress = new SendableChooser<>();
   
   /**
    * This function is run when the robot is first started up and should be
@@ -52,11 +64,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    GlobalVariables.chassisSpeed = 0.6;
+    health();
 
+  
     powertrain = new Powertrain();
     gripper = new Gripper();
-    elevator = new Elevator(); 
+    elevator = new Elevator();
+    jumper = new Jumper();
+    
+    compresor = new Compressor(0);
     
     oi = new OI();
 
@@ -66,9 +82,10 @@ public class Robot extends TimedRobot {
     inst.startClientTeam(5705);
 
     chooser.setDefaultOption("Automatic Autonomous", null);
-    chooser.addOption("Estation 1", null);
-    chooser.addOption("Estation 2", null);
-    chooser.addOption("Estation 3", null);
+    chooser.addOption("Estation 1", new RotatebyAngle(45));
+    chooser.addOption("Estation 2", new DistanceinInches(10, 0));
+    chooser.addOption("Estation 3", new AutonomousPosition1());
+    chooser.addOption("Null", null);
     
     mode_chooser.setDefaultOption("Automated Mode", "AM");
     mode_chooser.addOption("Manual Mode", "MM");
@@ -76,9 +93,15 @@ public class Robot extends TimedRobot {
     autonomous.setDefaultOption("Yes", "Y");
     autonomous.addOption("No", "N");
     
+    compress.setDefaultOption("On", true);
+    compress.addOption("Off", false);
+    
+    
     SmartDashboard.putData("Select Autonomous", chooser);
     SmartDashboard.putData("Select Mode", mode_chooser);
     SmartDashboard.putData("Autonomous On?", autonomous);
+    SmartDashboard.putData("Compressor", compress);
+
   }
   
   /**
@@ -95,6 +118,14 @@ public class Robot extends TimedRobot {
 
     center = centerX.getDouble(0);
     SmartDashboard.putNumber("CenterX", center);
+
+    boolean com = compress.getSelected();
+
+     if(com == true) compresor.start();
+     else compresor.stop();
+
+    if(compresor.enabled() == true) SmartDashboard.putString("Compresor", "ON");
+    else SmartDashboard.putString("Compresor", "OFF");
 
   }
 
@@ -175,6 +206,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+  }
+  
+  void health(){
+    System.out.println("********************************************");
+    System.out.println("********** Welcome to 5705 Robot **********");
+    System.out.println("********************************************");
+    
   }
 
   

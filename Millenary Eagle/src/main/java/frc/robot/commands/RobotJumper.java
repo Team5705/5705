@@ -10,10 +10,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class GripperManual extends Command {
-  public GripperManual() {
-    // Use requires() here to declare subsystem dependencies
-   requires(Robot.gripper);
+public class RobotJumper extends Command {
+  public RobotJumper() {
+    requires(Robot.jumper);
   }
 
   // Called just before this Command runs the first time
@@ -24,18 +23,20 @@ public class GripperManual extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    /*
     int POV = Robot.oi.controller1.getPOV();
     switch (POV) {
       case 0:
-        Robot.gripper.takeOutHatchGripper();
+        Robot.jumper.downFront();
         break;
       case 180:
-        Robot.gripper.hideHatchGripper();
+        Robot.jumper.upFront();
         break;
     
       default:
-    }*/
+    }
+
+    if (Robot.oi.controller1.getRawButton(10)) Robot.jumper.upRear();
+    else Robot.jumper.downRear();
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -47,7 +48,6 @@ public class GripperManual extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-
   }
 
   // Called when another command which requires one or more of the same

@@ -14,7 +14,7 @@ public class GyroPIDController extends Robot{
   * Variables
   */
     private double displacement = 0;
-    private double sum = 0, rate = 0;
+    private double sum = 0, rate = 0, errorAn = 0, errorD;
  /**
   * Constants
   */
@@ -33,15 +33,22 @@ public class GyroPIDController extends Robot{
   public double getPIDValue(int desiredAngle){
       displacement = desiredAngle - powertrain.gyroFinal(); //desiredAngle - currentAngle
       double pid = 0, sum = this.sum;
-      rate = powertrain.getRateGyro();
-      sum += rate;
+      sum = displacement*1 + sum;
+
+      errorD = (displacement - errorAn)/1; 
+
+      //Ecuacion general para el PID
+      
+      pid = (kP * displacement) + (kI * sum) + (kD * errorD);
+      
+      errorAn = displacement;
+      
       SmartDashboard.putNumber("P:", (kP * displacement));
       SmartDashboard.putNumber("I:", (kI * sum));
-      SmartDashboard.putNumber("D:", (kD * rate));
-      //Ecuacion general para el PID
+      SmartDashboard.putNumber("D:", (kD * errorD));
+      SmartDashboard.putNumber("PID", pid);
 
-      pid = (kP * displacement) + (kI * sum) + (kD * rate);
-      
+
       //No permita que el valor de PID aumente mas alla de PID_MAX o por debajo de PID_MIN y
       //Evite la acumulacion de la suma
       if(pid >= PID_MAX) pid = PID_MAX;

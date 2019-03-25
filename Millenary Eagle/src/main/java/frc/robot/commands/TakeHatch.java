@@ -7,29 +7,17 @@
 
 package frc.robot.commands;
 
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class AutonomousPosition1 extends CommandGroup {
+public class TakeHatch extends CommandGroup {
   /**
-   * Dejar disco en el CargoShip Posicion 3
+   * Add your docs here.
    */
-  public AutonomousPosition1() {
-
-    addSequential(new DistanceinInches(52, -5));//-124.50
-    /*addSequential(new RotatebyAngle(45));
-    addSequential(new DistanceinInches(12.52, 0));
-    addSequential(new RotatebyAngle(90));¨*/
-    /*
-    addParallel(new PositionLevel_Elevator(1));
-    addSequential(new DistanceinInches(28, 0));
-    addSequential(new GripperActions(2)); //Sacar gripp Hatch Panel
-*/
-
-    /*addSequential(new GripperActions(0)); //Soltar hatch panel
-    addParallel(new GripperActions(3)); //Ocultar gripp hatch panel
-    addSequential(new PositionLevel_Elevator(1));
-    addSequential(new RotatebyAngle(-45)); */
-
+  public TakeHatch() {
+    //addSequential(new GripperActions(1));
+    //addParallel(new Timeoutt(), 0.5);
+    addSequential(new GripperActions(2));
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

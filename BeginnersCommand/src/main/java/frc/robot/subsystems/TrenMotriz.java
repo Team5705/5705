@@ -67,10 +67,10 @@ public class TrenMotriz extends Subsystem {
   }
   
   // Escribimos un metodo/funcion para operar el Tren Motriz
-  public void arcadeDrive(double xSpeed, double rotateSpeed){
+  public void arcadeDrive(double xSpd, double rotateSpeed){
 
 
-    robotDrive.arcadeDrive(xSpeed, rotateSpeed);
+    robotDrive.arcadeDrive(xSpd, rotateSpeed);
   }
   // Creamos otro metodo/funcion para indicarle que se reiniciara el giroscopio
   public void resetGyro(){

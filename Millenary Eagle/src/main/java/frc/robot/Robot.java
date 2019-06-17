@@ -11,7 +11,9 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -38,6 +40,8 @@ public class Robot extends TimedRobot {
   public static Compressor compresor;
   //public static final Object imgLock = new Object();
 
+  private static I2C Wire = new I2C(Port.kOnboard, 0xF3);
+  
   NetworkTable table;
   NetworkTable subtable;
   NetworkTableEntry centerX;
@@ -154,6 +158,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    try {
+      Wire.write(0xF5, 6);
+    } catch (Exception e) {
+      //TODO: handle exception
+    }
+
+
     autonomousCommand = chooser.getSelected();
     auto = autonomous.getSelected();
     

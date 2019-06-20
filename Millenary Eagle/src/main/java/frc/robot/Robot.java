@@ -40,7 +40,7 @@ public class Robot extends TimedRobot {
   public static Compressor compresor;
   //public static final Object imgLock = new Object();
 
-  private static I2C Wire = new I2C(Port.kOnboard, 0xF3);
+  private static I2C Wire; 
   
   NetworkTable table;
   NetworkTable subtable;
@@ -77,6 +77,8 @@ public class Robot extends TimedRobot {
     compresor = new Compressor(0);
     
     oi = new OI();
+
+    Wire = new I2C(Port.kOnboard, 0xF5);
 
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     table = inst.getTable("CenterVisionTarget");
@@ -138,11 +140,25 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    String input = "6";
+    
+    char[] CharArray = input.toCharArray();//creates a char array from the input string
+    byte[] WriteData = new byte[CharArray.length];//creates a byte array from the char array
+    for (int i = 0; i < CharArray.length; i++) {//writes each byte to the arduino
+      WriteData[i] = (byte) CharArray[i];//adds the char elements to the byte array 
+    }
+    try {
+      //Wire.transaction(WriteData, WriteData.length, null, 0);//sends each byte to arduino
+      Wire.writeBulk(WriteData);
+      //Wire.write(0xF5, 6);
+    } catch (Exception e) {
+      //TODO: handle exception
+    }
   }
   
   @Override
   public void disabledPeriodic() {
-    Scheduler.getInstance().run();
+   
   }
 
   /**
@@ -158,11 +174,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    try {
-      Wire.write(0xF5, 6);
-    } catch (Exception e) {
-      //TODO: handle exception
-    }
 
 
     autonomousCommand = chooser.getSelected();
@@ -193,6 +204,21 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    String input = "5";
+    
+    char[] CharArray = input.toCharArray();//creates a char array from the input string
+    byte[] WriteData = new byte[CharArray.length];//creates a byte array from the char array
+    for (int i = 0; i < CharArray.length; i++) {//writes each byte to the arduino
+      WriteData[i] = (byte) CharArray[i];//adds the char elements to the byte array 
+    }
+    try {
+      //Wire.transaction(WriteData, WriteData.length, null, 0);//sends each byte to arduino
+      Wire.writeBulk(WriteData);
+      //Wire.write(0xF5, 6);
+    } catch (Exception e) {
+      //TODO: handle exception
+    }
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

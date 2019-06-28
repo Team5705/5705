@@ -140,20 +140,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    String input = "6";
-    
-    char[] CharArray = input.toCharArray();//creates a char array from the input string
-    byte[] WriteData = new byte[CharArray.length];//creates a byte array from the char array
-    for (int i = 0; i < CharArray.length; i++) {//writes each byte to the arduino
-      WriteData[i] = (byte) CharArray[i];//adds the char elements to the byte array 
-    }
-    try {
-      //Wire.transaction(WriteData, WriteData.length, null, 0);//sends each byte to arduino
-      Wire.writeBulk(WriteData);
-      //Wire.write(0xF5, 6);
-    } catch (Exception e) {
-      //TODO: handle exception
-    }
+    i2c_data("6");
   }
   
   @Override
@@ -174,7 +161,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-
+    i2c_data("4");
 
     autonomousCommand = chooser.getSelected();
     auto = autonomous.getSelected();
@@ -204,20 +191,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    String input = "5";
-    
-    char[] CharArray = input.toCharArray();//creates a char array from the input string
-    byte[] WriteData = new byte[CharArray.length];//creates a byte array from the char array
-    for (int i = 0; i < CharArray.length; i++) {//writes each byte to the arduino
-      WriteData[i] = (byte) CharArray[i];//adds the char elements to the byte array 
-    }
-    try {
-      //Wire.transaction(WriteData, WriteData.length, null, 0);//sends each byte to arduino
-      Wire.writeBulk(WriteData);
-      //Wire.write(0xF5, 6);
-    } catch (Exception e) {
-      //TODO: handle exception
-    }
+    i2c_data("5");
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
@@ -248,6 +222,23 @@ public class Robot extends TimedRobot {
     System.out.println("********** Welcome to 5705 Robot **********");
     System.out.println("********************************************");
     
+  }
+
+  void i2c_data(String data){
+    String input = data;
+    
+    char[] CharArray = input.toCharArray();//creates a char array from the input string
+    byte[] WriteData = new byte[CharArray.length];//creates a byte array from the char array
+    for (int i = 0; i < CharArray.length; i++) {//writes each byte to the arduino
+      WriteData[i] = (byte) CharArray[i];//adds the char elements to the byte array 
+    }
+    try {
+      //Wire.transaction(WriteData, WriteData.length, null, 0);//sends each byte to arduino
+      Wire.writeBulk(WriteData);
+      //Wire.write(0xF5, 6);
+    } catch (Exception e) {
+      //TODO: handle exception
+    }
   }
 
   

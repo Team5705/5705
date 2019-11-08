@@ -45,7 +45,7 @@ public class DistanceinInches extends Command {
     double xSpeed = ((ref - distance)*kProportional);
     double zSpeed = ((refAngle - angle)*kProportionalturn);
     
-    Robot.powertrain.arcadeDrive(velocity(xSpeed, 0.5, 0.4), velocity(zSpeed, 0.7, 0));
+    Robot.powertrain.arcadeDrive(velocity(xSpeed, 0.7, 0.4), velocity(zSpeed, 0.7, 0));
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -59,7 +59,7 @@ public class DistanceinInches extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.powertrain.arcadeDrive(0, 0);
+    Robot.powertrain.arcadeDrive(-0.1, 0);
   }
 
   // Called when another command which requires one or more of the same

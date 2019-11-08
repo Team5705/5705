@@ -22,7 +22,7 @@ public class Drive extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    chassisSpeed = 1.0;
+    chassisSpeed = 0.6; //Velocidad del chasis
   }
 
   // Called repeatedly when this Command is scheduled to run

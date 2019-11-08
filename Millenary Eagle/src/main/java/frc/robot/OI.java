@@ -28,10 +28,10 @@ public class OI {
 
 
   public OI(){
-    D1.whileHeld(new VisionTargetCenter());
-    D2.whenPressed(new PositionLevel_Elevator(3));
-    D3.whenPressed(new PositionLevel_Elevator(1));
-    D4.whenPressed(new PositionLevel_Elevator(2));
+    /*D1.whileHeld(null);//new VisionTargetCenter());
+    D2.whenPressed(null);//new PositionLevel_Elevator(3));
+    D3.whenPressed(null);//new PositionLevel_Elevator(1));
+    D4.whenPressed(null);//new PositionLevel_Elevator(2));*/
     D5.whenActive(new DropHatch());
     D6.whenActive(new TakeHatch());
    

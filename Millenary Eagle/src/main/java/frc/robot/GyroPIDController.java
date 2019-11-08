@@ -21,7 +21,7 @@ public class GyroPIDController extends Robot{
   private double kP, kI, kD;
   private final double PID_MIN, PID_MAX;
   
-  public GyroPIDController(double kP, double kI, double kD, double PID_MIN, double PID_MAX){
+  public GyroPIDController(double kP, double kD, double kI, double PID_MIN, double PID_MAX){
     this.kP = kP;
     this.kI = kI;
     this.kD = kD;
@@ -39,7 +39,7 @@ public class GyroPIDController extends Robot{
 
       //Ecuacion general para el PID
       
-      pid = (kP * displacement) + (kI * sum) + (kD * errorD);
+      pid = (kP * displacement) + (kD * errorD) + (kI * sum);
       
       errorAn = displacement;
       

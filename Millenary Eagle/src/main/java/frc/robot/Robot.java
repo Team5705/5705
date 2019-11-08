@@ -87,7 +87,7 @@ public class Robot extends TimedRobot {
 
     chooser.setDefaultOption("Automatic Autonomous", null);
     chooser.addOption("Estation 1", new RotatebyAngle(45));
-    chooser.addOption("Estation 2", new DistanceinInches(10, 0));
+    chooser.addOption("Estation 2", new DistanceinInches(40, 0));
     chooser.addOption("Estation 3", new AutonomousPosition2());
     chooser.addOption("Null", null);
     
@@ -145,7 +145,7 @@ public class Robot extends TimedRobot {
   
   @Override
   public void disabledPeriodic() {
-   
+    Robot.powertrain.arcadeDrive(0, 0);
   }
 
   /**
@@ -191,7 +191,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    i2c_data("5");
+    i2c_data("6");//5");
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
@@ -218,9 +218,9 @@ public class Robot extends TimedRobot {
   }
   
   void health(){
-    System.out.println("********************************************");
+    System.out.println("*********************************************");
     System.out.println("********** Welcome to 5705 Robot **********");
-    System.out.println("********************************************");
+    System.out.println("*********************************************");
     
   }
 
@@ -237,7 +237,7 @@ public class Robot extends TimedRobot {
       Wire.writeBulk(WriteData);
       //Wire.write(0xF5, 6);
     } catch (Exception e) {
-      //TODO: handle exception
+      return;
     }
   }
 

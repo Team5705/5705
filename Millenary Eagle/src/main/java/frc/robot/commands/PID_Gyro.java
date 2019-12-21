@@ -11,37 +11,54 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class Drive extends Command {
-  double chassisSpeed;
+public class PID_Gyro extends Command {
+  double gyro;
 
-  public Drive() {
+  double ajuste = 45;
+
+  double T = 20;
+  double err = 0;
+  double errI = 0; //Integral
+  double errD = 0;
+
+  double errP = 0; //Pasado
+
+  double kP = 0.05;
+  double kD = 0;
+  double kI = 0;
+
+  double PID = 0;
+
+  public PID_Gyro() {
     requires(Robot.powertrain);
-
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    chassisSpeed = 0.9; //Velocidad del chasis no ste chingando krnal 
+  Robot.powertrain.resetGyro();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    int POV = Robot.oi.controller1.getPOV();
-
-    double moveSpeed = -Robot.oi.controller1.getRawAxis(1);
-    double rotateSpeed = Robot.oi.controller1.getRawAxis(4);
-
-    Robot.powertrain.arcadeDrive(moveSpeed * chassisSpeed, rotateSpeed * chassisSpeed);  
+    gyro = Robot.powertrain.gyroFinal();
     
+    err = (ajuste - gyro);
+    
+    errI = (err * T) + errP;
 
-    SmartDashboard.putNumber("Angle", Robot.powertrain.gyro());
-    SmartDashboard.putNumber("POV", POV);
-    SmartDashboard.putNumber("ChassisSpeed", chassisSpeed);
-    SmartDashboard.putNumber("GyroFinal", Robot.powertrain.gyroFinal());
-    SmartDashboard.putNumber("Distance ", Robot.powertrain.position());
+    errD = (err - errP)/T;
 
+    /****************************************
+     *                PID
+     ****************************************/
+
+    PID = (err*kP) + (err*kI) + (err*kD);
+
+    Robot.powertrain.arcadeDrive(0, err);
+
+    SmartDashboard.putNumber("PID", PID);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -53,7 +70,6 @@ public class Drive extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.powertrain.arcadeDrive(0, 0);
   }
 
   // Called when another command which requires one or more of the same

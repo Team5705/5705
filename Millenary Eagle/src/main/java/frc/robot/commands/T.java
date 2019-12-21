@@ -9,38 +9,36 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 
-public class Drive extends Command {
-  double chassisSpeed;
+public class T extends Command {
+  public static long time; 
+  long countA = 0,/*Conteo actual*/ countP = 0,//Conteo pasado
+       count = 0;
+  int c = 0;
 
-  public Drive() {
-    requires(Robot.powertrain);
 
+  public T() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    chassisSpeed = 0.9; //Velocidad del chasis no ste chingando krnal 
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    int POV = Robot.oi.controller1.getPOV();
 
-    double moveSpeed = -Robot.oi.controller1.getRawAxis(1);
-    double rotateSpeed = Robot.oi.controller1.getRawAxis(4);
+    if(c < 2){
+    c++;
 
-    Robot.powertrain.arcadeDrive(moveSpeed * chassisSpeed, rotateSpeed * chassisSpeed);  
-    
-
-    SmartDashboard.putNumber("Angle", Robot.powertrain.gyro());
-    SmartDashboard.putNumber("POV", POV);
-    SmartDashboard.putNumber("ChassisSpeed", chassisSpeed);
-    SmartDashboard.putNumber("GyroFinal", Robot.powertrain.gyroFinal());
-    SmartDashboard.putNumber("Distance ", Robot.powertrain.position());
+    time = java.lang.System.currentTimeMillis();
+    countA = time;
+    count = countA - countP;
+    }
+    else SmartDashboard.putNumber("Count", count);
 
   }
 
@@ -53,13 +51,11 @@ public class Drive extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.powertrain.arcadeDrive(0, 0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

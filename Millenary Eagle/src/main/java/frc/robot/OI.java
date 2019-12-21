@@ -34,6 +34,7 @@ public class OI {
     D4.whenPressed(null);//new PositionLevel_Elevator(2));*/
     D5.whenActive(new DropHatch());
     D6.whenActive(new TakeHatch());
+    D1.whileHeld(new T());
    
 
     

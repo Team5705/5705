@@ -31,7 +31,7 @@ public class T extends Command {
   @Override
   protected void execute() {
 
-    if(c < 2){
+    if(c < 3){
     c++;
 
     time = java.lang.System.currentTimeMillis();

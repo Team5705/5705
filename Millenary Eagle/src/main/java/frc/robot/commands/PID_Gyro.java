@@ -20,6 +20,7 @@ public class PID_Gyro extends Command {
   double err = 0;
   double errI = 0; //Integral
   double errD = 0;
+  double errPp = 0;
 
   double errP = 0; //Pasado
 
@@ -48,13 +49,16 @@ public class PID_Gyro extends Command {
     
     errI = (err * T) + errP;
 
-    errD = (err - errP)/T;
+    errD = (err - errPp)/T;
+
+    errP = errI;
+    errPp = err;
 
     /****************************************
      *                PID
      ****************************************/
 
-    PID = (err*kP) + (err*kI) + (err*kD);
+    PID = (err*kP) + (errI*kI) + (errD*kD);
 
     Robot.powertrain.arcadeDrive(0, err);
 

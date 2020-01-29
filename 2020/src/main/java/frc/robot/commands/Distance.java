@@ -40,7 +40,7 @@ public class Distance extends CommandBase {
   @Override
   public void initialize() {
     powertrain.resetGyro();
-    powertrain.resetEncoder();
+    powertrain.resetEncoders();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

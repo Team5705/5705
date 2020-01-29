@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
@@ -7,25 +7,17 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Powertrain;
+import frc.robot.subsystems.Vision;
 
-/**
- * An example command that uses an example subsystem.
- */
-public class ExampleCommand extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ExampleSubsystem m_subsystem;
+public class Tracking extends CommandBase {
+  private final Vision vision;
+  private final Powertrain powertrain;
 
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
-  public ExampleCommand(ExampleSubsystem subsystem) {
-    m_subsystem = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_subsystem);
+  public Tracking(Powertrain powertrain, Vision vision) {
+    this.powertrain = powertrain;
+    this.vision = vision;
   }
 
   // Called when the command is initially scheduled.
@@ -36,6 +28,14 @@ public class ExampleCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double x = vision.getX();
+    double y = vision.getY();
+    double area = vision.getArea();
+
+    double xS = (0 - y)*0.04;
+    double turn = -(0 - x)*0.04;
+
+    powertrain.arcadeDrive(0, turn);
   }
 
   // Called once the command ends or is interrupted.

@@ -16,17 +16,23 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstant;
+import frc.robot.Constants.pathWeaver;
 
 
 public class Powertrain extends SubsystemBase { 
-  private final WPI_TalonSRX leftMaster = new WPI_TalonSRX(DriveConstant.portsMotors[0]);
-  private final WPI_VictorSPX rightMaster = new WPI_VictorSPX(DriveConstant.portsMotors[2]),
-                              leftFollow = new WPI_VictorSPX(DriveConstant.portsMotors[1]),
+  private final WPI_TalonSRX leftMaster = new WPI_TalonSRX(DriveConstant.portsMotors[0]),
+                             rightMaster = new WPI_TalonSRX(DriveConstant.portsMotors[2]);
+  private final WPI_VictorSPX leftFollow = new WPI_VictorSPX(DriveConstant.portsMotors[1]),
                               rightFollow = new WPI_VictorSPX(DriveConstant.portsMotors[3]);
 
   private final DifferentialDrive drive = new DifferentialDrive(leftMaster, rightMaster);
@@ -34,9 +40,7 @@ public class Powertrain extends SubsystemBase {
   private final Gyro gyro = new ADXRS450_Gyro(DriveConstant.Gyro);
   private final AHRS ahrs = new AHRS(SerialPort.Port.kMXP);
 
-  /**
-   * Creates a new Powertrain.
-   */
+  private final DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(new Rotation2d(0));
   
   public Powertrain() {
     gyro.calibrate();
@@ -46,22 +50,77 @@ public class Powertrain extends SubsystemBase {
     new PrintCommand("Powertrain iniciado");
   }
   
+  /**
+   * Hola que hace
+   *
+   * @param xSp Velocidad en X
+   * @param turn Velocidad en Y
+   */
   public void arcadeDrive(double xSp, double turn){
-    drive.arcadeDrive(xSp, turn);  
+    drive.arcadeDrive(xSp, turn);
+    drive.feed();
+  }
+
+   /**
+   * Controls the left and right sides of the drive directly with voltages.
+   *
+   * @param leftVolts  the commanded left output
+   * @param rightVolts the commanded right output
+   */
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    leftMaster.setVoltage(leftVolts);
+    rightMaster.setVoltage(-rightVolts);
+    drive.feed();
   }
 
   public int position(){
     return leftMaster.getSelectedSensorPosition(0);
   }
 
+  /**
+   * 7u7
+   * 
+   * @return La distancia en metros
+   */
   public double getDistanceLeft(){
-    double value = (leftMaster.getSelectedSensorPosition(0)/4096)*(Math.PI*6);
+    double value = Units.inchesToMeters((leftMaster.getSelectedSensorPosition(0)/4095)*(Math.PI*6));
     return value;
   }
 
+  /**
+   * UwU
+   * 
+   * @return La distancia en metros
+   */
   public double getDistanceRight(){
-    double value = (leftMaster.getSelectedSensorPosition(0)/4096)*(Math.PI*6);
+    double value = Units.inchesToMeters((rightMaster.getSelectedSensorPosition(0)/4095)*(Math.PI*6));
     return value;
+  }
+
+  public double getRateLeft(){
+    return ((leftMaster.getSelectedSensorVelocity(0)*10)/4095)*(Units.inchesToMeters(6)); //Velocidad en metros por segundo
+  }
+
+  public double getRateRight(){
+    return ((rightMaster.getSelectedSensorVelocity(0)*10)/4095)*(Units.inchesToMeters(6)); //Velocidad en metros por segundo
+  }
+
+  /**
+   * Returns the current wheel speeds of the robot.
+   *
+   * @return The current wheel speeds.
+   */
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(getRateLeft(), getRateRight());
+  }
+
+   /**
+   * Returns the heading of the robot.
+   *
+   * @return the robot's heading in degrees, from -180 to 180
+   */
+  public double getHeading() {
+    return Math.IEEEremainder(gyro.getAngle(), 360) * (pathWeaver.kGyroReversed ? -1.0 : 1.0);
   }
   
   public double angle(){
@@ -80,9 +139,12 @@ public class Powertrain extends SubsystemBase {
     return ahrs.getAngle();
   }
 
-  public void resetEncoder(){
+  public void resetEncoders(){
     leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
     leftMaster.setSelectedSensorPosition(0, 0, 10);
+
+    rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+    rightMaster.setSelectedSensorPosition(0, 0, 10);
   }
   
   public void resetGyro(){
@@ -90,15 +152,26 @@ public class Powertrain extends SubsystemBase {
   }
 
   public void updateOdometry(){
-
+    odometry.update(Rotation2d.fromDegrees(getHeading()), getDistanceLeft(),
+                      getDistanceRight());
   }
   
-  
+  /**
+   * Returns the currently-estimated pose of the robot.
+   *
+   * @return The pose.
+   */
+  public Pose2d getPose() {
+    return odometry.getPoseMeters();
+  }
+
   @Override
   public void periodic() {
+    updateOdometry();
 
     SmartDashboard.putNumber("Gyro", angleNormalized());
-    SmartDashboard.putNumber("Position Encoder", position());
+    SmartDashboard.putNumber("Encoder_L", getDistanceLeft());
+    SmartDashboard.putNumber("Encoder_R", getDistanceRight());
     SmartDashboard.putNumber("navGyro", navAngle());
   }
   
@@ -120,6 +193,9 @@ public class Powertrain extends SubsystemBase {
     try {
       leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
       leftMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 1);
+
+      rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+      rightMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 1);
     } catch (Exception e) {
       new PrintCommand("Encoder unavailable!");
       System.out.println();

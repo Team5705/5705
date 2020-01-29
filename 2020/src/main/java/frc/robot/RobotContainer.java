@@ -123,7 +123,7 @@ public class RobotContainer {
         config
     );*/
     Trajectory exampleTrajectory = null;
-    String trajectoryJSON = "paths/Step1.wpilib.json";
+    String trajectoryJSON = "output/Step1.wpilib.json";
       try {
         Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
         exampleTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);

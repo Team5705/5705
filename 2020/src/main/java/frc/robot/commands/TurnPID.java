@@ -33,7 +33,8 @@ public class TurnPID extends CommandBase {
   /**
    * unu
    * @param subsystemDrive Subsistema motriz
-   * @param angle Angulo deseado teniendo en cuenta que el angulo se resetea
+   * @param angle Angulo deseado teniendo en cuenta que el angulo se resetea y 
+   * un giro inverso es ncesario el angulo negativo
    */
   public TurnPID(Powertrain subsystemDrive, int angle) {
     // Use addRequirements() here to declare subsystem dependencies.

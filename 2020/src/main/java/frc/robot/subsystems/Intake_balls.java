@@ -37,13 +37,14 @@ public class Intake_balls extends SubsystemBase {
   }
 
   public void takeBalls(){
-    boolean s1 = sensor1.get();
-    boolean s2 = sensor2.get();
-    boolean s3 = sensor3.get();
-    boolean s4 = sensor4.get();
+    boolean s1 = !sensor1.get();
+    boolean s2 = !sensor2.get();
+    boolean s3 = !sensor3.get();
+    boolean s4 = !sensor4.get();
 
     /**
-     * Para la toma de decisiones de esta logica se tomo como referencia una tabla de verdad para los casos posibles y redundantes
+     * Para la toma de decisiones de esta logica se tomo como referencia una tabla de verdad para 
+     * los casos posibles y redundantes
      */
     if (s1 == true && s4 == true){ //1--1
       //Se detienen las bandas

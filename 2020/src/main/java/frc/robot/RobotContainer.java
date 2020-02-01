@@ -122,17 +122,17 @@ public class RobotContainer {
         // Pass config
         config
     );
-    Trajectory auto = null;
-    String trajectoryJSON = "output/Test.wpilib.json";
+    Trajectory auto;
+    String trajectoryJSON = "paths/Test.wpilib.json";
       try {
         Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
         auto = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
       } catch (IOException ex) {
         DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+        auto = exampleTrajectory;
       }
-
     RamseteCommand ramseteCommand = new RamseteCommand(
-        auto,//exampleTrajectory,
+        auto,
         powertrain::getPose,
         new RamseteController(pathWeaver.kRamseteB, pathWeaver.kRamseteZeta),
         new SimpleMotorFeedforward(pathWeaver.ksVolts,

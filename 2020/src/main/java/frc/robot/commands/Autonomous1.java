@@ -17,12 +17,12 @@ import frc.robot.subsystems.Powertrain;
 public class Autonomous1 extends SequentialCommandGroup {
   public static final int timeDelay = 1; //Tiempo de espera en segundos
 
-  public Autonomous1(Powertrain subsystem) {
+  public Autonomous1(Powertrain powertrain) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new Distance(subsystem, 10), new WaitCommand(timeDelay), 
-          new TurnPID(subsystem, 90),  new WaitCommand(timeDelay),
-          new Distance(subsystem, 20), new WaitCommand(timeDelay), 
-          new TurnPID(subsystem, -45));
+    super(new Distance(powertrain, 3), new WaitCommand(timeDelay), 
+          new TurnPID(powertrain, 90),  new WaitCommand(timeDelay),
+          new Distance(powertrain, 2), new WaitCommand(timeDelay), 
+          new TurnPID(powertrain, -45));
   }
 }

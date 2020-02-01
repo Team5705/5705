@@ -25,13 +25,14 @@ public class Drive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //powertrain.resetGyro();
+    powertrain.resetGyro();
+    powertrain.resetEncoders();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xSp = RobotContainer.driverController.getRawAxis(1);
+    double xSp = -RobotContainer.driverController.getRawAxis(1);
     double turn = RobotContainer.driverController.getRawAxis(4);
     powertrain.arcadeDrive(xSp, turn);
   }
@@ -39,7 +40,6 @@ public class Drive extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    powertrain.arcadeDrive(0, 0);
   }
 
   // Returns true when the command should end.

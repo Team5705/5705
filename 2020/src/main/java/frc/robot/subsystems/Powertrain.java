@@ -40,7 +40,7 @@ public class Powertrain extends SubsystemBase {
   private final Gyro gyro = new ADXRS450_Gyro(DriveConstant.Gyro);
   private final AHRS ahrs = new AHRS(SerialPort.Port.kMXP);
 
-  private final DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(new Rotation2d(0));
+  private final DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(0));
   
   public Powertrain() {
     gyro.calibrate();
@@ -58,7 +58,6 @@ public class Powertrain extends SubsystemBase {
    */
   public void arcadeDrive(double xSp, double turn){
     drive.arcadeDrive(xSp, turn);
-    drive.feed();
   }
 
    /**
@@ -70,11 +69,14 @@ public class Powertrain extends SubsystemBase {
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     leftMaster.setVoltage(leftVolts);
     rightMaster.setVoltage(-rightVolts);
-    drive.feed();
   }
 
-  public int position(){
+  public int positionLeft(){
     return leftMaster.getSelectedSensorPosition(0);
+  }
+
+  public int positionRight(){
+    return rightMaster.getSelectedSensorPosition(0);
   }
 
   /**
@@ -83,8 +85,8 @@ public class Powertrain extends SubsystemBase {
    * @return La distancia en metros
    */
   public double getDistanceLeft(){
-    double value = Units.inchesToMeters((leftMaster.getSelectedSensorPosition(0)/4095)*(Math.PI*6));
-    return value;
+    double value = Units.inchesToMeters(((double)-positionLeft()/4095.00)*(Math.PI*6.00)); //Invertido
+    return value;                                                                          //en sentido horario del robot marca negativo
   }
 
   /**
@@ -93,16 +95,26 @@ public class Powertrain extends SubsystemBase {
    * @return La distancia en metros
    */
   public double getDistanceRight(){
-    double value = Units.inchesToMeters((rightMaster.getSelectedSensorPosition(0)/4095)*(Math.PI*6));
+    double value = Units.inchesToMeters(((double)positionRight()/4095.00)*(Math.PI*6.00));
     return value;
   }
 
+  /**
+   * n_n
+   * 
+   * @return La velocidad en metros por segundo
+   */
   public double getRateLeft(){
-    return ((leftMaster.getSelectedSensorVelocity(0)*10)/4095)*(Units.inchesToMeters(6)); //Velocidad en metros por segundo
+    return (((double)-leftMaster.getSelectedSensorVelocity(0)*10)/4095)*(Units.inchesToMeters(6)*Math.PI);
   }
 
+/**
+ * :3
+ * 
+ * @return La velocidad en metros por segundo
+ */
   public double getRateRight(){
-    return ((rightMaster.getSelectedSensorVelocity(0)*10)/4095)*(Units.inchesToMeters(6)); //Velocidad en metros por segundo
+    return (((double)rightMaster.getSelectedSensorVelocity(0)*10)/4095)*(Units.inchesToMeters(6)*Math.PI);
   }
 
   /**
@@ -127,12 +139,21 @@ public class Powertrain extends SubsystemBase {
     return gyro.getAngle();
   }
   
+  /**
+   * T_T
+   * @return Devuelve el angulo del robot normalizado en un
+   * rango de 0 a 359
+   */
   public double angleNormalized(){ 
     double angle = gyro.getAngle();
-    if(angle >= 0) 
-      return (angle % 360);
-    else
-      return 360 - (angle % 360);
+    double operation;
+      if(angle >= 0) 
+          operation = (angle % 360);
+      else
+          operation = 360 - (Math.abs(angle % 360));
+      if (operation == 360) operation = 0;
+
+      return operation;
   }
 
   public double navAngle(){
@@ -170,8 +191,13 @@ public class Powertrain extends SubsystemBase {
     updateOdometry();
 
     SmartDashboard.putNumber("Gyro", angleNormalized());
+    SmartDashboard.putNumber("GyroN", angle());
     SmartDashboard.putNumber("Encoder_L", getDistanceLeft());
     SmartDashboard.putNumber("Encoder_R", getDistanceRight());
+    SmartDashboard.putNumber("PositionL", positionLeft());
+    SmartDashboard.putNumber("PositionR", positionRight());
+    SmartDashboard.putNumber("RateL", getRateLeft());
+    SmartDashboard.putNumber("RateR", getRateRight());
     SmartDashboard.putNumber("navGyro", navAngle());
   }
   
@@ -197,7 +223,7 @@ public class Powertrain extends SubsystemBase {
       rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
       rightMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 1);
     } catch (Exception e) {
-      new PrintCommand("Encoder unavailable!");
+      new PrintCommand("Encoders unavailables!");
       System.out.println();
     }
     

@@ -43,7 +43,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Powertrain powertrain = new Powertrain();
-  private final Pneumatics pneumatics =  new Pneumatics();
+  //private final Pneumatics pneumatics =  new Pneumatics();
   private final Vision vision = new Vision();
 
   private final Drive drive = new Drive(powertrain);;
@@ -79,9 +79,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new JoystickButton(driverController, 1).whileHeld(new Tracking(powertrain, vision));
-    new JoystickButton(driverController, 2).whileHeld(new Distance(powertrain, 10000));
-    new JoystickButton(driverController, 5).whileHeld(new ON(pneumatics));
-    new JoystickButton(driverController, 6).whileHeld(new OFF(pneumatics));
+    new JoystickButton(driverController, 2).whileHeld(new Distance(powertrain, 3));
+    new JoystickButton(driverController, 3).whileHeld(new TurnPID(powertrain, 90));
+    //new JoystickButton(driverController, 6).whileHeld(new OFF(pneumatics));
   }
 
 
@@ -109,7 +109,7 @@ public class RobotContainer {
             .addConstraint(autoVoltageConstraint);
 
     // An example trajectory to follow.  All units in meters.
-    /*Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
         // Start at the origin facing the +X direction
         new Pose2d(0, 0, new Rotation2d(0)),
         // Pass through these two interior waypoints, making an 's' curve path
@@ -121,18 +121,18 @@ public class RobotContainer {
         new Pose2d(3, 0, new Rotation2d(0)),
         // Pass config
         config
-    );*/
-    Trajectory exampleTrajectory = null;
-    String trajectoryJSON = "output/Step1.wpilib.json";
+    );
+    Trajectory auto = null;
+    String trajectoryJSON = "output/Test.wpilib.json";
       try {
         Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-        exampleTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+        auto = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
       } catch (IOException ex) {
         DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
       }
 
     RamseteCommand ramseteCommand = new RamseteCommand(
-        exampleTrajectory,
+        auto,//exampleTrajectory,
         powertrain::getPose,
         new RamseteController(pathWeaver.kRamseteB, pathWeaver.kRamseteZeta),
         new SimpleMotorFeedforward(pathWeaver.ksVolts,

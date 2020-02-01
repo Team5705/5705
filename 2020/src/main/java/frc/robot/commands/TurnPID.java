@@ -26,11 +26,14 @@ public class TurnPID extends CommandBase {
 
   double errP = 0; //Pasado
               //0.03kp  5.5kd   +/- 2 grados chassis solo 0.000003kI
-  double kP = 0.03, kD = 6, kI = 0.000003;
+  double kP = 0.03, kI = 0.000003, kD = 0;
 
   double PID = 0;
+  
   /**
-   * Creates a new TurnPID.
+   * unu
+   * @param subsystemDrive Subsistema motriz
+   * @param angle Angulo deseado teniendo en cuenta que el angulo se resetea
    */
   public TurnPID(Powertrain subsystemDrive, int angle) {
     // Use addRequirements() here to declare subsystem dependencies.

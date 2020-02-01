@@ -15,15 +15,14 @@ import frc.robot.subsystems.Powertrain;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class Autonomous1 extends SequentialCommandGroup {
-  /**
-   * Creates a new Autonomous1.
-   */
+  public static final int timeDelay = 1; //Tiempo de espera en segundos
+
   public Autonomous1(Powertrain subsystem) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new Distance(subsystem, 10), new WaitCommand(1), 
-          new TurnPID(subsystem, 90),  new WaitCommand(1),
-          new Distance(subsystem, 20), new WaitCommand(1), 
+    super(new Distance(subsystem, 10), new WaitCommand(timeDelay), 
+          new TurnPID(subsystem, 90),  new WaitCommand(timeDelay),
+          new Distance(subsystem, 20), new WaitCommand(timeDelay), 
           new TurnPID(subsystem, -45));
   }
 }

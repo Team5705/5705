@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -32,7 +33,7 @@ public final class Constants {
     
     public static final class Intake {
         public static final int m1 = 2;
-        public static final int[] sensors = new int[]{0 ,1};
+        public static final int[] sensors = new int[]{0 ,1, 2, 3};
     }
 
     public static final class pathWeaver {
@@ -40,26 +41,24 @@ public final class Constants {
         // for *your* robot's drive.
         // The Robot Characterization Toolsuite provides a convenient tool for obtaining these
         // values for your robot.
-        public static final double ksVolts = 0.00;
-        public static final double kvVoltSecondsPerMeter = 0.00;
-        public static final double kaVoltSecondsSquaredPerMeter = 0.00;
+        public static final double ksVolts = 0.992;
+        public static final double kvVoltSecondsPerMeter = 3.01;
+        public static final double kaVoltSecondsSquaredPerMeter = 0.484;
 
         // Example value only - as above, this must be tuned for your drive!
-        public static final double kPDriveVel = 0.0;
+        public static final double kPDriveVel = 0.0188;
 
-        public static final double kTrackwidthMeters = 0.00; //Distancia horizontal entre las ruedas en metros
+        public static final double kTrackwidthMeters = Units.inchesToMeters(18); //Distancia horizontal entre las ruedas en metros
         public static final DifferentialDriveKinematics kDriveKinematics =
             new DifferentialDriveKinematics(kTrackwidthMeters);
 
-        public static final double kMaxSpeedMetersPerSecond = 0; //Velocidad maxima del robot en metros por segundo
-        public static final double kMaxAccelerationMetersPerSecondSquared = 0; //Aceleracion maxima del robot en metros por segundo
+        public static final double kMaxSpeedMetersPerSecond = 1; //Velocidad maxima del robot en metros por segundo
+        public static final double kMaxAccelerationMetersPerSecondSquared = 0.5; //Aceleracion maxima del robot en metros por segundo
 
         // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
         //Debería de funcionar bien en cualquier robot, de ser necesario la modificacion entrar a la documentacion de WPI
         public static final double kRamseteB = 2;
         public static final double kRamseteZeta = 0.7;
-
-        public static final double kEncoderDistancePerPulse = 0.00;
 
         public static final boolean kGyroReversed = true;
     }

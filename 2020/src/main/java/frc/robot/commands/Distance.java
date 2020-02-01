@@ -26,13 +26,18 @@ public class Distance extends CommandBase {
 
   double errP = 0; //Pasado
 
-  double kP = 0.002, kD = 0.1, kI = 0;
+  double kP = 0.002, kI = 0, kD = 0.1;
 
   double PID = 0;
 
-  public Distance(Powertrain sub, double distanceInInches) {
+  /**
+   * 7v7
+   * @param sub Subsistema motriz
+   * @param distanceInMeters Distancia deseada en metros
+   */
+  public Distance(Powertrain sub, double distanceInMeters) {
     powertrain = sub;
-    this.distance = distanceInInches;
+    this.distance = distanceInMeters;
     addRequirements(powertrain);
   }
 
@@ -46,7 +51,7 @@ public class Distance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    enc = (powertrain.position()/4096)*(Math.PI*6); //Distance in Inches
+    enc = powertrain.getDistanceRight(); //Distance in meter
     
     err = -(distance - enc); //Negative!
     
@@ -63,7 +68,9 @@ public class Distance extends CommandBase {
 
     PID = ((err*kP) + (errI*kI) + (errD*kD));
 
-    powertrain.arcadeDrive(PID, 0);
+    double turn = 0 - powertrain.angle();
+
+    powertrain.arcadeDrive(PID, turn);
 
     SmartDashboard.putNumber("PID", PID);
   }

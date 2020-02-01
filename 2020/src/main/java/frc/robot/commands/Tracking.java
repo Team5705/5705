@@ -32,10 +32,15 @@ public class Tracking extends CommandBase {
     double y = vision.getY();
     double area = vision.getArea();
 
-    double xS = (0 - y)*0.04;
-    double turn = -(0 - x)*0.04;
+    if (vision.availableTarget()){
 
-    powertrain.arcadeDrive(0, turn);
+      double xS = (y)*0.04;
+      double turn = (x)*0.04;
+
+      powertrain.arcadeDrive(0, turn);
+    }
+    else 
+      powertrain.arcadeDrive(0, 0);
   }
 
   // Called once the command ends or is interrupted.

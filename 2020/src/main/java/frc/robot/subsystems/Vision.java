@@ -18,6 +18,7 @@ public class Vision extends SubsystemBase {
   private NetworkTableEntry tx = table.getEntry("tx");
   private NetworkTableEntry ty = table.getEntry("ty");
   private NetworkTableEntry ta = table.getEntry("ta");
+  private NetworkTableEntry tv = table.getEntry("tv");
 
   public Vision() {
 
@@ -33,6 +34,34 @@ public class Vision extends SubsystemBase {
 
   public double getArea(){
     return ta.getDouble(0.0);
+  }
+
+  public boolean availableTarget(){
+    if (tv.getDouble(0.0) == 1) return true;
+    else return false; 
+  }
+
+  public void ledsOff(){
+    table.getEntry("ledMode").setNumber(1);
+  }
+
+  public void blinkLeds(){
+    table.getEntry("ledMode").setNumber(2);
+  }
+
+  public void ledsDefault(){
+    table.getEntry("ledMode").setNumber(0);
+  }
+  public void visionProcessorMode(){
+    table.getEntry("camMode").setNumber(0);
+  }
+
+  public void driverCameraMode(){
+    table.getEntry("camMode").setNumber(1);
+  }
+
+  public void selectPipeline(int pipeline){
+    table.getEntry("pipeline").setNumber((double)pipeline);
   }
 
   @Override

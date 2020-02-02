@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Powertrain;
 
 public class Distance extends CommandBase {
-  private static Powertrain powertrain;
+  private final Powertrain powertrain;
 
   double enc;
 
@@ -26,7 +26,7 @@ public class Distance extends CommandBase {
 
   double errP = 0; //Pasado
 
-  double kP = 0.002, kI = 0, kD = 0.1;
+  double kP = 0.85, kI = 0.00001  , kD = 30.0;
 
   double PID = 0;
 
@@ -35,8 +35,8 @@ public class Distance extends CommandBase {
    * @param sub Subsistema motriz
    * @param distanceInMeters Distancia deseada en metros
    */
-  public Distance(Powertrain sub, double distanceInMeters) {
-    powertrain = sub;
+  public Distance(Powertrain powertrain, double distanceInMeters) {
+    this.powertrain = powertrain;
     this.distance = distanceInMeters;
     addRequirements(powertrain);
   }
@@ -53,7 +53,7 @@ public class Distance extends CommandBase {
   public void execute() {
     enc = powertrain.getDistanceRight(); //Distance in meter
     
-    err = -(distance - enc); //Negative!
+    err = (distance - enc);
     
     errI = (err * T) + errP;
 
@@ -68,7 +68,7 @@ public class Distance extends CommandBase {
 
     PID = ((err*kP) + (errI*kI) + (errD*kD));
 
-    double turn = 0 - powertrain.angle();
+    double turn = (0 - powertrain.angle())*0.1;
 
     powertrain.arcadeDrive(PID, turn);
 
@@ -83,6 +83,6 @@ public class Distance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (enc > (distance-0.1));
   }
 }

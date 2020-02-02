@@ -5,6 +5,15 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2020 Deser Eagles 5705. All Rights Reserved.                 */
+/* Codigo hecho en base a los conocimientos y experiencias del equipo.        */
+/* Usar este codigo como base para hacer su propio codigo. Por favor de no    */
+/* copiar exactamente partes de nuestro código o que sean muy similares,      */
+/* pongase en contacto con nuestro equipo y con gusto lo asesoramos con       */
+/* nuestros conocimientos y experiencias.                                     */
+/*----------------------------------------------------------------------------*/
+
 package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;

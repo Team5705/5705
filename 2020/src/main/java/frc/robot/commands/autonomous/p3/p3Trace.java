@@ -5,24 +5,26 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.autonomous.p3;
 
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.Distance;
+import frc.robot.commands.TurnPID;
 import frc.robot.subsystems.Powertrain;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class Autonomous1 extends SequentialCommandGroup {
-public static final int timeDelay = 1; //Tiempo de espera en segundos
+public class p3Trace extends SequentialCommandGroup {
+  public static final int timeDelay = 1; //Tiempo de espera en segundos
 
-  public Autonomous1(Powertrain powertrain) {
-    // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());
-    super(new Distance(powertrain, 3), new WaitCommand(timeDelay), 
-          new TurnPID(powertrain, 180),  new WaitCommand(timeDelay),
-          new Distance(powertrain, 3), new WaitCommand(timeDelay), 
-          new TurnPID(powertrain, 180));
+  public p3Trace(Powertrain powertrain) {
+    super(new Distance(powertrain, Units.inchesToMeters(40)), new WaitCommand(timeDelay), 
+          new TurnPID(powertrain, -90),  new WaitCommand(timeDelay),
+          new Distance(powertrain, Units.inchesToMeters(196)), new WaitCommand(timeDelay), 
+          new TurnPID(powertrain, -90), new WaitCommand(timeDelay),
+          new Distance(powertrain, Units.inchesToMeters(60)));
   }
 }

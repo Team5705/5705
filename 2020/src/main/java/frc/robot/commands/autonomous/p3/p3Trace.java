@@ -21,10 +21,10 @@ public class p3Trace extends SequentialCommandGroup {
   public static final int timeDelay = 1; //Tiempo de espera en segundos
 
   public p3Trace(Powertrain powertrain) {
-    super(new Distance(powertrain, Units.inchesToMeters(40)), new WaitCommand(timeDelay), 
-          new TurnPID(powertrain, -90),  new WaitCommand(timeDelay),
-          new Distance(powertrain, Units.inchesToMeters(196)), new WaitCommand(timeDelay), 
-          new TurnPID(powertrain, -90), new WaitCommand(timeDelay),
-          new Distance(powertrain, Units.inchesToMeters(60)));
+    super(new Distance(powertrain, Units.inchesToMeters(40),0,0,0), new WaitCommand(timeDelay), 
+          new TurnPID(powertrain, -90,0,0,0),  new WaitCommand(timeDelay),
+          new Distance(powertrain, Units.inchesToMeters(196),0,0,0), new WaitCommand(timeDelay), 
+          new TurnPID(powertrain, -90,0,0,0), new WaitCommand(timeDelay),
+          new Distance(powertrain, Units.inchesToMeters(60),0,0,0));
   }
 }

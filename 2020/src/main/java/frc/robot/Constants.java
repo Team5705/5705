@@ -21,8 +21,8 @@ import edu.wpi.first.wpilibj.util.Units;
  */
 public final class Constants {
     public static final class DriveConstant {        
-        public static final int[] portsMotors = new int[]{3, 6,     //leftMaster(SRX)  / leftFollow
-                                                          4, 9};    //rightMaster(SRX) / rightFollow
+        public static final int[] portsMotors = new int[]{4, 9,     //leftMaster(SRX)  / leftFollow
+                                                          3, 6};    //rightMaster(SRX) / rightFollow
 
         public static final Port Gyro = Port.kOnboardCS0;
     }
@@ -33,6 +33,7 @@ public final class Constants {
     
     public static final class Intake {
         public static final int m1 = 2;
+        public static final int[] solenoids = new int[]{0,1};
         public static final int[] sensors = new int[]{0 ,1, 2, 3};
     }
 

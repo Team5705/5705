@@ -26,7 +26,8 @@ public class TurnPID extends CommandBase {
 
   double errP = 0; //Pasado
               //0.03kp  5.5kd   +/- 2 grados chassis solo 0.000003kI
-  double kP = 0.03, kI = 0.00001, kD = 9;
+  double kP = 0.03, kI = 0.00001, kD = 9; //Avance 3 mts
+
 
   double PID = 0;
   
@@ -36,10 +37,12 @@ public class TurnPID extends CommandBase {
    * @param angle Angulo deseado teniendo en cuenta que el angulo se resetea y 
    * un giro inverso es necesario el angulo negativo
    */
-  public TurnPID(Powertrain powertrain, int angle) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public TurnPID(Powertrain powertrain, int angle, double kP, double kI, double kD) {
     this.powertrain = powertrain;
     this.angle = angle;
+    this.kP = kP;
+    this.kI = kI;
+    this.kD = kD;
     addRequirements(powertrain);
   }
 
@@ -82,6 +85,6 @@ public class TurnPID extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (gyro > (angle - 8));
+    return (gyro >= (angle));
   }
 }

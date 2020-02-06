@@ -16,10 +16,9 @@ public class Drive extends CommandBase {
   /**
    * Creates a new Drive.
    */
-  public Drive(Powertrain subsystemDrive) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    powertrain = subsystemDrive;
-    addRequirements(powertrain);
+  public Drive(Powertrain powertrain) {
+    this.powertrain = powertrain;
+    addRequirements(this.powertrain);
   }
 
   // Called when the command is initially scheduled.
@@ -35,6 +34,7 @@ public class Drive extends CommandBase {
     double xSp = -RobotContainer.driverController.getRawAxis(1);
     double turn = RobotContainer.driverController.getRawAxis(4);
     powertrain.arcadeDrive(xSp, turn);
+    //No tomen chavos                                                          Ctrl+K plus Ctrl+T     ^w^/ 
   }
 
   // Called once the command ends or is interrupted.

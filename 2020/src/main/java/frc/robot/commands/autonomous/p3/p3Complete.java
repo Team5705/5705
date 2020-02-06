@@ -7,8 +7,6 @@
 
 package frc.robot.commands.autonomous.p3;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -28,8 +26,8 @@ public class p3Complete extends SequentialCommandGroup {
     super(new p3Trace(powertrain), 
           new ParallelRaceGroup( 
             new Tracking(powertrain, vision), new SequentialCommandGroup(new WaitCommand(2) )), //Agregar tiro
-          new Distance(powertrain, -2),
-          new TurnPID(powertrain, 180)
+          new Distance(powertrain, -2,0,0,0),
+          new TurnPID(powertrain, 180,0,0,0)
           );
   }
 }

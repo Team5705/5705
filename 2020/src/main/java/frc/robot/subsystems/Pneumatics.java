@@ -7,13 +7,15 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Pneumatics extends SubsystemBase {
 
-  private final DoubleSolenoid car = new DoubleSolenoid(0, 1);
+  private final Solenoid car = new Solenoid(0);
+  private final Solenoid car2 = new Solenoid(1);
+  private final Solenoid car3 = new Solenoid(2);
+  private final Solenoid car4 = new Solenoid(3);
   /**
    * Creates a new Pneumatics.
    */
@@ -22,11 +24,17 @@ public class Pneumatics extends SubsystemBase {
   }
 
   public void on(){
-    car.set(Value.kForward);
+    car.set(true);
+    car2.set(true);
+    car3.set(true);
+    car4.set(true);
   }
 
   public void off(){
-    car.set(Value.kReverse);
+    car.set(false);
+    car2.set(false);;
+    car3.set(false);
+    car4.set(false);
   }
 
   @Override

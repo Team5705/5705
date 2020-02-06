@@ -46,7 +46,7 @@ public class RobotContainer {
   private final Pneumatics pneumatics =  new Pneumatics();
   private final Vision vision = new Vision();
 
-  private final Drive drive = new Drive(powertrain);;
+  private final Drive drive = new Drive(powertrain);
 
 
   public static XboxController driverController = new XboxController(OIConstant.controllerPort);
@@ -79,9 +79,10 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new JoystickButton(driverController, 1).whileHeld(new Tracking(powertrain, vision));
-    new JoystickButton(driverController, 2).whileHeld(new Distance(powertrain, 3));
-    new JoystickButton(driverController, 3).whileHeld(new TurnPID(powertrain, 180));
-    //new JoystickButton(driverController, 6).whileHeld(new OFF(pneumatics));
+    new JoystickButton(driverController, 2).whileHeld(new Distance(powertrain, 8, 0.6, 0, 15));
+    new JoystickButton(driverController, 3).whileHeld(new TurnPID(powertrain, 180, 0, 0, 0));
+    new JoystickButton(driverController, 6).whileHeld(new ON(pneumatics));
+    new JoystickButton(driverController, 5).whileHeld(new Drive());
   }
 
 
@@ -97,7 +98,7 @@ public class RobotContainer {
             new SimpleMotorFeedforward(pathWeaver.ksVolts,
                                        pathWeaver.kvVoltSecondsPerMeter,
                                        pathWeaver.kaVoltSecondsSquaredPerMeter),
-                                       pathWeaver.kDriveKinematics,10);
+                                       pathWeaver.kDriveKinematics, 10);
 
     // Create config for trajectory
     TrajectoryConfig config =
@@ -132,7 +133,7 @@ public class RobotContainer {
         auto = exampleTrajectory;
       }
     RamseteCommand ramseteCommand = new RamseteCommand(
-        auto,
+        exampleTrajectory,
         powertrain::getPose,
         new RamseteController(pathWeaver.kRamseteB, pathWeaver.kRamseteZeta),
         new SimpleMotorFeedforward(pathWeaver.ksVolts,

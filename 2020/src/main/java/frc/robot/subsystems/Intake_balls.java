@@ -31,6 +31,9 @@ public class Intake_balls extends SubsystemBase {
                        sensor3 = new DigitalInput(Intake.sensors[2]),
                        sensor4 = new DigitalInput(Intake.sensors[3]); //Sensor de salida
   
+  //TOMAR 80% AL TIRADOR!!! NO 100%
+  //LA VELOCIDAD DEL TIRADOR SERÁ VARIADA POR EL VALOR Y DADO POR LA LIMELIGHT
+
   Intake_balls() {
     //Configurar como defecto los controladores
     intake.configFactoryDefault();

@@ -45,7 +45,7 @@ public class Distance extends CommandBase {
   public void execute() {
     pidDistance.runPID(powertrain.getDistanceRight());
 
-    double turn = (0 - powertrain.angle())*0.1;
+    double turn = (0 - powertrain.navAngle())*0.1;
 
     powertrain.arcadeDrive(pidDistance.valuePID(), turn);
 
@@ -57,6 +57,6 @@ public class Distance extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return false;//(powertrain.getDistanceRight() > (distance-tolerance));
+    return (powertrain.getDistanceRight() > (distance-tolerance));
   }
 }

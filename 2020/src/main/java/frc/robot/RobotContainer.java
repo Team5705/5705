@@ -43,8 +43,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Powertrain powertrain = new Powertrain();
-  private final Pneumatics pneumatics =  new Pneumatics();
   private final Vision vision = new Vision();
+  private final IntakeBalls intake = new IntakeBalls();
 
   private final Drive drive = new Drive(powertrain);
 
@@ -81,8 +81,6 @@ public class RobotContainer {
     new JoystickButton(driverController, 1).whileHeld(new Tracking(powertrain, vision));
     new JoystickButton(driverController, 2).whileHeld(new Distance(powertrain, 8, 0.6, 0, 15));
     new JoystickButton(driverController, 3).whileHeld(new TurnPID(powertrain, 180, 0, 0, 0));
-    new JoystickButton(driverController, 6).whileHeld(new ON(pneumatics));
-    //new JoystickButton(driverController, 5).whileHeld(new Drive());
   }
 
 

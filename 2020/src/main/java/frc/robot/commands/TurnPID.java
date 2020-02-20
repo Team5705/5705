@@ -55,7 +55,7 @@ public class TurnPID extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    gyro = powertrain.angle();
+    gyro = powertrain.navAngle();
     
     err = (angle - gyro);
     

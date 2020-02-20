@@ -32,9 +32,11 @@ public final class Constants {
     }
     
     public static final class Intake {
-        public static final int m1 = 2;
-        public static final int[] solenoids = new int[]{0,1};
-        public static final int[] sensors = new int[]{0 ,1, 2, 3};
+        public static final int m1 = 43;
+        public static final int m2 = 5;
+        public static final int m3 = 8;
+        public static final int[] solenoids = new int[]{0};
+        public static final int[] sensors = new int[]{0, 1, 2, 3};
     }
 
     public static final class pathWeaver {

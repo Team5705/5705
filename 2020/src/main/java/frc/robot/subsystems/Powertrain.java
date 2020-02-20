@@ -135,7 +135,7 @@ public class Powertrain extends SubsystemBase {
     return Math.IEEEremainder(gyro.getAngle(), 360) * (pathWeaver.kGyroReversed ? -1.0 : 1.0);
   }
   
-  public double angle(){
+  public double aangle(){
     return gyro.getAngle();
   }
   
@@ -191,7 +191,7 @@ public class Powertrain extends SubsystemBase {
     updateOdometry();
 
     SmartDashboard.putNumber("Gyro", angleNormalized());
-    SmartDashboard.putNumber("GyroN", angle());
+    SmartDashboard.putNumber("GyroN", aangle());
     SmartDashboard.putNumber("Encoder_L", getDistanceLeft());
     SmartDashboard.putNumber("Encoder_R", getDistanceRight());
     SmartDashboard.putNumber("PositionL", positionLeft());

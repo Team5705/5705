@@ -7,38 +7,31 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Solenoid;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Pneumatics extends SubsystemBase {
+public class Shooter extends SubsystemBase {
+  WPI_VictorSPX shoot =  new WPI_VictorSPX(8);
 
-  private final Solenoid car = new Solenoid(0);
-  private final Solenoid car2 = new Solenoid(1);
-  private final Solenoid car3 = new Solenoid(2);
-  private final Solenoid car4 = new Solenoid(3);
-  /**
-   * Creates a new Pneumatics.
-   */
-  public Pneumatics() {
+  public Shooter() {
+    shoot.configFactoryDefault();
+    shoot.setInverted(false);
 
   }
 
-  public void on(){
-    car.set(true);
-    car2.set(true);
-    car3.set(true);
-    car4.set(true);
+  public void go(){
+    shoot.setVoltage(10); //Voltage de salida 10v
   }
 
-  public void off(){
-    car.set(false);
-    car2.set(false);;
-    car3.set(false);
-    car4.set(false);
+  public void goPID(double voltage){
+    if(voltage >= 10) voltage = 10;
+    else if(voltage <= 0) voltage = 0;
+    shoot.setVoltage(voltage);
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    
   }
 }

@@ -145,7 +145,7 @@ public class Powertrain extends SubsystemBase {
    * rango de 0 a 359
    */
   public double angleNormalized(){ 
-    double angle = gyro.getAngle();
+    double angle = navAngle();
     double operation;
       if(angle >= 0) 
           operation = (angle % 360);
@@ -191,7 +191,6 @@ public class Powertrain extends SubsystemBase {
     updateOdometry();
 
     SmartDashboard.putNumber("Gyro", angleNormalized());
-    SmartDashboard.putNumber("GyroN", aangle());
     SmartDashboard.putNumber("Encoder_L", getDistanceLeft());
     SmartDashboard.putNumber("Encoder_R", getDistanceRight());
     SmartDashboard.putNumber("PositionL", positionLeft());
@@ -199,6 +198,7 @@ public class Powertrain extends SubsystemBase {
     SmartDashboard.putNumber("RateL", getRateLeft());
     SmartDashboard.putNumber("RateR", getRateRight());
     SmartDashboard.putNumber("navGyro", navAngle());
+    SmartDashboard.putBoolean("navX-MXP_Calibrated", !ahrs.isCalibrating());
   }
   
   private void configTalon_Victor(){

@@ -27,7 +27,7 @@ public class Shoot extends ParallelCommandGroup {
     //Comando paralelo para accionar el shooter y dar una espera de x segundos para que llegue a la velocidad dada.
     //Es un comando mixto donde se realizan acciones paralelas y a su vez acciones secuenciales.
 
-    super(new RunCommand(() -> shooter.go(), shooter), new Tracking(powertrain, vision),
+    super(new RunCommand(() -> shooter.go(), shooter), //new Tracking(powertrain, vision),
           new SequentialCommandGroup(new WaitCommand(0.8), new RunCommand(() -> intake.ejectBallstoShooter(), intake))
           );
   }

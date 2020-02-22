@@ -10,6 +10,7 @@ package frc.robot;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -31,6 +32,7 @@ import frc.robot.Constants.pathWeaver;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -45,6 +47,7 @@ public class RobotContainer {
   private final Powertrain powertrain = new Powertrain();
   private final Vision vision = new Vision();
   private final IntakeBalls intake = new IntakeBalls();
+  private final Shooter shooter = new Shooter();
 
   private final Drive drive = new Drive(powertrain);
 
@@ -78,9 +81,15 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(driverController, 1).whileHeld(new Tracking(powertrain, vision));
-    new JoystickButton(driverController, 2).whileHeld(new Distance(powertrain, 8, 0.6, 0, 15));
-    new JoystickButton(driverController, 3).whileHeld(new TurnPID(powertrain, 180, 0, 0, 0));
+    //new JoystickButton(driverController, 1).whileHeld(new Tracking(powertrain, vision));
+    //new JoystickButton(driverController, 1).whileHeld(new Shoot(shooter, intake, powertrain, vision), !driverController.getAButton());
+    new JoystickButton(driverController, 1).whileHeld(new Shootv2(shooter), !driverController.getAButton());
+    new JoystickButton(driverController, 2).whenPressed(new InstantCommand(intake::toExtendIntake, intake));
+    new JoystickButton(driverController, 3).whenPressed(new InstantCommand(intake::saveIntake, intake));
+    new JoystickButton(driverController, 4).whileHeld(new TakeWhitSensor(intake));
+    //new JoystickButton(driverController, 2).whileHeld(new Distance(powertrain, 8, 0.6, 0, 15));
+    //new JoystickButton(driverController, 3).whileHeld(new TurnPID(powertrain, 180, 0, 0, 0));
+    new JoystickButton(driverController, 6).whileHeld(new TakeAll(intake));
   }
 
 
@@ -147,7 +156,8 @@ public class RobotContainer {
     );
 
     // Run path following command, then stop at the end.
-    return ramseteCommand.andThen(() -> powertrain.tankDriveVolts(0, 0));
+    //return ramseteCommand.andThen(() -> powertrain.tankDriveVolts(0, 0));
     //return new Autonomous1(powertrain);
+    return null;
   }
 }

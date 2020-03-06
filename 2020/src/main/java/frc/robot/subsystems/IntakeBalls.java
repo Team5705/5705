@@ -34,11 +34,11 @@ public class IntakeBalls extends SubsystemBase {
 
                        
   //Velocidad de los motores
-  private double intake_Velocity = 0.4
+  private double intake_Velocity = 0.5
   ,
   //regular la velocidad para procurar tener siempre el mismo disparo de salida y no aumentar la potencia con todo el recorrido
-  bandaA_Velocity = 0.3,
-  bandaB_Velocity = 0.3;
+  bandaA_Velocity = 0.5,
+  bandaB_Velocity = 0.5;
                        
   private boolean s1; //= !sensor1.get();
   private boolean s2; //= !sensor2.get();
@@ -77,7 +77,7 @@ public class IntakeBalls extends SubsystemBase {
     motorBandaA.set(ControlMode.PercentOutput, 0);
     motorBandaB.set(ControlMode.PercentOutput, 0);
   }
-
+ 
   /**
    * Dada una lógica sobre cuántas power cells tenemos en posesión asegura que mientras se ejecuta este método no existan espacios muertos
    * y pasen poco a poco sin llegar a tocar el disparador.
@@ -100,9 +100,10 @@ public class IntakeBalls extends SubsystemBase {
       ready = true;
     } 
 
-    else if (s1 == false && s4 == true || 
-             s1 == false && s2 == false && s3 == false && s4 == false ||
-             s1 == false && s2 == true && s4 == false){ // 0--1
+    else if (s1 == false && s4 == true ||
+             s1 == false && s2 == true && s4 == false ||
+             s1 ==  false && s2 == false && s3 == true && s4 == false
+             ){ // 0--1
       intake.set(ControlMode.PercentOutput, intake_Velocity);
       motorBandaA.set(ControlMode.PercentOutput, bandaA_Velocity);
       motorBandaB.set(ControlMode.PercentOutput, 0);
@@ -118,7 +119,11 @@ public class IntakeBalls extends SubsystemBase {
 
     else if(s1 == true && s2 == false && s3 == false && s4 == false ||
             s1 == true && s2 == false && s3 == true && s4 == false ||
-            s1 == true && s2 == true){//1000
+            s1 == true && s2 == true && s3 == false && s4 == false ||
+            s1 == true && s2 == true && s3 == true && s4 == false ||
+            s1 == false && s2 == true && s3 == true && s4 == false || 
+            s1 == false && s2 == false && s3 == false && s4 == false 
+            ){//1000
       intake.set(ControlMode.PercentOutput, intake_Velocity);
       motorBandaA.set(ControlMode.PercentOutput, bandaA_Velocity);
       motorBandaB.set(ControlMode.PercentOutput, bandaB_Velocity);
@@ -151,7 +156,7 @@ public class IntakeBalls extends SubsystemBase {
       motorBandaB.set(ControlMode.PercentOutput, 1);
     }*/
     else {
-      intake.set(ControlMode.PercentOutput, 0);
+      intake.set(ControlMode.PercentOutput, intake_Velocity);
       motorBandaA.set(ControlMode.PercentOutput, 0);
       motorBandaB.set(ControlMode.PercentOutput, 0);
 
@@ -174,10 +179,29 @@ public class IntakeBalls extends SubsystemBase {
       motorBandaA.set(ControlMode.PercentOutput, bandaA_Velocity);
       motorBandaB.set(ControlMode.PercentOutput, bandaB_Velocity);
     }*/
-    
-    intake.set(ControlMode.PercentOutput, intake_Velocity);
-    motorBandaA.set(ControlMode.PercentOutput, bandaA_Velocity);
-    motorBandaB.set(ControlMode.PercentOutput, bandaB_Velocity);
+    double ejectSpeed = 0.8;//0.8
+
+    intake.set(ControlMode.PercentOutput, ejectSpeed);
+    motorBandaA.set(ControlMode.PercentOutput, ejectSpeed);
+    motorBandaB.set(ControlMode.PercentOutput, ejectSpeed);
+  }
+
+  public void ejectBallstoShooterAuto(){
+    /*if (s1 == false && s2 == false && s3 == false && s4 == false){
+      intake.set(ControlMode.PercentOutput, intake_Velocity);
+      motorBandaA.set(ControlMode.PercentOutput, 0);
+      motorBandaB.set(ControlMode.PercentOutput, 0);
+    }
+    else {
+      intake.set(ControlMode.PercentOutput, intake_Velocity);
+      motorBandaA.set(ControlMode.PercentOutput, bandaA_Velocity);
+      motorBandaB.set(ControlMode.PercentOutput, bandaB_Velocity);
+    }*/
+    double ejectSpeed = 0.25;
+
+    intake.set(ControlMode.PercentOutput, ejectSpeed);
+    motorBandaA.set(ControlMode.PercentOutput, ejectSpeed);
+    motorBandaB.set(ControlMode.PercentOutput, ejectSpeed);
   }
 
 

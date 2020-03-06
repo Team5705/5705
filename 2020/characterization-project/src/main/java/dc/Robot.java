@@ -68,12 +68,12 @@ public class Robot extends TimedRobot {
 
     stick = new Joystick(0);
 
-    leftMaster = new WPI_TalonSRX(3);
+    leftMaster = new WPI_TalonSRX(4);
     leftMaster.setInverted(false);
     leftMaster.setSensorPhase(true);
     leftMaster.setNeutralMode(NeutralMode.Brake);
 
-    rightMaster = new WPI_TalonSRX(4);
+    rightMaster = new WPI_TalonSRX(3);
     rightMaster.setInverted(false);
     rightMaster.setSensorPhase(false);
     rightMaster.setNeutralMode(NeutralMode.Brake);
@@ -83,7 +83,7 @@ public class Robot extends TimedRobot {
     leftSlave0.follow(leftMaster);
     leftSlave0.setNeutralMode(NeutralMode.Brake);
 
-    WPI_VictorSPX rightSlave0 = new WPI_VictorSPX(9);
+    WPI_VictorSPX rightSlave0 = new WPI_VictorSPX(43);
     rightSlave0.setInverted(false);
     rightSlave0.follow(rightMaster);
     rightSlave0.setNeutralMode(NeutralMode.Brake);
@@ -94,8 +94,8 @@ public class Robot extends TimedRobot {
 
     // Note that the angle from the NavX and all implementors of wpilib Gyro
     // must be negated because getAngle returns a clockwise positive angle
-    Gyro gyro = new ADXRS450_Gyro();
-    gyroAngleRadians = () -> -1 * Math.toRadians(gyro.getAngle());
+    AHRS navx = new AHRS();
+    gyroAngleRadians = () -> -1 * Math.toRadians(navx.getAngle());
 
     //
     // Configure drivetrain movement

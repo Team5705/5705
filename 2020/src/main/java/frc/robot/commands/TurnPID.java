@@ -20,22 +20,23 @@ public class TurnPID extends CommandBase {
 
   double T = 20;
   double err = 0;
-  double errI = 0; //Integral
+  double errI = 0; // Integral
   double errD = 0;
   double errPp = 0;
 
-  double errP = 0; //Pasado
-              //0.03kp  5.5kd   +/- 2 grados chassis solo 0.000003kI
-  double kP = 0.03, kI = 0.00001, kD = 9; //Avance 3 mts
-
+  double errP = 0; // Pasado
+  // 0.03kp 5.5kd +/- 2 grados chassis solo 0.000003kI
+  double kP = 0.03, kI = 0.00001, kD = 9; // Avance 3 mts
 
   double PID = 0;
-  
+
   /**
    * unu
+   * 
    * @param subsystemDrive Subsistema motriz
-   * @param angle Angulo deseado teniendo en cuenta que el angulo se resetea y 
-   * un giro inverso es necesario el angulo negativo
+   * @param angle          Angulo deseado teniendo en cuenta que el angulo se
+   *                       resetea y un giro inverso es necesario el angulo
+   *                       negativo
    */
   public TurnPID(Powertrain powertrain, int angle, double kP, double kI, double kD) {
     this.powertrain = powertrain;
@@ -49,33 +50,33 @@ public class TurnPID extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-      powertrain.resetGyro();
+    powertrain.resetGyro();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     gyro = powertrain.navAngle();
-    
+
     err = (angle - gyro);
-    
+
     errI = (err * T) + errP;
 
-    errD = (err - errPp)/T;
+    errD = (err - errPp) / T;
 
     errP = errI;
     errPp = err;
 
     /****************************************
-     *                PID
+     * PID
      ****************************************/
 
-    PID = (err*kP) + (errI*kI) + (errD*kD);
+    PID = (err * kP) + (errI * kI) + (errD * kD);
 
     powertrain.arcadeDrive(0, PID);
 
     SmartDashboard.putNumber("PID", PID);
-  } 
+  }
 
   // Called once the command ends or is interrupted.
   @Override

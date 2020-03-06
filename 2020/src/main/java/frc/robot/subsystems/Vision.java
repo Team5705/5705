@@ -24,44 +24,47 @@ public class Vision extends SubsystemBase {
 
   }
 
-  public double getX(){
+  public double getX() {
     return tx.getDouble(0.0);
   }
 
-  public double getY(){
+  public double getY() {
     return ty.getDouble(0.0);
   }
 
-  public double getArea(){
+  public double getArea() {
     return ta.getDouble(0.0);
   }
 
-  public boolean availableTarget(){
-    if (tv.getDouble(0.0) == 1) return true;
-    else return false; 
+  public boolean availableTarget() {
+    if (tv.getDouble(0.0) == 1)
+      return true;
+    else
+      return false;
   }
 
-  public void ledsOff(){
+  public void ledsOff() {
     table.getEntry("ledMode").setNumber(1);
   }
 
-  public void blinkLeds(){
+  public void blinkLeds() {
     table.getEntry("ledMode").setNumber(2);
   }
 
-  public void ledsDefault(){
+  public void ledsDefault() {
     table.getEntry("ledMode").setNumber(0);
   }
-  public void visionProcessorMode(){
+
+  public void visionProcessorMode() {
     table.getEntry("camMode").setNumber(0);
   }
 
-  public void driverCameraMode(){
+  public void driverCameraMode() {
     table.getEntry("camMode").setNumber(1);
   }
 
-  public void selectPipeline(int pipeline){
-    table.getEntry("pipeline").setNumber((double)pipeline);
+  public void selectPipeline(int pipeline) {
+    table.getEntry("pipeline").setNumber((double) pipeline);
   }
 
   @Override

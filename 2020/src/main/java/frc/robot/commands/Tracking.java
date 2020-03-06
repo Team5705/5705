@@ -15,8 +15,8 @@ import frc.robot.subsystems.Vision;
 public class Tracking extends CommandBase {
   private final Vision vision;
   private final Powertrain powertrain;
-  private static PID pidX = new PID(0.03, 0, 8, 0, 0.27, false);
-  private static PID pidY = new PID(0.05, 0, 8, 0, 0.25, true);
+  private static PID pidX = new PID(0.04, 0, 8, 0, 0.27, false);
+  private static PID pidY = new PID(0.05, 0, 8, 0, 0.27, true);
 
   public Tracking(Powertrain powertrain, Vision vision) {
     this.powertrain = powertrain;
@@ -33,19 +33,17 @@ public class Tracking extends CommandBase {
   public void execute() {
     double x = vision.getX();
     double y = vision.getY();
-    
+
     pidX.runPIDErr(x);
     pidY.runPIDErr(y);
 
-    if (vision.availableTarget()){
-
+    if (vision.availableTarget()) {
 
       double xS = pidY.valuePID();
       double turn = pidX.valuePID();
 
-      powertrain.arcadeDrive(xS, turn);//x*0.03);
-    }
-    else 
+      powertrain.arcadeDrive(xS, turn);// x*0.03);
+    } else
       powertrain.arcadeDrive(0, 0);
   }
 

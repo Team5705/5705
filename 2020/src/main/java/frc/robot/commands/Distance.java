@@ -21,17 +21,18 @@ public class Distance extends CommandBase {
 
   /**
    * 7v7
-   * @param powertrain Subsistema motriz
+   * 
+   * @param powertrain       Subsistema motriz
    * @param distanceInMeters Distancia deseada en metros
-   * @param kP Proporcional
-   * @param kI Integral
-   * @param kD Derivativo
+   * @param kP               Proporcional
+   * @param kI               Integral
+   * @param kD               Derivativo
    */
   public Distance(Powertrain powertrain, double distanceInMeters, double kP, double kI, double kD) {
     this.powertrain = powertrain;
     this.distance = distanceInMeters;
-    pidDistance = new PID(kP, kI, kD, distanceInMeters, 0.15, false); //0.15
-    
+    pidDistance = new PID(kP, kI, kD, distanceInMeters, 0.15, false); // 0.15
+
     addRequirements(powertrain);
   }
 
@@ -45,7 +46,7 @@ public class Distance extends CommandBase {
   public void execute() {
     pidDistance.runPID(powertrain.getDistanceRight());
 
-    double turn = (0 - powertrain.navAngle())*0.1;
+    double turn = (0 - powertrain.navAngle()) * 0.1;
 
     powertrain.arcadeDrive(pidDistance.valuePID(), turn);
 
@@ -57,6 +58,6 @@ public class Distance extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return (powertrain.getDistanceRight() > (distance-tolerance));
+    return (powertrain.getDistanceRight() > (distance - tolerance));
   }
 }

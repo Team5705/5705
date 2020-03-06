@@ -8,39 +8,31 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
-import frc.robot.subsystems.Powertrain;
+import frc.robot.subsystems.IntakeBalls;
 
-public class Drive extends CommandBase {
-  private final Powertrain powertrain;
+public class TakeWithSensor extends CommandBase {
+  private final IntakeBalls intake;
 
-  /**
-   * Creates a new Drive.
-   */
-  public Drive(Powertrain powertrain) {
-    this.powertrain = powertrain;
-    addRequirements(this.powertrain);
+  public TakeWithSensor(IntakeBalls intake) {
+    this.intake = intake;
+    addRequirements(this.intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    powertrain.resetGyro();
-    powertrain.resetEncoders();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xSp = -RobotContainer.driverController.getRawAxis(1);
-    double turn = RobotContainer.driverController.getRawAxis(4);
-    powertrain.arcadeDrive(xSp, turn);
-    // No tomen chavos Ctrl+K plus Ctrl+T ^w^/
+    intake.takeBalls();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    intake.neutral();
   }
 
   // Returns true when the command should end.

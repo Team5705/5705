@@ -26,7 +26,7 @@ public class TakeAll extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.take();
+    intake.ejectBallstoShooter();
   }
 
   // Called once the command ends or is interrupted.

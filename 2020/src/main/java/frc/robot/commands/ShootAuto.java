@@ -7,21 +7,28 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.subsystems.IntakeBalls;
 import frc.robot.subsystems.Powertrain;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Vision;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class Autonomous1 extends SequentialCommandGroup {
-  public static final int timeDelay = 1; // Tiempo de espera en segundos
+public class ShootAuto extends ParallelCommandGroup {
+  /**
+   * Creates a new Shoot.
+   */
+  public ShootAuto(Shooter shooter, IntakeBalls intake, Powertrain powertrain, Vision vision) {
+    // Comando paralelo para accionar el shooter y dar una espera de x segundos para
+    // que llegue a la velocidad dada.
+    // Es un comando mixto donde se realizan acciones paralelas y a su vez acciones
+    // secuenciales.
 
-  public Autonomous1(Powertrain powertrain) {
-    // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());
-    super(new Distance(powertrain, 3, 0, 0, 0), new WaitCommand(timeDelay), new TurnPID(powertrain, 180, 0, 0, 0),
-        new WaitCommand(timeDelay), new Distance(powertrain, 3, 0, 0, 0), new WaitCommand(timeDelay),
-        new TurnPID(powertrain, 180, 0, 0, 0));
+    super(new Shootv2(shooter), new Tracking(powertrain, vision),
+        new SequentialCommandGroup(new WaitCommand(2), new TakeAllAuto(intake)));
   }
 }

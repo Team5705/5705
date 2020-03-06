@@ -10,10 +10,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeBalls;
 
-public class TakeWhitSensor extends CommandBase {
+public class TakeAllAuto extends CommandBase {
   private final IntakeBalls intake;
 
-  public TakeWhitSensor(IntakeBalls intake) {
+  public TakeAllAuto(IntakeBalls intake) {
     this.intake = intake;
     addRequirements(this.intake);
   }
@@ -26,7 +26,7 @@ public class TakeWhitSensor extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.take();
+    intake.ejectBallstoShooterAuto();
   }
 
   // Called once the command ends or is interrupted.

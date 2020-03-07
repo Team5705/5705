@@ -7,11 +7,6 @@
 
 package frc.robot.subsystems;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.List;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
@@ -20,29 +15,19 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
-import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.util.Units;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstant;
 import frc.robot.Constants.pathWeaver;
@@ -58,17 +43,27 @@ public class Powertrain extends SubsystemBase {
   private final Gyro gyro = new ADXRS450_Gyro(DriveConstant.Gyro);
   private final AHRS ahrs = new AHRS(SerialPort.Port.kMXP);
 
-  private final DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+  private DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(pathWeaver.kTrackwidthMeters);
+  private Pose2d position = new Pose2d(0.0, 0.0, getHeading());
+  
+  private DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading(), position);
+  private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(pathWeaver.ksVolts, 
+                                                                          pathWeaver.kvVoltSecondsPerMeter, 
+                                                                          pathWeaver.kaVoltSecondsSquaredPerMeter);
 
-  private Pose2d pose;
+  private PIDController leftPIDController = new PIDController(pathWeaver.kPDriveVel, 0, 0);
+  private PIDController rightPIDController = new PIDController(pathWeaver.kPDriveVel, 0, 0);
+
+  //private Pose2d pose;
 
   public Powertrain() {
     gyro.calibrate();
 
-    resetGyro();
-    resetEncoders();
-
     configTalon_Victor();
+
+    resetEncoders();
+    zeroHeading();
+
 
     new PrintCommand("Powertrain iniciado");
   }
@@ -89,13 +84,13 @@ public class Powertrain extends SubsystemBase {
    * @param leftVolts  the commanded left output
    * @param rightVolts the commanded right output
    */
-  public void tankDriveVolts(double leftVolts, double rightVolts) {
-    leftMaster.setVoltage(leftVolts);
-    rightMaster.setVoltage(rightVolts);
+  public void setVolts(double leftVolts, double rightVolts) {
+    drive.feed();
+    leftMaster.set(leftVolts/12);
+    rightMaster.set(rightVolts/12);
     /*
     leftMaster.set(ControlMode.PercentOutput, leftVolts / 12); 
     rightMaster.set(ControlMode.PercentOutput, rightVolts / 12);*/
-    drive.feed();
   }
 
   public int positionLeft() {
@@ -133,6 +128,7 @@ public class Powertrain extends SubsystemBase {
    */
   public double getRateLeft() {
     return (((double) -leftMaster.getSelectedSensorVelocity(0) * 10) / 4096) * (Units.inchesToMeters(6) * Math.PI);
+    //return -leftMaster.getSelectedSensorVelocity(0);
   }
 
   /**
@@ -142,6 +138,7 @@ public class Powertrain extends SubsystemBase {
    */
   public double getRateRight() {
     return (((double) rightMaster.getSelectedSensorVelocity(0) * 10) / 4096) * (Units.inchesToMeters(6) * Math.PI);
+    //return rightMaster.getSelectedSensorVelocity(0);
   }
 
   /**
@@ -149,7 +146,7 @@ public class Powertrain extends SubsystemBase {
    *
    * @return The current wheel speeds.
    */
-  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+  public DifferentialDriveWheelSpeeds getWheelSpeedss() {
     return new DifferentialDriveWheelSpeeds(getRateLeft(), getRateRight());
   }
 
@@ -158,8 +155,8 @@ public class Powertrain extends SubsystemBase {
    *
    * @return the robot's heading in degrees, from -180 to 180
    */
-  public double getHeading() {
-    return Math.IEEEremainder(navAngle(), 360) * (pathWeaver.kGyroReversed ? -1.0 : 1.0);
+  public Rotation2d getHeading() {
+    return Rotation2d.fromDegrees(Math.IEEEremainder(navAngle(), 360) * (pathWeaver.kGyroReversed ? -1.0 : 1.0));
   }
 
   /**
@@ -169,7 +166,7 @@ public class Powertrain extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     resetEncoders();
-    odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
+    odometry.resetPosition(pose, getHeading());
   }
 
   /**
@@ -177,8 +174,38 @@ public class Powertrain extends SubsystemBase {
    */
   public void zeroHeading() {
     ahrs.reset();
+    ahrs.zeroYaw();
   }
 
+  /**
+     * Sets the max output of the drive. Useful for scaling the drive to drive more
+     * slowly.
+     *
+     * @param maxOutput the maximum output to which the drive will be constrained
+     */
+    public void setMaxOutput(double maxOutput) {
+      drive.setMaxOutput(maxOutput);
+  }
+
+  public SimpleMotorFeedforward getFeedFoward() {
+    return feedforward;
+  }
+
+  public PIDController getLeftPIDController() {
+      return leftPIDController;
+  }
+
+  public PIDController getRightPIDController() {
+      return rightPIDController;
+  }
+
+  public DifferentialDriveKinematics getDifferentialDriveKinematics() {
+      return kinematics;
+  }
+
+  public Pose2d getPosition() {
+      return position;
+  }
 
   public double aangle() {
     return gyro.getAngle();
@@ -207,19 +234,27 @@ public class Powertrain extends SubsystemBase {
   }
 
   public void resetEncoders() {
-    leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-    leftMaster.setSelectedSensorPosition(0, 0, 10);
+    leftMaster.setSelectedSensorPosition(0);
 
-    rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-    rightMaster.setSelectedSensorPosition(0, 0, 10);
+    rightMaster.setSelectedSensorPosition(0);
   }
 
   public void resetGyro() {
     ahrs.reset();
   }
 
+  public static double ticksToMeters(double ticks) {
+    return ticks * pathWeaver.TICKS_TO_METERS_RATIO;
+}
+
   public void updateOdometry() {
-    pose = odometry.update(Rotation2d.fromDegrees(getHeading()), getDistanceLeft(), getDistanceRight());
+     position = odometry.update(getHeading(), ticksToMeters(leftMaster.getSelectedSensorPosition(0)), 
+                                              ticksToMeters(rightMaster.getSelectedSensorPosition(0)));
+  }
+
+  public DifferentialDriveWheelSpeeds getWheelSpeeds(){
+    return new DifferentialDriveWheelSpeeds(ticksToMeters(leftMaster.getSelectedSensorVelocity(0) * 10),
+                                            ticksToMeters(rightMaster.getSelectedSensorVelocity(0) * 10));
   }
 
   /**
@@ -256,7 +291,7 @@ public class Powertrain extends SubsystemBase {
     rightFollow.follow(rightMaster);
 
     leftMaster.setInverted(false);
-    rightMaster.setInverted(false);
+    rightMaster.setInverted(true);
 
     leftFollow.setInverted(InvertType.FollowMaster);
     rightFollow.setInverted(InvertType.FollowMaster);
@@ -272,8 +307,9 @@ public class Powertrain extends SubsystemBase {
       System.out.println();
     }
 
-  }
 
+  }
+/*
   public Command odometryCommand(int pathNumber) {
     // Create a voltage constraint to ensure we don't accelerate too fast
     var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
@@ -310,7 +346,7 @@ public class Powertrain extends SubsystemBase {
 
     switch (pathNumber) {
     case 1:
-      trajectoryJSON = "paths/post1.wpilib.json"; // Directorio del path numero 1
+      trajectoryJSON = "paths/Test.wpilib.json"; // Directorio del path numero 1
       break;
 
     case 2:
@@ -329,8 +365,8 @@ public class Powertrain extends SubsystemBase {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
       auto = null;
     }
-
-    RamseteCommand ramseteCommand = new RamseteCommand(exampleTrajectory, this::getPose,
+/*
+    RamseteCommand ramseteCommand = new RamseteCommand(auto, this::getPose,
         new RamseteController(pathWeaver.kRamseteB, 
                               pathWeaver.kRamseteZeta),
                               new SimpleMotorFeedforward(pathWeaver.ksVolts, 
@@ -350,5 +386,5 @@ public class Powertrain extends SubsystemBase {
     // Run path following command, then stop at the end.
     return ramseteCommand.andThen(() -> this.tankDriveVolts(0, 0));
   }
-
+*/
 }

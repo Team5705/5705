@@ -179,7 +179,7 @@ public class IntakeBalls extends SubsystemBase {
       motorBandaA.set(ControlMode.PercentOutput, bandaA_Velocity);
       motorBandaB.set(ControlMode.PercentOutput, bandaB_Velocity);
     }*/
-    double ejectSpeed = 0.8;//0.8
+    double ejectSpeed = 1.0;//0.8
 
     intake.set(ControlMode.PercentOutput, ejectSpeed);
     motorBandaA.set(ControlMode.PercentOutput, ejectSpeed);

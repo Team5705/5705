@@ -7,13 +7,26 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.ArrayList;
+
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import frc.robot.Constants.OIConstant;
+import frc.robot.Constants.pathWeaver;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -32,10 +45,12 @@ public class RobotContainer {
   private final Climber climber = new Climber();
 
   private final Drive drive = new Drive(powertrain);
-  private final Shoot shoot = new Shoot(shooter, intake, powertrain, vision);
+  //private final Shoot shoot = new Shoot(shooter, intake, powertrain, vision);
   private final Climberr climberr = new Climberr(climber);
 
   public static XboxController driverController = new XboxController(OIConstant.controllerPort);
+
+  ArrayList<Command> commands = new ArrayList<Command>();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -56,6 +71,26 @@ public class RobotContainer {
      ****************************************************************************/
   }
 
+  public void loadConfigs(ArrayList<String> trajectoryPaths) {
+    for (String path : trajectoryPaths) {
+        Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(path);
+        try {
+            Trajectory trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+
+            RamseteCommand command = new RamseteCommand(trajectory, powertrain::getPosition,
+                    new RamseteController(2.0, .7), powertrain.getFeedFoward(), powertrain.getDifferentialDriveKinematics(),
+                    powertrain::getWheelSpeeds, powertrain.getLeftPIDController(), powertrain.getRightPIDController(),
+                    powertrain::setVolts, powertrain);
+
+            commands.add(command);
+
+        } catch (IOException e) {
+            // TODO: handle this just in case maybe
+            System.out.println("Unable to open trajectory: " + path);
+        }
+      }
+      System.out.println("Paths successfully read");
+  }
   /**
    * Use this method to define your button->command mappings. Buttons can be
    * created by instantiating a {@link GenericHID} or one of its subclasses
@@ -88,7 +123,39 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    //return new Shoot(shooter, intake, powertrain, vision).withTimeout(6.3);
-    return powertrain.odometryCommand(1);
+
+    var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
+                new SimpleMotorFeedforward(pathWeaver.ksVolts, pathWeaver.kvVoltSecondsPerMeter, 
+                pathWeaver.kaVoltSecondsSquaredPerMeter), powertrain.getDifferentialDriveKinematics(), 10);
+
+        // TODO: update these
+        TrajectoryConfig config = new TrajectoryConfig(1, 1);
+
+        config.addConstraint(autoVoltageConstraint);
+        config.setKinematics(powertrain.getDifferentialDriveKinematics());
+
+        String trajectoryJSON = "paths/Test.wpilib.json";
+
+        try {
+            Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+            Trajectory trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+
+            System.out.println(trajectory.getStates());
+
+            RamseteCommand command = new RamseteCommand(trajectory, powertrain::getPosition, new RamseteController(2.0, .7),
+                    powertrain.getFeedFoward(), powertrain.getDifferentialDriveKinematics(), powertrain::getWheelSpeeds,
+                    powertrain.getLeftPIDController(), powertrain.getRightPIDController(), powertrain::setVolts, powertrain);
+
+            return command.andThen(() -> powertrain.setVolts(0, 0));
+        } catch (IOException ex) {
+            System.out.println("Unable to open trajectory: " + trajectoryJSON);
+        }
+
+        // TODO: return empty command to set motors to 0, 0
+        return null;
   }
+
+  public Command getNextAutonomousCommand() {
+    return commands.remove(0);
+}
 }

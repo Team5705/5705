@@ -28,9 +28,9 @@ public class Climberr extends CommandBase {
   @Override
   public void execute() {
     double speed = RobotContainer.driverController.getRawAxis(3) - RobotContainer.driverController.getRawAxis(2);
-    /*if (RobotContainer.driverController.getPOV() == 0)
+    if (RobotContainer.driverController.getPOV() == 0)
       climber.speedClimber(speed);
-    else*/
+    else
       climber.speedRobotClimber(speed);
 
   }

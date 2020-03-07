@@ -57,8 +57,11 @@ public final class Constants {
         public static final double kvVoltSecondsPerMeter = 3.01;
         public static final double kaVoltSecondsSquaredPerMeter = 0.632;
 
+        public static final double WHEEL_RADIUS = .0762;
+        public static final double TICKS_TO_METERS_RATIO = (2 * Math.PI * WHEEL_RADIUS) / 7;
+
         // Example value only - as above, this must be tuned for your drive!
-        public static final double kPDriveVel = 18.7;
+        public static final double kPDriveVel = 0.003;
 
         public static final double kTrackwidthMeters = Units.inchesToMeters(23.25); // Distancia horizontal entre las
                                                                                  // ruedas en metros
@@ -66,8 +69,8 @@ public final class Constants {
         public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
                 kTrackwidthMeters);
 
-        public static final double kMaxSpeedMetersPerSecond = 0.5; // Velocidad maxima del robot en metros por segundo
-        public static final double kMaxAccelerationMetersPerSecondSquared = 0.1; // Aceleracion maxima del robot en
+        public static final double kMaxSpeedMetersPerSecond = 1.5; // Velocidad maxima del robot en metros por segundo
+        public static final double kMaxAccelerationMetersPerSecondSquared = 0.2; // Aceleracion maxima del robot en
                                                                                  // metros por segundo
 
         // Reasonable baseline values for a RAMSETE follower in units of meters and

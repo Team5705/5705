@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.Shoot;
 
 public class Shooter extends SubsystemBase {
@@ -37,6 +38,9 @@ public class Shooter extends SubsystemBase {
     
     shoot.set(ControlMode.PercentOutput, 1.00);
     shoot2.set(ControlMode.PercentOutput, 1.00); // 0.9 es el valor óptimo sin utilizar el valor máximo y sin ser poco
+
+    RobotContainer.leds.sendData(2);
+
     // Apaga el compresor cuando se active el disparador y así utilizar toda la
     // batería
     compressor.stop();
@@ -45,6 +49,9 @@ public class Shooter extends SubsystemBase {
   public void neutral() {
     shoot.set(0);
     shoot2.set(0);
+
+    RobotContainer.leds.sendData(3);
+
     // Vuelve a activar el compresor si es necesario
     compressor.start();
   }

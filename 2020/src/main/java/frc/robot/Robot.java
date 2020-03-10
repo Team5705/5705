@@ -6,10 +6,10 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2020 Deser Eagles 5705. All Rights Reserved.                 */
+/* Copyright (c) 2020 Desert Eagles 5705. All Rights Reserved.                */
 /* Codigo hecho en base a los conocimientos y experiencias del equipo.        */
 /* Usar este codigo como base para hacer su propio codigo. Por favor de no    */
-/* copiar exactamente partes de nuestro código o que sean muy similares,      */
+/* copiar exactamente partes de nuestro código,                               */
 /* pongase en contacto con nuestro equipo y con gusto lo asesoramos con       */
 /* nuestros conocimientos y experiencias.                                     */
 /*----------------------------------------------------------------------------*/
@@ -30,11 +30,14 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
-  private Command m_autonomousCommand;
+
+  private Command currentCommand;
 
   private RobotContainer m_robotContainer;
 
   private String gameData;
+
+  
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -46,6 +49,14 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    RobotContainer.leds.sendData(10);
+
+    
+    
+
+
+    
   }
 
   /**
@@ -76,6 +87,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    RobotContainer.leds.sendData(0);
   }
 
   @Override
@@ -88,12 +100,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    RobotContainer.leds.sendData(1);
 
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
+    currentCommand = m_robotContainer.getAutonomousCommand();
+
+        if (currentCommand != null) {
+            currentCommand.schedule();
+        }
   }
 
   /**
@@ -101,16 +114,18 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+
   }
 
   @Override
   public void teleopInit() {
+    RobotContainer.leds.sendData(1);
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    if (currentCommand != null) {
+      currentCommand.cancel();
     }
   }
 
@@ -142,21 +157,29 @@ public class Robot extends TimedRobot {
         // Blue case code
         SmartDashboard.putString("Gamedata", "Blue/Azul");
         SmartDashboard.putBoolean("B", true);
+
+        RobotContainer.leds.sendData(8);
         break;
       case 'G':
         // Green case code
         SmartDashboard.putString("Gamedata", "Green/Verde");
         SmartDashboard.putBoolean("G", true);
+
+        RobotContainer.leds.sendData(7);
         break;
       case 'R':
         // Red case code
         SmartDashboard.putString("Gamedata", "Red/Rojo");
         SmartDashboard.putBoolean("R", true);
+
+        RobotContainer.leds.sendData(5);
         break;
       case 'Y':
         // Yellow case code
         SmartDashboard.putString("Gamedata", "Yellow/Amarillo");
         SmartDashboard.putBoolean("Y", true);
+
+        RobotContainer.leds.sendData(6);
         break;
       default:
         // This is corrupt data

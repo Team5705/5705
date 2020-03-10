@@ -29,6 +29,7 @@ public class Shoot extends ParallelCommandGroup {
     // secuenciales.
 
     super(new Shootv2(shooter), new Tracking(powertrain, vision),
-        new SequentialCommandGroup(new WaitCommand(2.75), new TakeAll(intake)));
+        new SequentialCommandGroup(new WaitCommand(2.75), new TakeAll(intake))
+        );
   }
 }

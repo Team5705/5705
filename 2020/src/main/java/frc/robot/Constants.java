@@ -58,7 +58,7 @@ public final class Constants {
         public static final double kaVoltSecondsSquaredPerMeter = 0.632;
 
         public static final double WHEEL_RADIUS = .0762;
-        public static final double TICKS_TO_METERS_RATIO = (2 * Math.PI * WHEEL_RADIUS) / 7;
+        public static final double TICKS_TO_METERS_RATIO = (2 * Math.PI * WHEEL_RADIUS) / 4096;
 
         // Example value only - as above, this must be tuned for your drive!
         public static final double kPDriveVel = 0.003;

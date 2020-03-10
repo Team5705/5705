@@ -34,6 +34,8 @@ public class Tracking extends CommandBase {
     double x = vision.getX();
     double y = vision.getY();
 
+    double gyro = powertrain.navAngle();
+
     pidX.runPIDErr(x);
     pidY.runPIDErr(y);
 
@@ -44,7 +46,12 @@ public class Tracking extends CommandBase {
 
       powertrain.arcadeDrive(xS, turn);// x*0.03);
     } else
-      powertrain.arcadeDrive(0, 0);
+        if (gyro < 0)
+          powertrain.arcadeDrive(0, 0.8);
+        else if (gyro > 0) 
+        powertrain.arcadeDrive(0, -0.8);
+        else 
+        powertrain.arcadeDrive(0, 0);
   }
 
   @Override

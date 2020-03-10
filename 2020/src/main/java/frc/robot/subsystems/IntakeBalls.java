@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.Intake;
 
 /**
@@ -48,7 +49,7 @@ public class IntakeBalls extends SubsystemBase {
   private boolean ready = false; 
   
   
-  //TOMAR 80% AL TIRADOR!!! NO 100% 
+  //TOMAR 80% AL TIRADOR!!! NO 100%          AL FINAL SIEMPRE QUEDO 100%
   //Update: Tomar 10v para la torreta
   //LA VELOCIDAD DEL TIRADOR PODRÍA VARIADA POR EL VALOR Y DADO POR LA LIMELIGHT
 
@@ -162,6 +163,9 @@ public class IntakeBalls extends SubsystemBase {
 
       ready = false;
     }
+
+    if (ready) RobotContainer.leds.sendData(4);
+    else RobotContainer.leds.sendData(1);
 
   }
   

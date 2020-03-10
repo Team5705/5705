@@ -20,8 +20,8 @@ public class Autonomous1 extends SequentialCommandGroup {
   public Autonomous1(Powertrain powertrain) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new Distance(powertrain, 3, 0, 0, 0), new WaitCommand(timeDelay), new TurnPID(powertrain, 180, 0, 0, 0),
-        new WaitCommand(timeDelay), new Distance(powertrain, 3, 0, 0, 0), new WaitCommand(timeDelay),
-        new TurnPID(powertrain, 180, 0, 0, 0));
+    super(new Distance(powertrain, 3), new WaitCommand(timeDelay), new TurnPID(powertrain, 180),
+        new WaitCommand(timeDelay), new Distance(powertrain, 3), new WaitCommand(timeDelay),
+        new TurnPID(powertrain, 180));
   }
 }

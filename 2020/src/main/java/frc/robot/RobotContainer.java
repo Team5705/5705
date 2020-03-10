@@ -15,18 +15,18 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
-import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import frc.robot.Constants.OIConstant;
-import frc.robot.Constants.pathWeaver;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -43,14 +43,20 @@ public class RobotContainer {
   private final IntakeBalls intake = new IntakeBalls();
   private final Shooter shooter = new Shooter();
   private final Climber climber = new Climber();
+  public static Leds leds = new Leds();
 
   private final Drive drive = new Drive(powertrain);
-  //private final Shoot shoot = new Shoot(shooter, intake, powertrain, vision);
   private final Climberr climberr = new Climberr(climber);
 
   public static XboxController driverController = new XboxController(OIConstant.controllerPort);
 
-  ArrayList<Command> commands = new ArrayList<Command>();
+  SendableChooser<String> autonomous = new SendableChooser<String>();
+
+  /*ArrayList<Command> auto1 = new ArrayList<Command>();
+  ArrayList<Command> auto2 = new ArrayList<Command>();
+  ArrayList<Command> test = new ArrayList<Command>();*/
+  
+  ArrayList<String> trajectoryPaths = new ArrayList<String>();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -61,18 +67,60 @@ public class RobotContainer {
 
     powertrain.setDefaultCommand(drive);
     climber.setDefaultCommand(climberr);
-    /***************************************************************************
-     * // Configure default commands // Set the default drive command to split-stick
-     * arcade drive powertrain.setDefaultCommand( // A split-stick arcade command,
-     * with forward/backward controlled by the left // hand, and turning controlled
-     * by the right. new RunCommand(() -> powertrain
-     * .arcadeDrive(driverController.getRawAxis(0), driverController.getRawAxis(5)),
-     * powertrain));
-     ****************************************************************************/
+
+    autonomous.addOption("Trench", "trench");
+    autonomous.addOption("Mid", "mid");
+    autonomous.addOption("Simple", "simple");
+    autonomous.addOption("Emergency", "emergency");
+    SmartDashboard.putData("Auto Mode?", autonomous);
+
+
+
+    trajectoryPaths.add(0, "paths/Trace1.wpilib.json");
+    trajectoryPaths.add(1, "paths/Trace2.wpilib.json");
+
+    trajectoryPaths.add(2, "paths/Trace1_v2.wpilib.json");
+    trajectoryPaths.add(3, "paths/Trace2_v2.wpilib.json");
+    trajectoryPaths.add(4, "paths/Trace3_v2.wpilib.json");
+    trajectoryPaths.add(5, "paths/Trace4_v2.wpilib.json");
+
+    /**
+     * Autonomous 1
+     */
+    /*auto1.add(0, new Shoot(shooter, intake, powertrain, vision).withTimeout(3.5));
+    loadConfigs(1, trajectoryPaths.get(0), auto1);
+    auto1.add(2, new ParallelDeadlineGroup(new Distance(powertrain, 2.6, 0, 0, 0, 0.4),
+                                              new TakeWithSensor(intake)) );
+    loadConfigs(3, trajectoryPaths.get(1), auto1);
+    auto1.add(4, new Shoot(shooter, intake, powertrain, vision).withTimeout(3.5));
+
+    /**
+     * Autonomous 2 
+     */
+    /*
+    auto2.add(0, new Shoot(shooter, intake, powertrain, vision));
+    loadConfigs(1, trajectoryPaths.get(2), auto2);
+    auto2.add(2, new TakeWithSensor(intake).withTimeout(1));
+    loadConfigs(3, trajectoryPaths.get(3), auto2);
+    auto2.add(4, new TakeWithSensor(intake).withTimeout(1));
+    loadConfigs(5, trajectoryPaths.get(4), auto2);
+    auto2.add(6, new TakeWithSensor(intake).withTimeout(1));
+    loadConfigs(7, trajectoryPaths.get(5), auto2);
+
+    //Test
+      test.add(0, new PrintCommand("0").withTimeout(2));
+      test.add(1, new PrintCommand("1").withTimeout(2));
+      test.add(2, new PrintCommand("2").withTimeout(2));
+      test.add(3, new PrintCommand("3").withTimeout(2));
+      test.add(4, new PrintCommand("4").withTimeout(2));
+*/
+    
   }
 
-  public void loadConfigs(ArrayList<String> trajectoryPaths) {
-    for (String path : trajectoryPaths) {
+  public Command ramseteC(String trajectoryPaths) {
+    //for (String path : trajectoryPaths) {
+      //for (int i = 0; i < trajectoryPaths.size(); i++){
+        String path = trajectoryPaths;
         Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(path);
         try {
             Trajectory trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
@@ -82,14 +130,16 @@ public class RobotContainer {
                     powertrain::getWheelSpeeds, powertrain.getLeftPIDController(), powertrain.getRightPIDController(),
                     powertrain::setVolts, powertrain);
 
-            commands.add(command);
-
+                    System.out.println("Paths successfully read");
+                    
+            return command;
+    
         } catch (IOException e) {
             // TODO: handle this just in case maybe
             System.out.println("Unable to open trajectory: " + path);
+
+            return null;
         }
-      }
-      System.out.println("Paths successfully read");
   }
   /**
    * Use this method to define your button->command mappings. Buttons can be
@@ -117,12 +167,33 @@ public class RobotContainer {
     new JoystickButton(driverController, 6).whileHeld(new TakeWithSensor(intake));
   }
 
+  
+  public Command getAutonomousCommand(){
+    if(autonomous.getSelected() == "trench"){
+      
+      return new SequentialCommandGroup(new Shoot(shooter, intake, powertrain, vision).withTimeout(3.5), 
+                                        ramseteC(trajectoryPaths.get(0)), 
+                                        new PrintCommand("2"), 
+                                        new PrintCommand("3"));
+                                      }
+
+    else if(autonomous.getSelected() == "mid"){
+      
+      return new SequentialCommandGroup(new PrintCommand("3"), new PrintCommand("2"), new PrintCommand("1"), new PrintCommand("0"));
+    }
+    
+    else
+    return null;
+  }
+}
+  
+  
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
+   *//*
+  public final Command getPathWeaver() {
 
     var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
                 new SimpleMotorFeedforward(pathWeaver.ksVolts, pathWeaver.kvVoltSecondsPerMeter, 
@@ -153,9 +224,21 @@ public class RobotContainer {
 
         // TODO: return empty command to set motors to 0, 0
         return null;
-  }
-
+  }*/
+  /*
   public Command getNextAutonomousCommand() {
-    return commands.remove(0);
-}
-}
+    if(autonomous.getSelected() == "trinch"){
+      auto1.remove(0);
+      return auto1.get(0);
+    }
+
+    else if(autonomous.getSelected() == "mid"){
+      auto2.remove(0);
+      return auto2.get(0);
+    }
+
+    else
+      //return null;
+      return test.remove(0);
+}*/
+//}

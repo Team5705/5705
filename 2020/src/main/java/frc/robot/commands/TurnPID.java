@@ -26,14 +26,14 @@ public class TurnPID extends CommandBase {
 
   double errP = 0; // Pasado
   // 0.03kp 5.5kd +/- 2 grados chassis solo 0.000003kI
-  double kP = 0.03, kI = 0.00001, kD = 9; // Avance 3 mts
+  double kP = 0.03, kI = 0.00001, kD = 9;
 
   double PID = 0;
 
   /**
    * unu
    * 
-   * @param subsystemDrive Subsistema motriz
+   * @param powertrain Subsistema motriz
    * @param angle          Angulo deseado teniendo en cuenta que el angulo se
    *                       resetea y un giro inverso es necesario el angulo
    *                       negativo
@@ -44,7 +44,21 @@ public class TurnPID extends CommandBase {
     this.kP = kP;
     this.kI = kI;
     this.kD = kD;
-    addRequirements(powertrain);
+    addRequirements(this.powertrain);
+  }
+
+  /**
+   * unu
+   * 
+   * @param powertrain Subsistema motriz
+   * @param angle Angulo deseado teniendo en cuenta que el angulo se
+   *                       resetea y un giro inverso es necesario el angulo
+   *                       negativo
+   */
+  public TurnPID(Powertrain powertrain, int angle) {
+    this.powertrain = powertrain;
+    this.angle = angle;
+    addRequirements(this.powertrain);
   }
 
   // Called when the command is initially scheduled.

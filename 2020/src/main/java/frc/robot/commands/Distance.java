@@ -19,6 +19,8 @@ public class Distance extends CommandBase {
 
   private double tolerance = 0.1;
 
+  double kP = 0, kI = 0, kD = 0;
+
   /**
    * 7v7
    * 
@@ -28,7 +30,15 @@ public class Distance extends CommandBase {
    * @param kI               Integral
    * @param kD               Derivativo
    */
-  public Distance(Powertrain powertrain, double distanceInMeters, double kP, double kI, double kD) {
+  public Distance(Powertrain powertrain, double distanceInMeters, double kP, double kI, double kD, double bias) {
+    this.powertrain = powertrain;
+    this.distance = distanceInMeters;
+    pidDistance = new PID(kP, kI, kD, distanceInMeters, bias, false); // 0.15
+
+    addRequirements(powertrain);
+  }
+
+  public Distance(Powertrain powertrain, double distanceInMeters) {
     this.powertrain = powertrain;
     this.distance = distanceInMeters;
     pidDistance = new PID(kP, kI, kD, distanceInMeters, 0.15, false); // 0.15

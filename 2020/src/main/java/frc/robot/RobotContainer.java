@@ -129,8 +129,9 @@ public class RobotContainer {
                     new RamseteController(2.0, .7), powertrain.getFeedFoward(), powertrain.getDifferentialDriveKinematics(),
                     powertrain::getWheelSpeeds, powertrain.getLeftPIDController(), powertrain.getRightPIDController(),
                     powertrain::setVolts, powertrain);
+                    powertrain.zeroHeading();
 
-                    System.out.println("Paths successfully read");
+                    System.out.println("Path successfully read");
                     
             return command;
     

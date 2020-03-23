@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Leds extends SubsystemBase {
   
-  private I2C arduino = new I2C(Port.kOnboard, 05);
+  private I2C arduino = new I2C(Port.kOnboard, 0xF5);
 
   public Leds() {
     sendData(9);
@@ -39,7 +39,7 @@ public class Leds extends SubsystemBase {
    *******************************************************/
 
   public void sendData(int data){
-    arduino.write(01, (byte) data);
+    arduino.write(0xF5, (byte) data);
   }
 
   @Override

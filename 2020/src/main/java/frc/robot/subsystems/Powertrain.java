@@ -25,10 +25,12 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.DriveConstant;
 import frc.robot.Constants.pathWeaver;
 
@@ -39,6 +41,8 @@ public class Powertrain extends SubsystemBase {
                               rightFollow = new WPI_VictorSPX(DriveConstant.portsMotors[3]);
 
   private final DifferentialDrive drive = new DifferentialDrive(leftMaster, rightMaster);
+
+  private final SwerveControllerCommand swerve = new SwerveControllerCommand(trajectory, pose, kinematics, xController, yController, thetaController, outputModuleStates, requirements)
 
   private final Gyro gyro = new ADXRS450_Gyro(DriveConstant.Gyro);
   private final AHRS ahrs = new AHRS(SerialPort.Port.kMXP);
@@ -65,7 +69,6 @@ public class Powertrain extends SubsystemBase {
 
     resetEncoders();
     zeroHeading();
-
 
     new PrintCommand("Powertrain iniciado");
   }

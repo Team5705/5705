@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Shooter;
 
 public class Shootv2 extends CommandBase {
@@ -21,6 +22,7 @@ public class Shootv2 extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    RobotContainer.leds.sendData2(2);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,6 +35,9 @@ public class Shootv2 extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     shooter.neutral();
+
+    RobotContainer.leds.sendData2(3);
+    RobotContainer.leds.sendData(2);
   }
 
   // Returns true when the command should end.

@@ -49,14 +49,8 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-
-    RobotContainer.leds.sendData(10);
-
     
-    
-
-
-    
+    RobotContainer.leds.sendData(0);
   }
 
   /**
@@ -78,8 +72,9 @@ public class Robot extends TimedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-
+    
     gameData();
+
   }
 
   /**
@@ -88,6 +83,8 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     RobotContainer.leds.sendData(0);
+    RobotContainer.leds.sendData2(0);
+
   }
 
   @Override
@@ -119,7 +116,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    RobotContainer.leds.sendData(1);
+    RobotContainer.leds.sendData(2);
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -189,4 +186,5 @@ public class Robot extends TimedRobot {
       // No data received yet
     }
   }
+
 }

@@ -22,6 +22,10 @@ public class Shooter extends SubsystemBase {
 
   private Compressor compressor = new Compressor();
 
+  private double velocityShoot = 1.00;
+  private double velocityNow = 0;
+  private double up = 0.1;
+
   public Shooter() {
     shoot.configFactoryDefault();
     shoot.setInverted(false);
@@ -32,21 +36,25 @@ public class Shooter extends SubsystemBase {
   }
 
   public void go() {
-    /*
-    shoot.setVoltage(12);
-    shoot2.setVoltage(12);*/
     
-    shoot.set(ControlMode.PercentOutput, 1.00);
-    shoot2.set(ControlMode.PercentOutput, 1.00); // 0.9 es el valor óptimo sin utilizar el valor máximo y sin ser poco
+    if(velocityNow < velocityShoot){
+      velocityNow += up;
+    }
+
+    shoot.set(ControlMode.PercentOutput, velocityNow);
+    shoot2.set(ControlMode.PercentOutput, velocityNow); // 0.9 es el valor óptimo sin utilizar el valor máximo y sin ser poco
 
     RobotContainer.leds.sendData(2);
 
-    // Apaga el compresor cuando se active el disparador y así utilizar toda la
+    // Apaga el compresor (esté o no conectado) cuando se active el disparador y así utilizar toda la
     // batería
     compressor.stop();
   }
 
   public void neutral() {
+
+    velocityNow = 0;
+
     shoot.set(0);
     shoot2.set(0);
 

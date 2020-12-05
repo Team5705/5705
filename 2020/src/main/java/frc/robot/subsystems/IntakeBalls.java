@@ -7,12 +7,9 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
@@ -22,9 +19,9 @@ import frc.robot.Constants.Intake;
  * Aqui se declara los componentes del Intake
  */
 public class IntakeBalls extends SubsystemBase {
-  private WPI_VictorSPX intake = new WPI_VictorSPX(Intake.m1); //Intake
-  private WPI_VictorSPX motorBandaA = new WPI_VictorSPX(Intake.m2); //Banda A (Bufer)
-  private WPI_TalonSRX motorBandaB = new WPI_TalonSRX(Intake.m3); //Banda B
+  private Spark intake = new Spark(Intake.m1); //Intake
+  private Spark motorBandaA = new Spark(Intake.m2); //Banda A (Bufer)
+  private Spark motorBandaB = new Spark(Intake.m3); //Banda B
 
   private Solenoid pistonA = new Solenoid(Intake.solenoids[0]);
 
@@ -54,10 +51,6 @@ public class IntakeBalls extends SubsystemBase {
   //LA VELOCIDAD DEL TIRADOR PODRÍA VARIADA POR EL VALOR Y DADO POR LA LIMELIGHT
 
   public IntakeBalls() {
-    //Configurar como defecto los controladores
-    intake.configFactoryDefault();
-    motorBandaA.configFactoryDefault();
-    motorBandaB.configFactoryDefault();
     
     //Asignar si es invertido o no
     intake.setInverted(true);
@@ -67,16 +60,16 @@ public class IntakeBalls extends SubsystemBase {
   }
 
   public void take(){
-    intake.set(ControlMode.PercentOutput, intake_Velocity);
-    motorBandaA.set(ControlMode.PercentOutput, bandaA_Velocity);
-    motorBandaB.set(ControlMode.PercentOutput, bandaB_Velocity);
+    intake.set(intake_Velocity);
+    motorBandaA.set(bandaA_Velocity);
+    motorBandaB.set(bandaB_Velocity);
 
   }
 
   public void neutral(){
-    intake.set(ControlMode.PercentOutput, 0);
-    motorBandaA.set(ControlMode.PercentOutput, 0);
-    motorBandaB.set(ControlMode.PercentOutput, 0);
+    intake.set(0);
+    motorBandaA.set(0);
+    motorBandaB.set(0);
   }
  
   /**
@@ -93,10 +86,10 @@ public class IntakeBalls extends SubsystemBase {
      */
     if (s1 == true && s4 == true){ //1--1
       //Se detienen las bandas
-      //Prender Led de control (Listo para tirar)
-      intake.set(ControlMode.PercentOutput, intake_Velocity);
-      motorBandaA.set(ControlMode.PercentOutput, 0);
-      motorBandaB.set(ControlMode.PercentOutput, 0);
+      RobotContainer.leds.sendData2(4); //Prender Led de control (Listo para tirar)
+      intake.set(intake_Velocity);
+      motorBandaA.set(0);
+      motorBandaB.set(0);
 
       ready = true;
     } 
@@ -105,9 +98,9 @@ public class IntakeBalls extends SubsystemBase {
              s1 == false && s2 == true && s4 == false ||
              s1 ==  false && s2 == false && s3 == true && s4 == false
              ){ // 0--1
-      intake.set(ControlMode.PercentOutput, intake_Velocity);
-      motorBandaA.set(ControlMode.PercentOutput, bandaA_Velocity);
-      motorBandaB.set(ControlMode.PercentOutput, 0);
+      intake.set(intake_Velocity);
+      motorBandaA.set(bandaA_Velocity);
+      motorBandaB.set(0);
 
       ready = false;
     }
@@ -125,9 +118,9 @@ public class IntakeBalls extends SubsystemBase {
             s1 == false && s2 == true && s3 == true && s4 == false || 
             s1 == false && s2 == false && s3 == false && s4 == false 
             ){//1000
-      intake.set(ControlMode.PercentOutput, intake_Velocity);
-      motorBandaA.set(ControlMode.PercentOutput, bandaA_Velocity);
-      motorBandaB.set(ControlMode.PercentOutput, bandaB_Velocity);
+      intake.set(intake_Velocity);
+      motorBandaA.set(bandaA_Velocity);
+      motorBandaB.set(bandaB_Velocity);
 
       ready = false;
     }
@@ -157,9 +150,9 @@ public class IntakeBalls extends SubsystemBase {
       motorBandaB.set(ControlMode.PercentOutput, 1);
     }*/
     else {
-      intake.set(ControlMode.PercentOutput, intake_Velocity);
-      motorBandaA.set(ControlMode.PercentOutput, 0);
-      motorBandaB.set(ControlMode.PercentOutput, 0);
+      intake.set(intake_Velocity);
+      motorBandaA.set(0);
+      motorBandaB.set(0);
 
       ready = false;
     }
@@ -185,9 +178,9 @@ public class IntakeBalls extends SubsystemBase {
     }*/
     double ejectSpeed = 1.0;//0.8
 
-    intake.set(ControlMode.PercentOutput, ejectSpeed);
-    motorBandaA.set(ControlMode.PercentOutput, ejectSpeed);
-    motorBandaB.set(ControlMode.PercentOutput, ejectSpeed);
+    intake.set(ejectSpeed);
+    motorBandaA.set(ejectSpeed);
+    motorBandaB.set(ejectSpeed);
   }
 
   public void ejectBallstoShooterAuto(){
@@ -203,9 +196,9 @@ public class IntakeBalls extends SubsystemBase {
     }*/
     double ejectSpeed = 0.25;
 
-    intake.set(ControlMode.PercentOutput, ejectSpeed);
-    motorBandaA.set(ControlMode.PercentOutput, ejectSpeed);
-    motorBandaB.set(ControlMode.PercentOutput, ejectSpeed);
+    intake.set(ejectSpeed);
+    motorBandaA.set(ejectSpeed);
+    motorBandaB.set(ejectSpeed);
   }
 
 
@@ -213,9 +206,9 @@ public class IntakeBalls extends SubsystemBase {
    * Expulsa las power cells hacía fuera del robot.
    */
   public void ejectBallstoOut(){
-    intake.set(ControlMode.PercentOutput, -intake_Velocity);
-      motorBandaA.set(ControlMode.PercentOutput, -bandaA_Velocity);
-      motorBandaB.set(ControlMode.PercentOutput, -bandaB_Velocity);
+    intake.set(-intake_Velocity);
+      motorBandaA.set(-bandaA_Velocity);
+      motorBandaB.set(-bandaB_Velocity);
 
   }
 

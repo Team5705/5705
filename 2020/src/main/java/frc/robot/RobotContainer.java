@@ -51,10 +51,6 @@ public class RobotContainer {
   public static XboxController driverController = new XboxController(OIConstant.controllerPort);
 
   SendableChooser<String> autonomous = new SendableChooser<String>();
-
-  /*ArrayList<Command> auto1 = new ArrayList<Command>();
-  ArrayList<Command> auto2 = new ArrayList<Command>();
-  ArrayList<Command> test = new ArrayList<Command>();*/
   
   ArrayList<String> trajectoryPaths = new ArrayList<String>();
 
@@ -72,6 +68,7 @@ public class RobotContainer {
     autonomous.addOption("Mid", "mid");
     autonomous.addOption("Simple", "simple");
     autonomous.addOption("Emergency", "emergency");
+    autonomous.addOption("Test", "test");
     SmartDashboard.putData("Auto Mode?", autonomous);
 
 
@@ -83,6 +80,10 @@ public class RobotContainer {
     trajectoryPaths.add(3, "paths/Trace2_v2.wpilib.json");
     trajectoryPaths.add(4, "paths/Trace3_v2.wpilib.json");
     trajectoryPaths.add(5, "paths/Trace4_v2.wpilib.json");
+
+    trajectoryPaths.add(6, "paths/One_Meter_Test.wpilib.json");
+
+    vision.ledsOff();
 
     /**
      * Autonomous 1
@@ -118,8 +119,6 @@ public class RobotContainer {
   }
 
   public Command ramseteC(String trajectoryPaths) {
-    //for (String path : trajectoryPaths) {
-      //for (int i = 0; i < trajectoryPaths.size(); i++){
         String path = trajectoryPaths;
         Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(path);
         try {
@@ -132,12 +131,14 @@ public class RobotContainer {
                     powertrain.zeroHeading();
 
                     System.out.println("Path successfully read");
+                    new PrintCommand("Path successfully read");
                     
             return command;
     
         } catch (IOException e) {
             // TODO: handle this just in case maybe
             System.out.println("Unable to open trajectory: " + path);
+            new PrintCommand("Unable to open trajectory: " + path);
 
             return null;
         }
@@ -149,46 +150,44 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // new JoystickButton(driverController, 1).whileHeld(new Tracking(powertrain,
-    // vision));
-    // new JoystickButton(driverController, 1).whileHeld(new Shoot(shooter, intake,
-    // powertrain, vision));
 
-    new JoystickButton(driverController, 1).whileHeld(new Shootv2(shooter));// , !driverController.getAButton());
+    new JoystickButton(driverController, 1).whileHeld(new Shootv2(shooter));
     new JoystickButton(driverController, 2).whenPressed(new InstantCommand(intake::toExtendIntake, intake));
     new JoystickButton(driverController, 3).whenPressed(new InstantCommand(intake::saveIntake, intake));
-    // new JoystickButton(driverController, 4).whileHeld(new Tracking(powertrain,
-    // vision));
+
     new JoystickButton(driverController, 4).whenPressed(new Shoot(shooter, intake, powertrain, vision).withTimeout(4.5));
-    // new JoystickButton(driverController, 2).whileHeld(new Distance(powertrain, 8,
-    // 0.6, 0, 15));
-    // new JoystickButton(driverController, 3).whileHeld(new TurnPID(powertrain,
-    // 180, 0, 0, 0));
+   
     new JoystickButton(driverController, 5).whileHeld(new TakeAll(intake));
     new JoystickButton(driverController, 6).whileHeld(new TakeWithSensor(intake));
   }
 
-  
+  //-----------------------------------------------------------------------------------------------------------------------------------------
+
   public Command getAutonomousCommand(){
     if(autonomous.getSelected() == "trench"){
       
-      return new SequentialCommandGroup(new Shoot(shooter, intake, powertrain, vision).withTimeout(3.5), 
-                                        ramseteC(trajectoryPaths.get(0)), 
-                                        new PrintCommand("2"), 
-                                        new PrintCommand("3"));
-                                      }
+      return new SequentialCommandGroup(new Shoot(shooter, intake, powertrain, vision).withTimeout(3.6), 
+                                        ramseteC(trajectoryPaths.get(0)),
+                                        new PrintCommand("3"), 
+                                        new PrintCommand("4")
+                                        );
+    }
 
     else if(autonomous.getSelected() == "mid"){
       
-      return new SequentialCommandGroup(new PrintCommand("3"), new PrintCommand("2"), new PrintCommand("1"), new PrintCommand("0"));
+      return new SequentialCommandGroup(new PrintCommand("1"), new PrintCommand("2"), new PrintCommand("3"), new PrintCommand("4"));
     }
     
+    else if(autonomous.getSelected() == "Test"){
+      return ramseteC(trajectoryPaths.get(6)); //6 is test
+    }
     else
     return null;
   }
 }
   
-  
+//-----------------------------------------------------------------------------------------------------------------------------------------  
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

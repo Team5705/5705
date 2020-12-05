@@ -26,7 +26,7 @@ public class Tracking extends CommandBase {
 
   @Override
   public void initialize() {
-    vision.ledsDefault();
+    vision.ledsOn();
   }
 
   @Override
@@ -47,15 +47,16 @@ public class Tracking extends CommandBase {
       powertrain.arcadeDrive(xS, turn);// x*0.03);
     } else
         if (gyro < 0)
-          powertrain.arcadeDrive(0, 0.8);
+          powertrain.arcadeDrive(0, 0.6);
         else if (gyro > 0) 
-        powertrain.arcadeDrive(0, -0.8);
+        powertrain.arcadeDrive(0, -0.6);
         else 
         powertrain.arcadeDrive(0, 0);
   }
 
   @Override
   public void end(boolean interrupted) {
+    vision.blinkLeds();
     vision.ledsOff();
   }
 

@@ -7,14 +7,16 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Spark;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
-  private final Spark m1 = new Spark(9);
-  private final Spark m2 = new Spark(8);
-  private final Spark up = new Spark(7);
+  private final WPI_VictorSPX m1 = new WPI_VictorSPX(43);
+  private final WPI_VictorSPX m2 = new WPI_VictorSPX(9);
+  private final WPI_VictorSPX up = new WPI_VictorSPX(5);
 
   private final DifferentialDrive scale = new DifferentialDrive(m1, m2);
 
@@ -23,7 +25,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void speedClimber(double speed) {
-    up.set(speed);
+    up.set(ControlMode.PercentOutput ,speed);
 
   }
 

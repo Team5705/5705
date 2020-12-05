@@ -44,6 +44,7 @@ public class IntakeBalls extends SubsystemBase {
   private boolean s4; //= !sensor4.get();
 
   private boolean ready = false; 
+//no
   
   
   //TOMAR 80% AL TIRADOR!!! NO 100%          AL FINAL SIEMPRE QUEDO 100%

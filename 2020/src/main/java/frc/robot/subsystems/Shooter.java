@@ -24,7 +24,7 @@ public class Shooter extends SubsystemBase {
 
   private double velocityShoot = 1.00;
   private double velocityNow = 0;
-  private double up = 0.1;
+  private double up = 0.1; //Velocidad a la que aumenta la velocidad, no aumentar mucho el valor, queremos que sea suave el ascenso
 
   public Shooter() {
     shoot.configFactoryDefault();

@@ -72,7 +72,7 @@ public final class Constants {
         public static final double kPDriveVel = 0.003;
 
         public static final double kTrackwidthMeters = Units.inchesToMeters(23.25); // Distancia horizontal entre las
-                                                                                 // ruedas en metros
+                                                                                    // ruedas en metros
                                                                                  
         public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
                 kTrackwidthMeters);

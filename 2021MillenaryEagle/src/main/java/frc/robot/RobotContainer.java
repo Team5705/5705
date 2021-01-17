@@ -69,55 +69,29 @@ public class RobotContainer {
     autonomous.addOption("Simple", "simple");
     autonomous.addOption("Emergency", "emergency");
     autonomous.addOption("Test", "test");
-    SmartDashboard.putData("Auto Mode?", autonomous);
+    SmartDashboard.putData("autoMode", autonomous);
 
 
 
-    trajectoryPaths.add(0, "paths/Trace1.wpilib.json");
-    trajectoryPaths.add(1, "paths/Trace2.wpilib.json");
+    trajectoryPaths.add(0, "");
+    trajectoryPaths.add(1, "");
 
-    trajectoryPaths.add(2, "paths/Trace1_v2.wpilib.json");
-    trajectoryPaths.add(3, "paths/Trace2_v2.wpilib.json");
-    trajectoryPaths.add(4, "paths/Trace3_v2.wpilib.json");
-    trajectoryPaths.add(5, "paths/Trace4_v2.wpilib.json");
+    trajectoryPaths.add(2, "");
+    trajectoryPaths.add(3, "");
+    trajectoryPaths.add(4, "");
+    trajectoryPaths.add(5, "");
 
-    trajectoryPaths.add(6, "paths/One_Meter_Test.wpilib.json");
+    trajectoryPaths.add(6, "paths/output/test.wpilib.json");
 
     vision.ledsOff();
-
-    /**
-     * Autonomous 1
-     */
-    /*auto1.add(0, new Shoot(shooter, intake, powertrain, vision).withTimeout(3.5));
-    loadConfigs(1, trajectoryPaths.get(0), auto1);
-    auto1.add(2, new ParallelDeadlineGroup(new Distance(powertrain, 2.6, 0, 0, 0, 0.4),
-                                              new TakeWithSensor(intake)) );
-    loadConfigs(3, trajectoryPaths.get(1), auto1);
-    auto1.add(4, new Shoot(shooter, intake, powertrain, vision).withTimeout(3.5));
-
-    /**
-     * Autonomous 2 
-     */
-    /*
-    auto2.add(0, new Shoot(shooter, intake, powertrain, vision));
-    loadConfigs(1, trajectoryPaths.get(2), auto2);
-    auto2.add(2, new TakeWithSensor(intake).withTimeout(1));
-    loadConfigs(3, trajectoryPaths.get(3), auto2);
-    auto2.add(4, new TakeWithSensor(intake).withTimeout(1));
-    loadConfigs(5, trajectoryPaths.get(4), auto2);
-    auto2.add(6, new TakeWithSensor(intake).withTimeout(1));
-    loadConfigs(7, trajectoryPaths.get(5), auto2);
-
-    //Test
-      test.add(0, new PrintCommand("0").withTimeout(2));
-      test.add(1, new PrintCommand("1").withTimeout(2));
-      test.add(2, new PrintCommand("2").withTimeout(2));
-      test.add(3, new PrintCommand("3").withTimeout(2));
-      test.add(4, new PrintCommand("4").withTimeout(2));
-*/
     
   }
 
+  /**
+   * 
+   * @param trajectoryPaths Número del path en la lista declarada
+   * @return  Comando ramsete para su utilización en el seguimiento del path
+   */
   public Command ramseteC(String trajectoryPaths) {
         String path = trajectoryPaths;
         Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(path);
@@ -136,7 +110,6 @@ public class RobotContainer {
             return command;
     
         } catch (IOException e) {
-            // TODO: handle this just in case maybe
             System.out.println("Unable to open trajectory: " + path);
             new PrintCommand("Unable to open trajectory: " + path);
 
@@ -185,60 +158,3 @@ public class RobotContainer {
     return null;
   }
 }
-  
-//-----------------------------------------------------------------------------------------------------------------------------------------  
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   *//*
-  public final Command getPathWeaver() {
-
-    var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
-                new SimpleMotorFeedforward(pathWeaver.ksVolts, pathWeaver.kvVoltSecondsPerMeter, 
-                pathWeaver.kaVoltSecondsSquaredPerMeter), powertrain.getDifferentialDriveKinematics(), 10);
-
-        // TODO: update these
-        TrajectoryConfig config = new TrajectoryConfig(1, 1);
-
-        config.addConstraint(autoVoltageConstraint);
-        config.setKinematics(powertrain.getDifferentialDriveKinematics());
-
-        String trajectoryJSON = "paths/Test.wpilib.json";
-
-        try {
-            Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-            Trajectory trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-
-            System.out.println(trajectory.getStates());
-
-            RamseteCommand command = new RamseteCommand(trajectory, powertrain::getPosition, new RamseteController(2.0, .7),
-                    powertrain.getFeedFoward(), powertrain.getDifferentialDriveKinematics(), powertrain::getWheelSpeeds,
-                    powertrain.getLeftPIDController(), powertrain.getRightPIDController(), powertrain::setVolts, powertrain);
-
-            return command.andThen(() -> powertrain.setVolts(0, 0));
-        } catch (IOException ex) {
-            System.out.println("Unable to open trajectory: " + trajectoryJSON);
-        }
-
-        // TODO: return empty command to set motors to 0, 0
-        return null;
-  }*/
-  /*
-  public Command getNextAutonomousCommand() {
-    if(autonomous.getSelected() == "trinch"){
-      auto1.remove(0);
-      return auto1.get(0);
-    }
-
-    else if(autonomous.getSelected() == "mid"){
-      auto2.remove(0);
-      return auto2.get(0);
-    }
-
-    else
-      //return null;
-      return test.remove(0);
-}*/
-//}

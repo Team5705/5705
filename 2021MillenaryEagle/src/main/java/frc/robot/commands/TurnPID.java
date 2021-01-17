@@ -7,7 +7,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Powertrain;
 
@@ -89,7 +88,7 @@ public class TurnPID extends CommandBase {
 
     powertrain.arcadeDrive(0, PID);
 
-    SmartDashboard.putNumber("PID", PID);
+    // SmartDashboard.putNumber("PID", PID);
   }
 
   // Called once the command ends or is interrupted.

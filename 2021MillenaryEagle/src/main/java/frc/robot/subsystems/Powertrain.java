@@ -29,7 +29,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Dashboard;
 import frc.robot.Constants.DriveConstant;
 import frc.robot.Constants.pathWeaver;
 
@@ -273,24 +272,19 @@ public class Powertrain extends SubsystemBase {
   public void periodic() {
     updateOdometry();
 
-    SmartDashboard.putNumber("Gyro", angleNormalized()); //--
-    SmartDashboard.putNumber("Encoder_L", getDistanceLeft());
-    SmartDashboard.putNumber("Encoder_R", getDistanceRight());
-    SmartDashboard.putNumber("PositionL", positionLeft());
-    SmartDashboard.putNumber("PositionR", positionRight());
-    SmartDashboard.putNumber("RateL", getRateLeft());//--
-    SmartDashboard.putNumber("RateR", getRateRight());//--
-    SmartDashboard.putBoolean("navX-MXP_Calibrated", !ahrs.isCalibrating());//--
+    SmartDashboard.putNumber("gyro", angleNormalized());
+    SmartDashboard.putNumber("encoder_L", getDistanceLeft());
+    SmartDashboard.putNumber("encoder_R", getDistanceRight());
+    SmartDashboard.putNumber("positionL", positionLeft());
+    SmartDashboard.putNumber("positionR", positionRight());
+    SmartDashboard.putNumber("rateL", getRateLeft());
+    SmartDashboard.putNumber("rateR", getRateRight());
+    SmartDashboard.putBoolean("navX-MXP_Calibrated", !ahrs.isCalibrating());
 
-    Dashboard.sendDouble("gyro", angleNormalized());
+    /* Dashboard.sendDouble("gyro", angleNormalized());
     Dashboard.sendDouble("rateL", getRateLeft());
     Dashboard.sendDouble("rateR", getRateRight());
-    Dashboard.sendBoolean("navReady", !ahrs.isCalibrating());
-
-    //Dashboard.gyro(angleNormalized());
-    //Dashboard.rateL(getRateLeft());
-    //Dashboard.rateR(getRateRight());
-    //Dashboard.navReady(!ahrs.isCalibrating());
+    Dashboard.sendBoolean("navReady", !ahrs.isCalibrating()); */
   }
 
   private void configTalon_Victor() {

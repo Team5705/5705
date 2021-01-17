@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Dashboard;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.Intake;
 
@@ -216,11 +215,11 @@ public class IntakeBalls extends SubsystemBase {
     SmartDashboard.putBoolean("4", s4);
     SmartDashboard.putBoolean("READY?", ready);
 
-    Dashboard.sendBoolean("sens1", s1);
+    /* Dashboard.sendBoolean("sens1", s1);
     Dashboard.sendBoolean("sens2", s2);
     Dashboard.sendBoolean("sens3", s3);
     Dashboard.sendBoolean("sens4", s4);
-    Dashboard.sendBoolean("ready", ready);
+    Dashboard.sendBoolean("ready", ready); */
 
   }
 }

@@ -14,7 +14,6 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Dashboard;
 
 public class Vision extends SubsystemBase {
   private NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -101,9 +100,9 @@ public class Vision extends SubsystemBase {
     SmartDashboard.putNumber("Y", getY());
     SmartDashboard.putNumber("Area", getArea());
 
-    Dashboard.sendDouble("x", getX());
+    /* Dashboard.sendDouble("x", getX());
     Dashboard.sendDouble("y", getY());
-    Dashboard.sendDouble("area", getArea());
+    Dashboard.sendDouble("area", getArea()); */
 
     if(availableLimeLight() && !availableCamera){
       availableCamera = true;

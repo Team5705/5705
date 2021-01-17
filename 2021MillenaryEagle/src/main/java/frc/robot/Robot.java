@@ -152,63 +152,63 @@ public class Robot extends TimedRobot {
       switch (gameData.charAt(0)) {
       case 'B':
         // Blue case code
-        SmartDashboard.putString("Gamedata", "Blue/Azul");
+        SmartDashboard.putString("gamedata", "Blue/Azul");
         SmartDashboard.putBoolean("B", true);
 
-        Dashboard.sendString("gamedata", "Blue/Azul");
-        Dashboard.sendBoolean("B", true);
+        /* Dashboard.sendString("gamedata", "Blue/Azul");
+        Dashboard.sendBoolean("B", true); */
 
         RobotContainer.leds.sendData(8);
         break;
       case 'G':
         // Green case code
-        SmartDashboard.putString("Gamedata", "Green/Verde");
+        SmartDashboard.putString("gamedata", "Green/Verde");
         SmartDashboard.putBoolean("G", true);
 
-        Dashboard.sendString("gamedata", "Green/Verde");
-        Dashboard.sendBoolean("G", true);
+        /* Dashboard.sendString("gamedata", "Green/Verde");
+        Dashboard.sendBoolean("G", true); */
 
         RobotContainer.leds.sendData(7);
         break;
       case 'R':
         // Red case code
-        SmartDashboard.putString("Gamedata", "Red/Rojo");
+        SmartDashboard.putString("gamedata", "Red/Rojo");
         SmartDashboard.putBoolean("R", true);
 
-        Dashboard.sendString("gamedata", "Red/Rojo");
-        Dashboard.sendBoolean("R", true);
+        /* Dashboard.sendString("gamedata", "Red/Rojo");
+        Dashboard.sendBoolean("R", true); */
 
         RobotContainer.leds.sendData(5);
         break;
       case 'Y':
         // Yellow case code
-        SmartDashboard.putString("Gamedata", "Yellow/Amarillo");
+        SmartDashboard.putString("gamedata", "Yellow/Amarillo");
         SmartDashboard.putBoolean("Y", true);
 
-        Dashboard.sendString("gamedata", "Yellow/Amarillo");
-        Dashboard.sendBoolean("Y", true);
+        /* Dashboard.sendString("gamedata", "Yellow/Amarillo");
+        Dashboard.sendBoolean("Y", true); */
 
         RobotContainer.leds.sendData(6);
         break;
       default:
         // This is corrupt data
-        SmartDashboard.putString("Gamedata", "Corrupt Data");
-        Dashboard.sendString("gamedata", "Corrupt Data");
+        SmartDashboard.putString("gamedata", "Corrupt Data");
+        // Dashboard.sendString("gamedata", "Corrupt Data");
       }
     } else {
       // No data received yet
-      SmartDashboard.putString("Gamedata", "");
-      Dashboard.sendString("gamedata", "");
+      SmartDashboard.putString("gamedata", "");
+      // Dashboard.sendString("gamedata", "");
 
       SmartDashboard.putBoolean("B", false);
       SmartDashboard.putBoolean("G", false);
       SmartDashboard.putBoolean("R", false);
       SmartDashboard.putBoolean("Y", false);
 
-      Dashboard.sendBoolean("B", false);
+      /* Dashboard.sendBoolean("B", false);
       Dashboard.sendBoolean("G", false);
       Dashboard.sendBoolean("R", false);
-      Dashboard.sendBoolean("Y", false);
+      Dashboard.sendBoolean("Y", false); */
     }
   }
 

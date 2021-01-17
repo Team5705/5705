@@ -5,10 +5,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.AutonomousBasic;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.Distance;
+import frc.robot.commands.TurnPID;
 import frc.robot.subsystems.Powertrain;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -18,8 +20,6 @@ public class Autonomous1 extends SequentialCommandGroup {
   public static final int timeDelay = 1; // Tiempo de espera en segundos
 
   public Autonomous1(Powertrain powertrain) {
-    // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());
     super(new Distance(powertrain, 3), new WaitCommand(timeDelay), new TurnPID(powertrain, 180),
         new WaitCommand(timeDelay), new Distance(powertrain, 3), new WaitCommand(timeDelay),
         new TurnPID(powertrain, 180));

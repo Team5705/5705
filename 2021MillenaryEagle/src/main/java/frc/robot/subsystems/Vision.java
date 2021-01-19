@@ -28,9 +28,24 @@ public class Vision extends SubsystemBase {
 
   private boolean availableCamera = false;
 
+  // Vision Tape Height
+
+  private final double visionTapeHeightFt = 8 + 2.25/12; // 8 feet, 2.25 inches
+
+  // Camera height and angle
+
+  private final double cameraHeightInches = 39; // 39 inches exaple
+
+  private final double cameraMountingAngle = 35; // 35 degrees exaple
+
+  private final double mountingRadians = Math.toRadians(cameraMountingAngle); // a1, converted to radians
+
+  // result of h2 - h1
+  private double differenceOfHeights = visionTapeHeightFt - cameraHeightInches;
+
   public Vision() {
     ledsOff();
-		cam0.setResolution(160, 120);
+		cam0.setResolution(240, 360);
 
   }
 
@@ -94,11 +109,28 @@ public class Vision extends SubsystemBase {
     table.getEntry("pipeline").setNumber((double) pipeline);
   }
 
+  public double getDistance(){
+
+    // a2 to radians
+    double radiansToTarget = Math.toRadians(ty.getDouble(0.0));
+
+    // result of a1 + a2
+    double angleInRadians = mountingRadians + radiansToTarget;
+
+    // tangent of a1 + a1
+    double tangentOfAngle = Math.tan(angleInRadians);
+
+    double distance = differenceOfHeights/tangentOfAngle;
+
+    return distance;
+  }
+
   @Override
   public void periodic() {
     SmartDashboard.putNumber("X", getX());
     SmartDashboard.putNumber("Y", getY());
     SmartDashboard.putNumber("Area", getArea());
+    SmartDashboard.putNumber("Distance", getDistance());
 
     /* Dashboard.sendDouble("x", getX());
     Dashboard.sendDouble("y", getY());

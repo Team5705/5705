@@ -46,10 +46,10 @@ public class Tracking extends CommandBase {
 
       powertrain.arcadeDrive(xS, turn);// x*0.03);
     } else
-        if (gyro < 0)
-          powertrain.arcadeDrive(0, 0.6);
-        else if (gyro > 0) 
-        powertrain.arcadeDrive(0, -0.6);
+        if (gyro > 0 && gyro <= 180)
+          powertrain.arcadeDrive(0, -0.6);
+        else if (gyro > 180 && gyro < 360) 
+        powertrain.arcadeDrive(0, 0.6);
   }
 
   @Override

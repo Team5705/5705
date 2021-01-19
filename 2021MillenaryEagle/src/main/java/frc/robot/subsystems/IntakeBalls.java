@@ -64,6 +64,8 @@ public class IntakeBalls extends SubsystemBase {
   private boolean s4; //= !sensor4.get();
 
   private boolean ready = false; 
+
+  private boolean intakeDeployed = false; // Estado del intake (false = retraido | true = extendido)
   
   //TOMAR 80% AL TIRADOR!!! NO 100%  --->  AL FINAL SIEMPRE QUEDO 100%
   //LA VELOCIDAD DEL TIRADOR PODRIA SER VARIADA POR EL VALOR DADO POR LA LIMELIGHT
@@ -188,6 +190,7 @@ public class IntakeBalls extends SubsystemBase {
    */
   public void toExtendIntake(){
     pistonA.set(true);
+    intakeDeployed = true;
   }
 
   /**
@@ -195,6 +198,7 @@ public class IntakeBalls extends SubsystemBase {
    */
   public void saveIntake(){
     pistonA.set(false);
+    intakeDeployed = false;
   }
 
   @Override
@@ -214,6 +218,8 @@ public class IntakeBalls extends SubsystemBase {
     SmartDashboard.putBoolean("3", s3);
     SmartDashboard.putBoolean("4", s4);
     SmartDashboard.putBoolean("READY?", ready);
+
+    SmartDashboard.putBoolean("intakeDeployed", intakeDeployed); // registra el estado del intake si esta o no extendido
 
     /* Dashboard.sendBoolean("sens1", s1);
     Dashboard.sendBoolean("sens2", s2);

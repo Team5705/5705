@@ -13,9 +13,20 @@ import frc.robot.subsystems.Shooter;
 
 public class Shootv2 extends CommandBase {
   private final Shooter shooter;
+  private boolean finished = false;
 
+  /**
+   * Ejecuta el disparador hasta cuando se indique
+   * @param shooter
+   */
   public Shootv2(Shooter shooter) {
     this.shooter = shooter;
+    addRequirements(this.shooter);
+  }
+
+  public Shootv2(Shooter shooter, boolean finished) {
+    this.shooter = shooter;
+    this.finished = finished;
     addRequirements(this.shooter);
   }
 
@@ -43,6 +54,9 @@ public class Shootv2 extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if(TakeAll.finishedShoot == true)
+      return true;
+    else 
+      return false;
   }
 }

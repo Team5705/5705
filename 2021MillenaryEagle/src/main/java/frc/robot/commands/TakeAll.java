@@ -12,7 +12,12 @@ import frc.robot.subsystems.IntakeBalls;
 
 public class TakeAll extends CommandBase {
   private final IntakeBalls intake;
+  public static boolean finishedShoot =  false;
 
+  /**
+   * Eyecta las powercells al disparador
+   * @param intake Subsistema del intake
+   */
   public TakeAll(IntakeBalls intake) {
     this.intake = intake;
     addRequirements(this.intake);
@@ -21,6 +26,7 @@ public class TakeAll extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    finishedShoot = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,6 +39,7 @@ public class TakeAll extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     intake.neutral();
+    finishedShoot = true;
   }
 
   // Returns true when the command should end.

@@ -8,26 +8,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.PID;
 import frc.robot.subsystems.Powertrain;
 
 public class TurnPID extends CommandBase {
   private final Powertrain powertrain;
 
-  double gyro;
+  private static PID pidTurn;
 
+  double gyro;
   double angle;
 
-  double T = 20;
-  double err = 0;
-  double errI = 0; // Integral
-  double errD = 0;
-  double errPp = 0;
-
-  double errP = 0; // Pasado
-  // 0.03kp 5.5kd +/- 2 grados chassis solo 0.000003kI
-  double kP = 0.03, kI = 0.00001, kD = 9;
-
-  double PID = 0;
+  double kP = 0.03, kI = 0.00001, kD = 9, bias = 0.27;
 
   /**
    * unu
@@ -50,20 +42,21 @@ public class TurnPID extends CommandBase {
    * unu
    * 
    * @param powertrain Subsistema motriz
-   * @param angle Angulo deseado teniendo en cuenta que el angulo se
-   *                       resetea y un giro inverso es necesario el angulo
-   *                       negativo
+   * @param angle Angulo deseado entre los 360 grados del robot, el giroscopio
+   *              no se reinicia.
    */
   public TurnPID(Powertrain powertrain, int angle) {
     this.powertrain = powertrain;
     this.angle = angle;
+    pidTurn = new PID(kP, kI, kD, angle, bias, false);
+
     addRequirements(this.powertrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    powertrain.resetGyro();
+    //powertrain.resetGyro();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -71,7 +64,11 @@ public class TurnPID extends CommandBase {
   public void execute() {
     gyro = powertrain.navAngle();
 
-    err = (angle - gyro);
+    pidTurn.runPID(gyro);
+
+    double turn = pidTurn.valuePID();
+
+    /* err = (angle - gyro);
 
     errI = (err * T) + errP;
 
@@ -82,11 +79,11 @@ public class TurnPID extends CommandBase {
 
     /****************************************
      * PID
-     ****************************************/
+     ***************************************
 
-    PID = (err * kP) + (errI * kI) + (errD * kD);
+    PID = (err * kP) + (errI * kI) + (errD * kD); */
 
-    powertrain.arcadeDrive(0, PID);
+    powertrain.arcadeDrive(0, turn);
 
     // SmartDashboard.putNumber("PID", PID);
   }
@@ -99,6 +96,6 @@ public class TurnPID extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (gyro >= (angle));
+    return (gyro >= (angle-1) && gyro <= (angle +1));
   }
 }

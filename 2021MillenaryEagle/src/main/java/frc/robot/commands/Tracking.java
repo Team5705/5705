@@ -17,10 +17,33 @@ public class Tracking extends CommandBase {
   private final Powertrain powertrain;
   private static PID pidX = new PID(0.04, 0, 8, 0, 0.27, false);
   private static PID pidY = new PID(0.05, 0, 8, 0, 0.27, true);
+  private boolean finished = false;
+  private double x, y;
 
+  /**
+   * Ejecuta el seguimiento correspondiente del objetivo.
+   * 
+   * @param powertrain Subsistema motriz
+   * @param vision Subsistema de vision
+   */
   public Tracking(Powertrain powertrain, Vision vision) {
     this.powertrain = powertrain;
     this.vision = vision;
+    addRequirements(this.powertrain, this.vision);
+  }
+
+  /**
+   * Ejecuta el seguimiento correspondiente del objetivo.
+   * 
+   * @param powertrain Subsistema motriz
+   * @param vision subsistema de vision
+   * @param finished Indica si queremos que el comando termine o no, de ser falso nunca terminará hasta que sea interrumpido,
+   *                 de ser verdadero terminará cuando el robot esté alineado con el objetivo.
+   */
+  public Tracking(Powertrain powertrain, Vision vision, boolean finished) {
+    this.powertrain = powertrain;
+    this.vision = vision;
+    this.finished = finished;
     addRequirements(this.powertrain, this.vision);
   }
 
@@ -31,8 +54,8 @@ public class Tracking extends CommandBase {
 
   @Override
   public void execute() {
-    double x = vision.getX();
-    double y = vision.getY();
+    x = vision.getX();
+    y = vision.getY();
 
     double gyro = powertrain.navAngle();
 
@@ -60,6 +83,9 @@ public class Tracking extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return false;
+    if (finished == true){
+      return (x >= -1 && x <= 1) && (y >= -1 && y <= 1);
+    } else
+      return false;
   }
 }

@@ -131,6 +131,7 @@ public class Vision extends SubsystemBase {
     SmartDashboard.putNumber("Y", getY());
     SmartDashboard.putNumber("Area", getArea());
     SmartDashboard.putNumber("Distance", getDistance());
+    SmartDashboard.putBoolean("targetVisible", availableTarget());
 
     /* Dashboard.sendDouble("x", getX());
     Dashboard.sendDouble("y", getY());

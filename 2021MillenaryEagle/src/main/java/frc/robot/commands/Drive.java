@@ -31,7 +31,7 @@ public class Drive extends CommandBase {
   @Override
   public void execute() {
     double xSp = RobotContainer.driverController.getRawAxis(3) - RobotContainer.driverController.getRawAxis(2);
-    double turn = RobotContainer.driverController.getRawAxis(1);
+    double turn = RobotContainer.driverController.getRawAxis(0);
     powertrain.arcadeDrive(xSp, turn);
     // No tomen chavos Ctrl+K plus Ctrl+T ^w^/
   }

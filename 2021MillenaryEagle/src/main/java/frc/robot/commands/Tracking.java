@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.PID;
 import frc.robot.subsystems.Powertrain;
 import frc.robot.subsystems.Vision;
@@ -15,7 +16,7 @@ import frc.robot.subsystems.Vision;
 public class Tracking extends CommandBase {
   private final Vision vision;
   private final Powertrain powertrain;
-  private static PID pidX = new PID(0.04, 0, 8, 0, 0.27, false);
+  private static PID pidX = new PID(0.04, 0, 5, 0, 0.27, false); //turn 0.00001dl
   private static PID pidY = new PID(0.05, 0, 8, 0, 0.27, true);
   private boolean finished = false;
   private double x, y;
@@ -44,6 +45,10 @@ public class Tracking extends CommandBase {
     this.powertrain = powertrain;
     this.vision = vision;
     this.finished = finished;
+
+    x = 1;
+    y = 1;
+
     addRequirements(this.powertrain, this.vision);
   }
 
@@ -79,13 +84,16 @@ public class Tracking extends CommandBase {
   public void end(boolean interrupted) {
     vision.blinkLeds();
     vision.ledsOff();
+
+    new PrintCommand("FinishedVision");
   }
 
   @Override
   public boolean isFinished() {
     if (finished == true){
-      return (x >= -1 && x <= 1) && (y >= -1 && y <= 1);
-    } else
+      return (x == 0.00) && (y == 0.00);//(x >= -0.5 && x <= 0.5) && (y >= -0.5 && y <= 0.5);
+    } 
+    else
       return false;
   }
 }

@@ -17,13 +17,21 @@ public class Shootv2 extends CommandBase {
 
   /**
    * Ejecuta el disparador hasta cuando se indique
-   * @param shooter
+   * 
+   * @param shooter Subsistema del disparador
    */
   public Shootv2(Shooter shooter) {
     this.shooter = shooter;
     addRequirements(this.shooter);
   }
 
+  /**
+   * Ejecuta el disparador hasta que el comando que expulsa las powercells acabe.
+   * Esto se usa para comandos de automatización.
+   * 
+   * @param shooter Subsistema del disparador
+   * @param finished Valor para activar el paro. Dejar en true.
+   */
   public Shootv2(Shooter shooter, boolean finished) {
     this.shooter = shooter;
     this.finished = finished;
@@ -34,6 +42,7 @@ public class Shootv2 extends CommandBase {
   @Override
   public void initialize() {
     RobotContainer.leds.sendData2(2);
+    TakeAll.finishedShoot = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -54,8 +63,8 @@ public class Shootv2 extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(TakeAll.finishedShoot == true)
-      return true;
+    if(finished == true)
+      return TakeAll.finishedShoot;
     else 
       return false;
   }

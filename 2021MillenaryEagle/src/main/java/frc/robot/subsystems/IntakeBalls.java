@@ -32,7 +32,7 @@ public class IntakeBalls extends SubsystemBase {
                        sensor3 = new DigitalInput(Intake.sensors[2]),
                        sensor4 = new DigitalInput(Intake.sensors[3]); //Sensor de salida
 
-  private boolean[] sensors = new boolean[]{};
+ //private boolean[] sensors = new boolean[]{};
 
                                                     //  s1     s2      s3    s4
   /*private boolean[][] tabladeverdad = new boolean[][]{{false, false, false, false}, // 1
@@ -208,10 +208,10 @@ public class IntakeBalls extends SubsystemBase {
     s3 = !sensor3.get();
     s4 = !sensor4.get();
 
-    sensors[0] = !sensor1.get();
+    /* sensors[0] = !sensor1.get();
     sensors[1] = !sensor2.get();
     sensors[2] = !sensor3.get();
-    sensors[3] = !sensor4.get();
+    sensors[3] = !sensor4.get(); */
 
     SmartDashboard.putBoolean("1", s1);
     SmartDashboard.putBoolean("2", s2);

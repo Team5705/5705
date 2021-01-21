@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.IntakeBalls;
 import frc.robot.subsystems.Powertrain;
 import frc.robot.subsystems.Shooter;
@@ -25,9 +26,11 @@ public class Shoot extends ParallelCommandGroup {
    */
   public Shoot(Shooter shooter, IntakeBalls intake, Powertrain powertrain, Vision vision) {
 
-    super(new Shootv2(shooter),
-          new SequentialCommandGroup(new Tracking(powertrain, vision, true), new ParallelCommandGroup(new Tracking(powertrain, vision), 
-                                                                                                      new TakeAll(intake).withTimeout(4.5)))
-         );
+    super(new Tracking(powertrain, vision, false), new WaitCommand(1));
+
+  /*super(new Shootv2(shooter, true),
+          new SequentialCommandGroup(new Tracking(powertrain, vision, true), new ParallelCommandGroup(new Tracking(powertrain, vision).withTimeout(4.5), 
+                                                                                                      new SequentialCommandGroup(new WaitCommand(1.5), new TakeAll(intake).withTimeout(3))))
+         );*/
   }
 }

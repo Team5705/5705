@@ -124,7 +124,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    new JoystickButton(driverController, 1).whileHeld(new Shootv2(shooter));
+    new JoystickButton(driverController, 1).whileHeld(new Shootv2(shooter, false));
     new JoystickButton(driverController, 2).whenPressed(new InstantCommand(intake::toExtendIntake, intake));
     new JoystickButton(driverController, 3).whenPressed(new InstantCommand(intake::saveIntake, intake));
 

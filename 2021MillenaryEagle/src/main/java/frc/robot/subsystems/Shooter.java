@@ -35,6 +35,9 @@ public class Shooter extends SubsystemBase {
   }
 
   public void go() {
+    // Apaga el compresor (esté o no conectado) cuando se active el disparador y así utilizar toda la
+    // batería
+    compressor.stop();
     
     if(velocityNow < velocityShoot){
       velocityNow += up;
@@ -45,9 +48,6 @@ public class Shooter extends SubsystemBase {
 
     RobotContainer.leds.sendData(2);
 
-    // Apaga el compresor (esté o no conectado) cuando se active el disparador y así utilizar toda la
-    // batería
-    compressor.stop();
   }
 
   public void neutral() {

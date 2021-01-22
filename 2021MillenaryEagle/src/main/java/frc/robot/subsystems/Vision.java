@@ -34,9 +34,9 @@ public class Vision extends SubsystemBase {
 
   // Camera height and angle
 
-  private final double cameraHeightInches = 39; // 39 inches exaple
+  private final double cameraHeightInches = 33.5; //33.5 in aprox
 
-  private final double cameraMountingAngle = 35; // 35 degrees exaple
+  private final double cameraMountingAngle = 28; // 35 deg aprox.
 
   private final double mountingRadians = Math.toRadians(cameraMountingAngle); // a1, converted to radians
 
@@ -127,8 +127,8 @@ public class Vision extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("X", getX());
-    SmartDashboard.putNumber("Y", getY());
+    SmartDashboard.putNumber("tX", getX());
+    SmartDashboard.putNumber("tY", getY());
     SmartDashboard.putNumber("Area", getArea());
     SmartDashboard.putNumber("Distance", getDistance());
     SmartDashboard.putBoolean("targetVisible", availableTarget());

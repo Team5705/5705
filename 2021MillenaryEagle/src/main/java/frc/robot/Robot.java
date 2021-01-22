@@ -18,6 +18,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -74,7 +75,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     
     gameData();
-
+    SmartDashboard.putNumber("Time", Timer.getMatchTime());
   }
 
   /**
@@ -154,6 +155,9 @@ public class Robot extends TimedRobot {
         // Blue case code
         SmartDashboard.putString("gamedata", "Blue/Azul");
         SmartDashboard.putBoolean("B", true);
+        SmartDashboard.putBoolean("R", false);
+        SmartDashboard.putBoolean("G", false);
+        SmartDashboard.putBoolean("Y", false);
 
         /* Dashboard.sendString("gamedata", "Blue/Azul");
         Dashboard.sendBoolean("B", true); */
@@ -164,6 +168,9 @@ public class Robot extends TimedRobot {
         // Green case code
         SmartDashboard.putString("gamedata", "Green/Verde");
         SmartDashboard.putBoolean("G", true);
+        SmartDashboard.putBoolean("R", false);
+        SmartDashboard.putBoolean("Y", false);
+        SmartDashboard.putBoolean("B", false);
 
         /* Dashboard.sendString("gamedata", "Green/Verde");
         Dashboard.sendBoolean("G", true); */
@@ -174,6 +181,9 @@ public class Robot extends TimedRobot {
         // Red case code
         SmartDashboard.putString("gamedata", "Red/Rojo");
         SmartDashboard.putBoolean("R", true);
+        SmartDashboard.putBoolean("Y", false);
+        SmartDashboard.putBoolean("G", false);
+        SmartDashboard.putBoolean("B", false);
 
         /* Dashboard.sendString("gamedata", "Red/Rojo");
         Dashboard.sendBoolean("R", true); */
@@ -184,6 +194,9 @@ public class Robot extends TimedRobot {
         // Yellow case code
         SmartDashboard.putString("gamedata", "Yellow/Amarillo");
         SmartDashboard.putBoolean("Y", true);
+        SmartDashboard.putBoolean("R", false);
+        SmartDashboard.putBoolean("G", false);
+        SmartDashboard.putBoolean("B", false);
 
         /* Dashboard.sendString("gamedata", "Yellow/Amarillo");
         Dashboard.sendBoolean("Y", true); */

@@ -71,10 +71,10 @@ public class Vision extends SubsystemBase {
   }
 
   public boolean availableTarget() {
-    if (tv.getDouble(0.0f) == 0.0f)
-      return false;
-    else
+    if (tv.getDouble(0.0) > 0)
       return true;
+    else
+      return false;
   }
 
   public void ledsOff() {

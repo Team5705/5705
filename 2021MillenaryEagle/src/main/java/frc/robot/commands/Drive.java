@@ -32,7 +32,7 @@ public class Drive extends CommandBase {
   public void execute() {
     double xSp = RobotContainer.driverController.getRawAxis(3) - RobotContainer.driverController.getRawAxis(2);
     double turn = RobotContainer.driverController.getRawAxis(0);
-    powertrain.arcadeDrive(xSp, turn);
+    powertrain.arcadeDrive(xSp, turn * 0.7);
     // No tomen chavos Ctrl+K plus Ctrl+T ^w^/
   }
 

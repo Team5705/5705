@@ -23,14 +23,14 @@ public class Shoot extends ParallelCommandGroup {
    * Comando paralelo para accionar el shooter y esperar a que la limelight encuentre el objetivo.
    * Es un comando mixto donde se realizan acciones paralelas y a su vez acciones
    * secuenciales.
+   * No hace faltar mantenerlo presionado, solo con hacerlo una vez el comando acabará si es que encuentra un objetivo.
+   * Para cancelarlo basta con presionar el botón A para interrumpirlo.
    */
   public Shoot(Shooter shooter, IntakeBalls intake, Powertrain powertrain, Vision vision) {
 
-    super(new Tracking(powertrain, vision, false), new WaitCommand(1));
-
-  /*super(new Shootv2(shooter, true),
-          new SequentialCommandGroup(new Tracking(powertrain, vision, true), new ParallelCommandGroup(new Tracking(powertrain, vision).withTimeout(4.5), 
-                                                                                                      new SequentialCommandGroup(new WaitCommand(1.5), new TakeAll(intake).withTimeout(3))))
-         );*/
+  super(new Shootv2(shooter, true),
+          new SequentialCommandGroup(new Tracking(powertrain, vision, true), new ParallelCommandGroup(new Tracking(powertrain, vision).withTimeout(3), 
+                                                                                                      new SequentialCommandGroup(new WaitCommand(1), new TakeAll(intake).withTimeout(2))))
+         );
   }
 }

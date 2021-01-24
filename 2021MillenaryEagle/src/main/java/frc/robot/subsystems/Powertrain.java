@@ -219,14 +219,12 @@ public class Powertrain extends SubsystemBase {
    * @return Devuelve el angulo del robot normalizado en un rango de 0 a 359
    */
   public double angleNormalized() {
-    double angle = navAngle();
     double operation;
-    if (angle >= 0)
-      operation = (angle % 360);
+
+    if (navAngle() >= 0)
+      operation = navAngle() % 360;
     else
-      operation = 360 - (Math.abs(angle % 360));
-    if (operation == 360)
-      operation = 0;
+      operation = 360 - Math.abs(navAngle() % 360);
 
     return operation;
   }

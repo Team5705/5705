@@ -14,12 +14,16 @@ import frc.robot.subsystems.Powertrain;
 public class Distance extends CommandBase {
   private final Powertrain powertrain;
   private static PID pidDistance;
+  private float angle;
 
   private double distance;
 
-  private double tolerance = 0.1;
+  private double tolerance = 0.05; // 5 cm
 
-  double kP = 0, kI = 0, kD = 0;
+  double kP = 0,
+         kI = 0, 
+         kD = 0, 
+         bias = 0.3;
 
   /**
    * 7v7
@@ -33,30 +37,39 @@ public class Distance extends CommandBase {
   public Distance(Powertrain powertrain, double distanceInMeters, double kP, double kI, double kD, double bias) {
     this.powertrain = powertrain;
     this.distance = distanceInMeters;
-    pidDistance = new PID(kP, kI, kD, distanceInMeters, bias, false); // 0.15
+    pidDistance = new PID(kP, kI, kD, distanceInMeters, bias, false);
 
     addRequirements(powertrain);
   }
 
+  /**
+   * Comando para acanzar la distancia deseada en metros. Realiza el cálculo de PID y terminará cuando la distancia
+   * sea mayor o igual tomando en cuenta la tolerancia dada. los valores de PID en este apartado ya están declarados.
+   * 
+   * @param powertrain
+   * @param distanceInMeters
+   */
   public Distance(Powertrain powertrain, double distanceInMeters) {
     this.powertrain = powertrain;
     this.distance = distanceInMeters;
-    pidDistance = new PID(kP, kI, kD, distanceInMeters, 0.15, false); // 0.15
+
+    pidDistance = new PID(kP, kI, kD, distanceInMeters, bias, false);
 
     addRequirements(powertrain);
   }
 
   @Override
   public void initialize() {
-    powertrain.resetGyro();
     powertrain.resetEncoders();
+
+    angle = (float) powertrain.angleNormalized(); //Guardamos el grado actual del robot para realizar su recorrido recto.
   }
 
   @Override
   public void execute() {
     pidDistance.runPID(powertrain.getDistanceRight());
 
-    double turn = (0 - powertrain.navAngle()) * 0.1;
+    double turn = (angle - powertrain.navAngle()) * 0.1;
 
     powertrain.arcadeDrive(pidDistance.valuePID(), turn);
 
@@ -68,6 +81,6 @@ public class Distance extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return (powertrain.getDistanceRight() > (distance - tolerance));
+    return (powertrain.getDistanceRight() >= (distance - tolerance));
   }
 }

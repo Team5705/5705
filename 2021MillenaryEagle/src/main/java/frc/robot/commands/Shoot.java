@@ -9,7 +9,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.IntakeBalls;
 import frc.robot.subsystems.Powertrain;
 import frc.robot.subsystems.Shooter;
@@ -19,18 +18,19 @@ import frc.robot.subsystems.Vision;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class Shoot extends ParallelCommandGroup {
+
   /**
-   * Comando paralelo para accionar el shooter y esperar a que la limelight encuentre el objetivo.
+   * Comando paralelo para accionar el shooter mientras espera a que la limelight encuentre el objetivo.
    * Es un comando mixto donde se realizan acciones paralelas y a su vez acciones
    * secuenciales.
    * No hace faltar mantenerlo presionado, solo con hacerlo una vez el comando acabará si es que encuentra un objetivo.
-   * Para cancelarlo basta con presionar el botón A para interrumpirlo.
+   * Para interrumpirlo basta con presionar el botón A.
    */
   public Shoot(Shooter shooter, IntakeBalls intake, Powertrain powertrain, Vision vision) {
 
   super(new Shootv2(shooter, true),
-          new SequentialCommandGroup(new Tracking(powertrain, vision, true), new ParallelCommandGroup(new Tracking(powertrain, vision).withTimeout(3), 
-                                                                                                      new SequentialCommandGroup(new WaitCommand(1), new TakeAll(intake).withTimeout(2))))
+        new SequentialCommandGroup(new Tracking(powertrain, vision, true), new ParallelCommandGroup(new Tracking(powertrain, vision).withTimeout(3), 
+                                                                                                    new TakeAll(intake).withTimeout(2)))
          );
   }
 }

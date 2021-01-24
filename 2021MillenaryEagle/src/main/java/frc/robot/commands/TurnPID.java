@@ -16,8 +16,9 @@ public class TurnPID extends CommandBase {
 
   private static PID pidTurn;
 
-  double gyro;
-  double angle;
+  private double gyro;
+  private double angle;
+  private boolean direction; // true = clockwise | false = counter-clockwise
 
   double kP = 0.03, kI = 0.00001, kD = 9, bias = 0.27;
 
@@ -41,14 +42,18 @@ public class TurnPID extends CommandBase {
   /**
    * unu
    * 
+   * En este apartado controlamos el giro del robot hacia el ángulo deseado. Es importante saber
+   * que el giroscopio no se reinicia, por ende hay que tener en cuenta en qué sentido se encuentra el 
+   * robot actualmente y a que grado queremos llegar conforme al grado 0 que el robot inicia mirando al 
+   * objetivo de las powercells.
+   * 
    * @param powertrain Subsistema motriz
-   * @param angle Angulo deseado entre los 360 grados del robot, el giroscopio
-   *              no se reinicia.
+   * @param angle Angulo deseado entre los 360 grados del robot.
    */
   public TurnPID(Powertrain powertrain, int angle) {
     this.powertrain = powertrain;
     this.angle = angle;
-    pidTurn = new PID(kP, kI, kD, angle, bias, false);
+    
 
     addRequirements(this.powertrain);
   }
@@ -56,36 +61,49 @@ public class TurnPID extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //powertrain.resetGyro();
+    gyro = powertrain.angleNormalized();
+
+    double difference = Math.abs(gyro - angle);
+
+    /**
+     * Qué pasa aquí? Sencillo, si la direncia es mayor a 180° de donde nos encontramos actualmente hasta donde queremos llegar 
+     * quiere decir que si giramos en sentido horario vamos a recorres más que si giramos en sentido antihorario. Con esto al saber
+     * si la diferencia es mayor a 180° podemos decidir a dónde girar y solo definir el PID.
+     */
+
+    if (difference > 180){
+      direction = true; //Clockwise | Sentido horario
+
+      pidTurn = new PID(kP, kI, kD, angle, bias, false);
+    }
+
+    else{
+      direction = false; //Counter-clockwise | Sentido antihorario 
+
+      pidTurn = new PID(kP, kI, kD, -angle, bias, true);
+    }
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    gyro = powertrain.navAngle();
+    
+    if(direction){
+      gyro = powertrain.angleNormalized(); //Devuelve el valor en un rango de 0 a 359
+      
+    }
+    else {
+      gyro = -powertrain.navAngle() % 360; //Negativo
 
+    }
+    
     pidTurn.runPID(gyro);
 
     double turn = pidTurn.valuePID();
 
-    /* err = (angle - gyro);
-
-    errI = (err * T) + errP;
-
-    errD = (err - errPp) / T;
-
-    errP = errI;
-    errPp = err;
-
-    /****************************************
-     * PID
-     ***************************************
-
-    PID = (err * kP) + (errI * kI) + (errD * kD); */
-
     powertrain.arcadeDrive(0, turn);
 
-    // SmartDashboard.putNumber("PID", PID);
   }
 
   // Called once the command ends or is interrupted.

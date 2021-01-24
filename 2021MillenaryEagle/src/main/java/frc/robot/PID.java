@@ -53,7 +53,7 @@ public class PID {
     }
 
     /**
-     * PID.
+     * PID. Usar valueInverted en caso de que el PID funcione de manera invertida.
      * 
      * @param kP           Valor Proporcional
      * @param kI           Valor Integral
@@ -85,6 +85,23 @@ public class PID {
         this.kI = kI;
         this.kD = kD;
         this.desiredValue = desiredValue;
+        this.valueInverted = valueInverted;
+
+    }
+
+    /**
+     * PID. Usar valueInverted en caso de que el PID funcione de manera invertida.
+     * 
+     * @param kP            Valor Proporcional
+     * @param kI            Valor Integral
+     * @param kD            Valor Derivativo
+     * @param desiredValue  Valor deseado o punto de ajuste
+     * @param valueInverted Error invertido
+     */
+    public PID(double kP, double kI, double kD, boolean valueInverted) {
+        this.kP = kP;
+        this.kI = kI;
+        this.kD = kD;
         this.valueInverted = valueInverted;
 
     }

@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -127,11 +128,12 @@ public class RobotContainer {
     new JoystickButton(driverController, 1).whileHeld(new Shootv2(shooter, false));
     new JoystickButton(driverController, 2).whenPressed(new InstantCommand(intake::toExtendIntake, intake));
     new JoystickButton(driverController, 3).whenPressed(new InstantCommand(intake::saveIntake, intake));
-
     new JoystickButton(driverController, 4).whenPressed(new Shoot(shooter, intake, powertrain, vision));
-   
     new JoystickButton(driverController, 5).whileHeld(new TakeAll(intake));
     new JoystickButton(driverController, 6).whileHeld(new TakeWithSensor(intake));
+    new JoystickButton(driverController, 7).whenPressed(new InstantCommand(powertrain::resetGyro)); // Boton Select
+
+    new POVButton(driverController, 270).whileHeld(new EjectBalls(intake));
   }
 
   //-----------------------------------------------------------------------------------------------------------------------------------------

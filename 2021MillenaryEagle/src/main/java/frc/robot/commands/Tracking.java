@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.PID;
@@ -66,7 +67,7 @@ public class Tracking extends CommandBase {
     pidX.runPIDErr(x);
     pidY.runPIDErr(y);
 
-    if (gyro > 340 && gyro < 20) {
+    if (vision.availableTarget()) {
 
       double xS = pidY.valuePID();
       double turn = pidX.valuePID();
@@ -74,19 +75,19 @@ public class Tracking extends CommandBase {
       powertrain.arcadeDrive(xS, turn);
 
     } else{
-        if (gyro > 0 && gyro <= 180){
-          powertrain.arcadeDrive(0, -0.6);
+        if (gyro > 180)
+          powertrain.arcadeDrive(0, 0.6);
 
-        }
-        else if (gyro > 180 && gyro <= 360){
-        powertrain.arcadeDrive(0, 0.6);
+        else
+        powertrain.arcadeDrive(0, -0.6);
 
-      }
     }
   }
 
   @Override
   public void end(boolean interrupted) {
+    vision.blinkLeds();
+    Timer.delay(1);
     vision.ledsOff();
 
     new PrintCommand("FinishedVision");
@@ -102,7 +103,5 @@ public class Tracking extends CommandBase {
     else {
       return false;
     }
-    
-    
   }
 }

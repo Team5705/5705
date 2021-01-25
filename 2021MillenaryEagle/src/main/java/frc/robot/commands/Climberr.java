@@ -28,18 +28,21 @@ public class Climberr extends CommandBase {
   @Override
   public void execute() {
     double speed = RobotContainer.driverController.getRawAxis(5);
-    if (RobotContainer.driverController.getPOV() == 180)
-      climber.speedClimber(speed*0.6);
 
-    else if (RobotContainer.driverController.getPOV() == 0)
-      climber.speedRobotClimber(speed);
-
-    else {
-      climber.speedRobotClimber(0);
-      climber.speedClimber(0);
-
+    switch (RobotContainer.driverController.getPOV()) {
+      case 180:
+        climber.speedClimber(speed*0.6);
+        break;
+      
+      case 0:
+        climber.speedRobotClimber(speed);
+        break;
+    
+      default:
+        climber.speedRobotClimber(0);
+        climber.speedClimber(0);
+        break;
     }
-
   }
 
   // Called once the command ends or is interrupted.

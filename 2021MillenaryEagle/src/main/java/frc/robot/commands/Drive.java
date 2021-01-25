@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Powertrain;
@@ -24,7 +25,6 @@ public class Drive extends CommandBase {
 
   @Override
   public void initialize() {
-    //powertrain.resetGyro();
     powertrain.resetEncoders();
   }
 
@@ -33,6 +33,12 @@ public class Drive extends CommandBase {
     double xSp = RobotContainer.driverController.getRawAxis(3) - RobotContainer.driverController.getRawAxis(2);
     double turn = RobotContainer.driverController.getRawAxis(0);
     powertrain.arcadeDrive(xSp, turn * 0.7);
+
+    if(powertrain.collision()) {
+      RobotContainer.driverController.setRumble(RumbleType.kLeftRumble, 0.7);
+      RobotContainer.driverController.setRumble(RumbleType.kRightRumble, 0.7);
+    }
+
     // No tomen chavos Ctrl+K plus Ctrl+T ^w^/
   }
 

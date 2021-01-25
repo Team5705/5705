@@ -80,7 +80,7 @@ public class TurnPID extends CommandBase {
     else{
       direction = false; //Counter-clockwise | Sentido antihorario 
 
-      pidTurn = new PID(kP, kI, kD, -angle, bias, true);
+      pidTurn = new PID(kP, kI, kD, angle - 360, bias, true);
     }
 
   }
@@ -94,7 +94,7 @@ public class TurnPID extends CommandBase {
       
     }
     else {
-      gyro = -powertrain.navAngle() % 360; //Negativo
+      gyro = -powertrain.angleNormalized(); //Negativo
 
     }
     

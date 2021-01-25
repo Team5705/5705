@@ -95,6 +95,32 @@ public class Powertrain extends SubsystemBase {
     rightMaster.set(ControlMode.PercentOutput, rightVolts / 12);*/
   }
 
+  private double last_world_linear_accel_x;
+  private double last_world_linear_accel_y;
+
+  final static double kCollisionThreshold_DeltaG = 0.5f;
+
+  public boolean collision(){
+    boolean collisionDetected = false;
+          
+    double curr_world_linear_accel_x = ahrs.getWorldLinearAccelX();
+    double currentJerkX = curr_world_linear_accel_x - last_world_linear_accel_x;
+
+    last_world_linear_accel_x = curr_world_linear_accel_x;
+
+    double curr_world_linear_accel_y = ahrs.getWorldLinearAccelY();
+    double currentJerkY = curr_world_linear_accel_y - last_world_linear_accel_y;
+    
+    last_world_linear_accel_y = curr_world_linear_accel_y;
+    
+    if ( ( Math.abs(currentJerkX) > kCollisionThreshold_DeltaG ) ||
+         ( Math.abs(currentJerkY) > kCollisionThreshold_DeltaG) ) {
+        collisionDetected = true;
+    }
+    SmartDashboard.putBoolean("CollisionDetected", collisionDetected);
+    return collisionDetected;
+  }
+
   public double positionLeft() {
     return leftMaster.getSelectedSensorPosition(0);
   }

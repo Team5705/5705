@@ -17,8 +17,8 @@ import frc.robot.subsystems.Vision;
 public class Tracking extends CommandBase {
   private final Vision vision;
   private final Powertrain powertrain;
-  private static PID pidX = new PID(0.04, 0, 8, 0.27, false); //turn 0.00001dl
-  private static PID pidY = new PID(0.06, 0, 8, 0.3, true);
+  private static PID pidX = new PID(0.04, 0, 8, 0, 0.27, false); //turn 0.00001dl
+  private static PID pidY = new PID(0.06, 0, 8, 0, 0.3, true);
   private boolean finished = false;
   private double x, y;
   private double range = 0.1;
@@ -86,8 +86,11 @@ public class Tracking extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    vision.blinkLeds();
-    Timer.delay(1);
+    if (finished != true){
+      vision.blinkLeds();
+      Timer.delay(1);
+    }
+
     vision.ledsOff();
 
     new PrintCommand("FinishedVision");

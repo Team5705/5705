@@ -34,10 +34,10 @@ public class Drive extends CommandBase {
     double turn = RobotContainer.driverController.getRawAxis(0);
     powertrain.arcadeDrive(xSp, turn * 0.7);
 
-    if(powertrain.collision()) {
+    /*if(powertrain.collision()) {
       RobotContainer.driverController.setRumble(RumbleType.kLeftRumble, 0.7);
       RobotContainer.driverController.setRumble(RumbleType.kRightRumble, 0.7);
-    }
+    }*/
 
     // No tomen chavos Ctrl+K plus Ctrl+T ^w^/
   }

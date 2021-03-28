@@ -53,10 +53,10 @@ public class IntakeBalls extends SubsystemBase {
                                                       {true,  true,  false, true}}; // 16*/
                        
   //Velocidad de los motores
-  private double intake_Velocity = 0.5,
+  private double intake_Velocity = 1,
   //regular la velocidad para procurar tener siempre el mismo disparo de salida y no aumentar la potencia con todo el recorrido
-  bandaA_Velocity = 0.5,
-  bandaB_Velocity = 0.5;
+  bandaA_Velocity = 0.9,
+  bandaB_Velocity = 0.9;
                        
   private boolean s1; //= !sensor1.get();
   private boolean s2; //= !sensor2.get();
@@ -179,9 +179,9 @@ public class IntakeBalls extends SubsystemBase {
    * Expulsa las power cells hacía fuera del robot.
    */
   public void ejectBallstoOut(){
-    intake.set(-intake_Velocity);
-      motorBandaA.set(-bandaA_Velocity);
-      motorBandaB.set(-bandaB_Velocity);
+    intake.set(-1);
+      motorBandaA.set(-0.9);
+      motorBandaB.set(-0.9);
 
   }
 

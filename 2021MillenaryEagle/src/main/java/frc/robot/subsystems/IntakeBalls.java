@@ -53,7 +53,7 @@ public class IntakeBalls extends SubsystemBase {
                                                       {true,  true,  false, true}}; // 16*/
                        
   //Velocidad de los motores
-  private double intake_Velocity = 1,
+  private double intake_Velocity = 0.9,
   //regular la velocidad para procurar tener siempre el mismo disparo de salida y no aumentar la potencia con todo el recorrido
   bandaA_Velocity = 0.9,
   bandaB_Velocity = 0.9;

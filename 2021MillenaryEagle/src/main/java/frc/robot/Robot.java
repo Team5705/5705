@@ -67,6 +67,7 @@ public class Robot extends TimedRobot {
     System.out.println("⠄⠄⠄⠄⠄⠄⠄⠉⠻⣿⣿⣾⣦⡙⠻⣷⣾⣿⠃⠿⠋⠁⠄⠄⠄⠄⠄⢀⣠⣴");
     System.out.println("⣿⣿⣿⣶⣶⣮⣥⣒⠲⢮⣝⡿⣿⣿⡆⣿⡿⠃⠄⠄⠄⠄⠄⠄⠄⣠⣴⣿⣿⣿");
     
+    //Atte: Tulagrande69
     RobotContainer.leds.sendData(0);
   }
 

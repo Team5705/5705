@@ -20,12 +20,12 @@ public class PID {
     private boolean valueInverted = false;
     private double desiredValue;
 
-    private final double T = 20;
-    private double err = 0;
+    private final double kT = 20; // Tiempo de ejecución del comnado en línea, son 0.020 segundos por ciclo
+    private double err = 0; // Error
     private double errI = 0; // Integral
-    private double errD = 0;
-    private double errPp = 0;
-    private double errP = 0; // Pasado
+    private double errD = 0; // Diferencial
+    private double errPp = 0; // Error pasado del pasado
+    private double errP = 0; // Error pasado
 
     private double PID;
 
@@ -115,9 +115,9 @@ public class PID {
     public void runPID(double value) {
         err = (valueInverted ? -1.0 : 1.0) * (desiredValue - value);
 
-        errI = (err * T) + errP;
+        errI = (err * kT) + errP;
 
-        errD = (err - errPp) / T;
+        errD = (err - errPp) / kT;
 
         errP = errI;
         errPp = err;
@@ -134,9 +134,9 @@ public class PID {
         double biass = bias;
         err = (valueInverted ? -1.0 : 1.0) * error;
 
-        errI = (err * T) + errP;
+        errI = (err * kT) + errP;
 
-        errD = (err - errPp) / T;
+        errD = (err - errPp) / kT;
 
         errP = errI;
         errPp = err;

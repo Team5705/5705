@@ -25,7 +25,7 @@ public class PID {
     private double errI = 0; // Integral
     private double errD = 0; // Diferencial
     private double errPp = 0; // Error pasado del pasado
-    private double errP = 0; // Error pasado
+    private double errI_P = 0; // Error pasado
 
     private double PID;
 
@@ -110,20 +110,20 @@ public class PID {
      * Inicia el procesamiento del PID siempre y cuando se mande a llamar. Mande a
      * llamar antes de obtener el valor.
      * 
-     * @param value Valor del sensor a seguir
+     * @param value Valor del sensor a seguir en el tiempo actual.
      */
     public void runPID(double value) {
         err = (valueInverted ? -1.0 : 1.0) * (desiredValue - value);
 
-        errI = (err * kT) + errP;
+        errI = (err * kT) + errI_P;
 
         errD = (err - errPp) / kT;
 
-        errP = errI;
+        errI_P = errI;
         errPp = err;
 
         /*--------------------------------------*/
-        /* PID */
+        /*                 PID                  */
         /*--------------------------------------*/
 
         PID = ((err * kP) + (errI * kI) + (errD * kD) + ((valueInverted ? -1.0 : 1.0) * bias));
@@ -134,15 +134,13 @@ public class PID {
         double biass = bias;
         err = (valueInverted ? -1.0 : 1.0) * error;
 
-        errI = (err * kT) + errP;
+        errI = (err * kT) + errI_P;
 
         errD = (err - errPp) / kT;
 
-        errP = errI;
+        errI_P = errI;
         errPp = err;
 
-        if (err < 0)
-            biass = -bias;
         /*--------------------------------------*/
         /* PID */
         /*--------------------------------------*/
